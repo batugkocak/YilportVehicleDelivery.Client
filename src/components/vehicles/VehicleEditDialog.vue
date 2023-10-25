@@ -1,12 +1,14 @@
 <template>
-  <v-dialog v-model="dialog" class="dialog" max-width="500">
+  <v-dialog v-model="dialog" class="dialog" v-if="vehicle" max-width="500">
     <v-card class="pa-5 mt-2">
-      <v-form @submit.prevent="">
+      <v-card-text> Düzenle: {{ tempPlate }} </v-card-text>
+      <v-form>
         <v-text-field
-          v-model="insertedVehicle.plate"
+          v-model="vehicle.plate"
           label="Plaka"
           placeholder="16YH1616"
           prepend-icon="mdi-card-text"
+          @update:model-value="checkPlate"
           :rules="[
             ruleRequired,
             (v) => ruleMinLength(v, 4),
@@ -15,17 +17,17 @@
           :counter="10"
         />
         <v-select
-          v-model="insertedVehicle.type"
+          v-model="vehicle.type"
           label="Tip"
           :items="types"
           item-title="name"
           item-value="id"
           prepend-icon="mdi-car-estate"
-          no-data-text="Araç Sahipleri getiriliyor, lütfen bekleyin..."
+          no-data-text="Araç Tipleri getiriliyor, lütfen bekleyin..."
           :rules="[ruleRequired]"
         />
         <v-select
-          v-model="insertedVehicle.color"
+          v-model="vehicle.color"
           label="Renk"
           :items="colors"
           item-title="name"
@@ -35,44 +37,43 @@
           :rules="[ruleRequired]"
         />
         <v-autocomplete
-          v-model="insertedVehicle.owner"
+          v-model="vehicle.ownerId"
           label="Sahip"
           :items="owners"
           item-title="name"
           item-value="id"
           prepend-icon="mdi-account-tie"
-          @click="getOwners"
           no-data-text="Araç Sahipleri getiriliyor, lütfen bekleyin..."
           :rules="[ruleRequired]"
         ></v-autocomplete>
         <v-select
-          v-model="insertedVehicle.brand"
+          v-model="vehicle.brandId"
           label="Marka"
           :items="brands"
           item-title="name"
           item-value="id"
           required
           prepend-icon="mdi-watermark"
-          @click="getBrands"
+          :loading="load"
           no-data-text="Markalar getiriliyor, lütfen bekleyin..."
           :rules="[ruleRequired]"
         />
         <v-text-field
-          v-model="insertedVehicle.model"
+          v-model="vehicle.modelName"
           label="Model"
           prepend-icon="mdi-car-outline"
           :rules="[ruleRequired, (v) => ruleMaxLength(v, 15)]"
           :counter="15"
         />
         <v-text-field
-          v-model="insertedVehicle.modelYear"
+          v-model="vehicle.modelYear"
           label="Model Yılı"
           prepend-icon="mdi-calendar-question"
           :rules="[ruleRequired, (v) => ruleMaxLength(v, 4)]"
           counter="4"
         />
         <v-autocomplete
-          v-model="insertedVehicle.fuelType"
+          v-model="vehicle.fuelType"
           label="Yakıt Türü"
           prepend-icon="mdi-fuel"
           :items="fuelTypes"
@@ -83,19 +84,18 @@
           :rules="[ruleRequired]"
         />
         <v-autocomplete
-          v-model="insertedVehicle.department"
+          v-model="vehicle.departmentId"
           label="Departman"
           :items="departments"
           item-title="name"
           item-value="id"
           prepend-icon="mdi-form-select"
-          @click="getDepartments"
           no-data-text="Departmanlar getiriliyor, lütfen bekleyin..."
           :rules="[ruleRequired]"
         ></v-autocomplete>
 
         <v-select
-          v-model="insertedVehicle.status"
+          v-model="vehicle.status"
           label="Durum"
           :items="stats"
           item-title="name"
@@ -106,7 +106,7 @@
           :rules="[ruleRequired]"
         />
         <v-text-field
-          v-model="insertedVehicle.note"
+          v-model="vehicle.note"
           label="Not"
           prepend-icon="mdi-note-edit"
           :rules="[(v) => ruleMaxLength(v, 200)]"
@@ -115,8 +115,15 @@
         </v-text-field>
         <v-row class="mt-3">
           <v-spacer />
-          <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
-          <v-btn type="submit" color="success" class="ml-5 mr-5">Ekle</v-btn>
+        </v-row>
+        <v-row class="mr-2">
+          <v-spacer></v-spacer>
+          <v-btn color="red" @click="closeDialog" class="ml-5 mr-5">
+            Vazgeç
+          </v-btn>
+          <v-btn type="submit" color="success" @click="updateCar(vehicle)">
+            Düzenle
+          </v-btn>
         </v-row>
       </v-form>
     </v-card>
@@ -124,7 +131,6 @@
 </template>
 
 <script>
-import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
 import { vehicles } from "@/common/config/apiConfig";
 
@@ -134,34 +140,31 @@ import VehicleStatus from "@/common/constants/vehicleStatus";
 import VehicleType from "@/common/constants/vehicleType";
 
 export default {
-  props: ["modelValue"],
-  emits: ["update:modelValue", "open-snackbar"],
+  props: ["modelValue", "id"],
+  emits: ["update:modelValue"],
   data() {
     return {
-      ...rules,
-      insertedVehicle: {
-        plate: "",
-        type: "",
-        color: "",
-        owner: "",
-        brand: "",
-        model: "",
-        modelYear: "",
-        fuelType: "",
-        department: "",
-        status: "",
-        note: "",
-      },
-      departments: [],
+      vehicle: null,
       brands: [],
+      departments: [],
       owners: [],
-      isSuccess: false,
-      snackBarMessage: "",
+      tempPlate: 0,
     };
   },
   methods: {
     closeDialog() {
       this.$emit("update:modelValue", false);
+    },
+    async getCar() {
+      api
+        .get(vehicles.getById(this.id))
+        .then((response) => {
+          this.vehicle = response.data.data;
+        })
+        .finally(() => {
+          this.tempPlate = this.vehicle.plate;
+          console.log(this.vehicle);
+        });
     },
     async getDepartments() {
       if (this.departments.length) {
@@ -220,6 +223,7 @@ export default {
         });
     },
   },
+
   computed: {
     dialog: {
       get() {
@@ -240,6 +244,19 @@ export default {
     },
     types() {
       return VehicleType.vehicleTypes;
+    },
+  },
+  watch: {
+    dialog: {
+      handler(newValue) {
+        if (newValue) {
+          this.getCar();
+          this.getBrands();
+          this.getDepartments();
+          this.getOwners();
+        }
+      },
+      immediate: true,
     },
   },
 };

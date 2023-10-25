@@ -2,7 +2,9 @@
   <v-app>
     <the-sidebar />
     <v-main>
-      <router-view></router-view>
+      <div class="ma-5">
+        <router-view></router-view>
+      </div>
     </v-main>
   </v-app>
   <result-snackbar ref="snackBar"></result-snackbar>

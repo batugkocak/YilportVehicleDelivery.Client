@@ -3,7 +3,11 @@
     <v-list>
       <v-list-item title="Yılport" subtitle="Holding INC.">
         <template v-slot:prepend>
-          <v-img :width="25" src="../../assets/YPH_logo_black.png"></v-img>
+          <v-img
+            :width="25"
+            src="../../assets/YPH_logo_black.png"
+            class="mr-2"
+          ></v-img>
         </template>
       </v-list-item>
     </v-list>

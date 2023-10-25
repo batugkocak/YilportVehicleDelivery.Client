@@ -14,9 +14,12 @@ export const vehiclesForTable = {
 
 //'https://localhost:7060/Vehicles/Details/ById?vehicleId=6'
 export const vehicles = {
-  getAll: "https://localhost:7060/Vehicles",
-  getById: (carId) =>
-    `https://localhost:7060/Vehicles/Details/ById?vehicleId=${carId}`,
+  all: "https://localhost:7060/Vehicles",
+  getByIdDetails: (carId) => `https://localhost:7060/Vehicles/${carId}/Details`,
+  getById: (carId) => `https://localhost:7060/Vehicles/${carId}`,
+  departments: "https://localhost:7060/Departments",
+  brands: "https://localhost:7060/Brands",
+  owners: "https://localhost:7060/Owners",
 };
 
 //TODO: Decide wheter using "Separate Endpoints" or "Base URL with Concatenation"

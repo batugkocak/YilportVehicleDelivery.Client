@@ -83,12 +83,14 @@
 <script>
 import api from "@/services/httpService";
 import { vehicles } from "@/common/config/apiConfig";
+import baseRules from "@/common/rules/rules";
 
 export default {
   props: ["modelValue", "id"],
   emits: ["update:modelValue"],
   data() {
     return {
+      ...baseRules,
       vehicle: null,
     };
   },
@@ -99,7 +101,7 @@ export default {
     },
 
     async getCar() {
-      api.get(vehicles.getById(this.id)).then((response) => {
+      api.get(vehicles.getByIdDetails(this.id)).then((response) => {
         this.vehicle = response.data.data;
       });
     },

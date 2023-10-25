@@ -1,8 +1,8 @@
 const vehicleColors= [
-        {
-        name: "None",
-        id:0
-        },
+        // {
+        // name: "None",
+        // id:0
+        // },
         {
         name: "Beyaz",
         id:1

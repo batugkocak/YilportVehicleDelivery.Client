@@ -1,8 +1,8 @@
 const stats= [
-  {
-  name: "None",
-  id:0
-},
+//   {
+//   name: "None",
+//   id:0
+// },
 {
   name: "Müsait",
   id:1

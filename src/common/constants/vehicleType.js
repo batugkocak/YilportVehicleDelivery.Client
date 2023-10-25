@@ -1,8 +1,8 @@
 const vehicleTypes= [
-{
-  name: "None",
-  id:0
-},
+// {
+//   name: "None",
+//   id:0
+// },
 {
   name: "Otomobil",
   id:1

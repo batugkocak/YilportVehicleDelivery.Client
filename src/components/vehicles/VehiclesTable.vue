@@ -44,7 +44,13 @@ import api from "@/services/httpService";
 import { vehiclesForTable } from "@/common/config/apiConfig";
 
 export default {
-  emits: ["toggle-detail", "open-snackbar", "toggle-add"],
+  emits: [
+    "toggle-detail",
+    "open-snackbar",
+    "toggle-add",
+    "toggle-edit",
+    "toggle-delete",
+  ],
   data() {
     return {
       vehicles: [],
@@ -97,6 +103,9 @@ export default {
     },
     openAddDialog(id) {
       this.$emit("toggle-add", id);
+    },
+    openDeleteDialog(id) {
+      this.$emit("toggle-delete", id);
     },
   },
 
