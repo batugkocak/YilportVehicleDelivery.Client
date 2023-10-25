@@ -1,25 +1,18 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <v-dialog
-    v-model="dialog"
-    class="dialog"
-    :close-on-back="false"
-    v-if="vehicle"
-  >
+  <v-dialog v-model="dialog" v-if="vehicle" max-width="500">
     <v-card
-      class="dialogCard"
+      class="pa-2"
       prepend-icon="mdi-car"
       :title="vehicle.plate"
-      :subtitle="
-        vehicle.brand + ' ' + vehicle.modelName + ' - ' + vehicle.modelYear
-      "
+      :subtitle="cardSubtitle"
       hover
     >
       <v-chip :color="chipColor">
         {{ vehicle.status }}
       </v-chip>
-      <v-card elevation="3" class="dialogCard">
-        <div class="d-flex align-center">
+      <v-card elevation="1" class="pa-5 mt-2">
+        <div :class="cardContentStyling">
           <v-icon icon="mdi-car-estate" />
           <div>
             <v-card-title> Tip </v-card-title>
@@ -28,7 +21,7 @@
         </div>
         <v-divider />
 
-        <div class="d-flex align-center">
+        <div :class="cardContentStyling">
           <v-icon icon="mdi-palette" />
           <div>
             <v-card-title> Renk </v-card-title>
@@ -37,7 +30,7 @@
         </div>
         <v-divider />
 
-        <div class="d-flex align-center">
+        <div :class="cardContentStyling">
           <v-icon icon="mdi-account-tie" />
           <div>
             <v-card-title> Sahip </v-card-title>
@@ -47,7 +40,7 @@
         <v-divider />
 
         <v-divider />
-        <div class="d-flex align-center">
+        <div :class="cardContentStyling">
           <v-icon icon="mdi-fuel" />
           <div>
             <v-card-title> Yakıt Tipi </v-card-title>
@@ -56,7 +49,7 @@
         </div>
         <v-divider />
 
-        <div class="d-flex align-center">
+        <div :class="cardContentStyling">
           <v-icon icon="mdi-form-select" />
           <div>
             <v-card-title> Departman </v-card-title>
@@ -65,28 +58,26 @@
         </div>
         <v-divider />
 
-        <div class="d-flex align-center">
+        <div :class="cardContentStyling">
           <v-icon icon="mdi-note" />
           <div>
             <v-card-title> Not </v-card-title>
           </div>
         </div>
-        <v-card elevation="5" class="mt-5">
+        <v-card elevation="2" class="px-5">
           <v-card-text v-if="vehicle.note != null">
             {{ vehicle.note }}
           </v-card-text>
           <v-card-text v-else
-            >Araca ait bir not bulunamadı. Not eklemek için aracı
-            düzenleyin.</v-card-text
-          >
+            >Araca ait bir not bulunamadı. Not eklemek için aracı düzenleyin.
+          </v-card-text>
         </v-card>
       </v-card>
       <v-card-actions>
-        <v-btn color="primary" block @click="closeDialog">Kapat</v-btn>
+        <v-btn color="primary" @click="closeDialog">Kapat</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-btn @click="getCar"> Test</v-btn>
 </template>
 
 <script>
@@ -119,7 +110,7 @@ export default {
         return this.modelValue;
       },
       set() {
-        this.$emit("update:modelValue", false);
+        this.closeDialog();
       },
     },
     chipColor() {
@@ -129,13 +120,23 @@ export default {
         return "primary";
       }
     },
+    cardSubtitle() {
+      return (
+        this.vehicle.brand +
+        " " +
+        this.vehicle.modelName +
+        " - " +
+        this.vehicle.modelYear
+      );
+    },
+    cardContentStyling() {
+      return "d-flex align-center";
+    },
   },
   watch: {
     dialog: {
       handler(newValue) {
-        console.log("Diyalog değişti");
         if (newValue) {
-          console.log("Id ile araç yüklendi");
           this.getCar();
         }
       },
