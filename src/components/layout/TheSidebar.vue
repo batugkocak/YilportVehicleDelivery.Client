@@ -1,8 +1,8 @@
 <template>
-  <v-navigation-drawer :rail="hover">
+  <v-navigation-drawer :rail="hover" :permanent="true">
     <v-list>
       <v-list-item title="Yılport" subtitle="Holding INC.">
-        <template v-slot:prepend >
+        <template v-slot:prepend>
           <v-img :width="25" src="../../assets/YPH_logo_black.png"></v-img>
         </template>
       </v-list-item>
