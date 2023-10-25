@@ -44,7 +44,7 @@ import api from "@/services/httpService";
 import { vehiclesForTable } from "@/common/config/apiConfig";
 
 export default {
-  emits: ["toggle-detail", "open-snackbar"],
+  emits: ["toggle-detail", "open-snackbar", "toggle-add"],
   data() {
     return {
       vehicles: [],
