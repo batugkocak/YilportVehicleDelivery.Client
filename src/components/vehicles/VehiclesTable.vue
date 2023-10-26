@@ -3,14 +3,30 @@
   <v-data-table
     :headers="headers"
     :items="vehicles"
+    :hover="true"
+    :search="searchText"
+    density="comfortable"
     class="elevation-1"
     loading-text="Araçlar yükleniyor..."
     no-data-text="Kayıtlı araç yok."
+    items-per-page-text="Sayfa başına araç:"
   >
     <template v-slot:top>
       <v-toolbar>
         <v-toolbar-title>ARAÇLAR</v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-responsive max-width="150" class="mt-2 mr-3">
+          <v-text-field
+            variant="solo"
+            label="Ara"
+            v-model="searchText"
+            bg-color="grey-lighten-4"
+            elevation-0
+            :clearable="true"
+            :flat="true"
+            placeholder="Plaka, Tip, Marka, ..."
+          ></v-text-field>
+        </v-responsive>
         <v-btn color="primary" @click="openAddDialog"> Araç Ekle </v-btn>
       </v-toolbar>
     </template>
@@ -72,10 +88,10 @@ export default {
           align: "start",
           sortable: false,
           fixed: true,
+          width: "200",
         },
       ],
-      isSuccess: false,
-      snackBarMessage: "",
+      searchText: "",
     };
   },
   methods: {
@@ -101,8 +117,8 @@ export default {
     openEditDialog(id) {
       this.$emit("toggle-edit", id);
     },
-    openAddDialog(id) {
-      this.$emit("toggle-add", id);
+    openAddDialog() {
+      this.$emit("toggle-add");
     },
     openDeleteDialog(id) {
       this.$emit("toggle-delete", id);

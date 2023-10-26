@@ -6,7 +6,8 @@
     @toggle-delete="openDeleteDialog"
     @open-snackbar="openSnackbar"
   />
-  <vehicle-detail-dialog v-model="detailDialog" :id="selectedVehicleId" />
+  <!-- TODO: Add snackbar to axios methods -->
+  <vehicle-details-dialog v-model="detailDialog" :id="selectedVehicleId" />
   <vehicle-add-dialog v-model="addDialog" @open-snackbar="openSnackbar" />
   <vehicle-edit-dialog v-model="editDialog" :id="selectedVehicleId" />
   <vehicle-delete-dialog v-model="deleteDialog" :id="selectedVehicleId" />
@@ -14,7 +15,7 @@
 
 <script>
 import VehiclesTable from "@/components/vehicles/VehiclesTable.vue";
-import VehicleDetailDialog from "@/components/vehicles/VehicleDetailDialog.vue";
+import VehicleDetailsDialog from "@/components/vehicles/VehicleDetailsDialog.vue";
 import VehicleAddDialog from "@/components/vehicles/VehicleAddDialog.vue";
 import VehicleEditDialog from "@/components/vehicles/VehicleEditDialog.vue";
 import VehicleDeleteDialog from "@/components/vehicles/VehicleDeleteDialog.vue";
@@ -22,7 +23,7 @@ import VehicleDeleteDialog from "@/components/vehicles/VehicleDeleteDialog.vue";
 export default {
   components: {
     VehiclesTable,
-    VehicleDetailDialog,
+    VehicleDetailsDialog,
     VehicleAddDialog,
     VehicleEditDialog,
     VehicleDeleteDialog,
