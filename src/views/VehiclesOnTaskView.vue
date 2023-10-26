@@ -12,6 +12,7 @@
     v-model="addDialog"
   />
   <vehicles-on-task-details-dialog
+    @open-snackbar="openSnackbar"
     v-model="detailDialog"
     :id="selectedVehicleId"
   />

@@ -92,11 +92,11 @@
 
 <script>
 import api from "@/services/httpService";
-import { predefinedTasks } from "@/common/config/apiConfig";
 import {
-  vehiclesForTable,
   departments,
   vehicles,
+  drivers,
+  predefinedTasks,
 } from "@/common/config/apiConfig";
 import baseRules from "@/common/rules/rules";
 export default {
@@ -129,7 +129,7 @@ export default {
     },
     async getVehicles() {
       await api
-        .get(vehiclesForTable.getAll)
+        .get(vehicles.detailsForTable)
         .then((response) => {
           this.vehicles = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -145,7 +145,7 @@ export default {
     },
     async getDrivers() {
       await api
-        .get(vehicles.drivers)
+        .get(drivers.url)
         .then((response) => {
           this.drivers = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -161,7 +161,7 @@ export default {
     },
     async getDepartments() {
       await api
-        .get(departments.getAll)
+        .get(departments.url)
         .then((response) => {
           this.departments = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -178,7 +178,7 @@ export default {
     async getPredefinedTasks() {
       this.getDepartments();
       await api
-        .get(predefinedTasks.getAll)
+        .get(predefinedTasks.url)
         .then((response) => {
           this.predefinedTasks = response.data.data;
           this.snackBarMessage = response.data.message;

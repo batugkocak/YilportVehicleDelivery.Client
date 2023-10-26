@@ -132,7 +132,12 @@
 
 <script>
 import api from "@/services/httpService";
-import { vehicles } from "@/common/config/apiConfig";
+import {
+  vehicles,
+  brands,
+  owners,
+  departments,
+} from "@/common/config/apiConfig";
 
 import FuelType from "@/common/constants/fuelType";
 import VehicleColor from "@/common/constants/vehicleColor";
@@ -157,7 +162,7 @@ export default {
     },
     async getCar() {
       api
-        .get(vehicles.getById(this.id))
+        .get(vehicles.byId(this.id))
         .then((response) => {
           this.vehicle = response.data.data;
         })
@@ -171,7 +176,7 @@ export default {
         return;
       }
       await api
-        .get(vehicles.departments)
+        .get(departments.url)
         .then((res) => {
           console.log(res);
           this.departments = res.data.data;
@@ -190,7 +195,7 @@ export default {
         return;
       }
       await api
-        .get(vehicles.owners)
+        .get(owners.url)
         .then((res) => {
           this.owners = res.data.data;
           this.isSuccess = true;
@@ -208,7 +213,7 @@ export default {
         return;
       }
       await api
-        .get(vehicles.brands)
+        .get(brands.url)
         .then((res) => {
           this.brands = res.data.data;
           this.isSuccess = true;

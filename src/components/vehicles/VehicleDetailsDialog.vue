@@ -101,7 +101,7 @@ export default {
     },
 
     async getCar() {
-      api.get(vehicles.getByIdDetails(this.id)).then((response) => {
+      api.get(vehicles.byIdDetails(this.id)).then((response) => {
         this.vehicle = response.data.data;
       });
     },

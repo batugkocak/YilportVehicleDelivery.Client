@@ -155,7 +155,7 @@ export default {
   methods: {
     async fetchVehiclesOnTask() {
       await api
-        .get(vehiclesOnTask.getAll)
+        .get(vehiclesOnTask.url)
         .then((response) => {
           this.vehiclesOnTask = response.data.data;
           this.snackBarMessage = response.data.message;

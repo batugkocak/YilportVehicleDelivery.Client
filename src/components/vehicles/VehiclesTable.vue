@@ -57,7 +57,7 @@
 
 <script>
 import api from "@/services/httpService";
-import { vehiclesForTable } from "@/common/config/apiConfig";
+import { vehicles } from "@/common/config/apiConfig";
 
 export default {
   emits: [
@@ -99,7 +99,7 @@ export default {
   methods: {
     async fetchVehicles() {
       await api
-        .get(vehiclesForTable.getAll)
+        .get(vehicles.detailsForTable)
         .then((response) => {
           this.vehicles = response.data.data;
           this.snackBarMessage = response.data.message;
