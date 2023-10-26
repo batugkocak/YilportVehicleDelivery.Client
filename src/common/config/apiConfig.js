@@ -14,6 +14,9 @@ export const vehiclesForTable = {
 export const vehiclesOnTask = {
   getAll: "https://localhost:7060/VehicleOnTasks/ForTable",
 };
+export const predefinedTasks = {
+  getAll: "https://localhost:7060/PredefinedTasks",
+};
 
 //'https://localhost:7060/Vehicles/Details/ById?vehicleId=6'
 export const vehicles = {
@@ -23,6 +26,7 @@ export const vehicles = {
   departments: "https://localhost:7060/Departments",
   brands: "https://localhost:7060/Brands",
   owners: "https://localhost:7060/Owners",
+  drivers: "https://localhost:7060/Drivers",
 };
 
 //TODO: Decide wheter using "Separate Endpoints" or "Base URL with Concatenation"

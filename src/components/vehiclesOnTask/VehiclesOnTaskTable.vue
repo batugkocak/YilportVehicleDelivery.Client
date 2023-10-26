@@ -148,6 +148,8 @@ export default {
           width: "150",
         },
       ],
+      snackBarMessage: "",
+      isSuccess: false,
     };
   },
   methods: {

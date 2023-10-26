@@ -7,7 +7,10 @@
     @toggle-finish="openFinishDialog"
     @open-snackbar="openSnackbar"
   />
-  <vehicles-on-task-add-dialog v-model="addDialog" />
+  <vehicles-on-task-add-dialog
+    @open-snackbar="openSnackbar"
+    v-model="addDialog"
+  />
   <vehicles-on-task-details-dialog
     v-model="detailDialog"
     :id="selectedVehicleId"

@@ -92,6 +92,8 @@ export default {
         },
       ],
       searchText: "",
+      snackBarMessage: "",
+      isSuccess: false,
     };
   },
   methods: {
