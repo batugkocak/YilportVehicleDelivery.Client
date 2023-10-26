@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import VehiclesView from "@/views/VehiclesView.vue";
 import VehiclesOnTaskView from "@/views/VehiclesOnTaskView.vue";
+import VehiclesOnTaskArchiveView from "@/views/VehiclesOnTaskArchiveView.vue";
 
 const routes = [
   {
@@ -18,6 +19,13 @@ const routes = [
     path: "/vehiclesOnTask",
     name: "vehicles-on-task",
     component: VehiclesOnTaskView,
+    children: [
+      {
+        path: "archive",
+        name: "archive",
+        component: VehiclesOnTaskArchiveView,
+      },
+    ],
   },
 ];
 

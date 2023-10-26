@@ -11,6 +11,9 @@ export const departments = {
 export const vehiclesForTable = {
   getAll: "https://localhost:7060/Vehicles/DetailsForTable",
 };
+export const vehiclesOnTask = {
+  getAll: "https://localhost:7060/VehicleOnTasks/ForTable",
+};
 
 //'https://localhost:7060/Vehicles/Details/ById?vehicleId=6'
 export const vehicles = {
