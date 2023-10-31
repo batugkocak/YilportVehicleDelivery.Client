@@ -26,13 +26,11 @@ const routes = [
     path: "/vehiclesOnTask",
     name: "VehiclesOnTask",
     component: VehiclesOnTaskView,
-    children: [
-      {
-        path: "archive",
-        name: "Archive",
-        component: VehiclesOnTaskArchiveView,
-      },
-    ],
+  },
+  {
+    path: "/archive",
+    name: "Archive",
+    component: VehiclesOnTaskArchiveView,
   },
 ];
 

@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer :rail="hover" :permanent="true">
     <v-list>
-      <v-list-item title="Yılport" subtitle="Holding INC.">
+      <v-list-item title="Araç Teslim" subtitle="Yılport Holding INC.">
         <template v-slot:prepend>
           <v-img
             :width="25"
@@ -18,13 +18,29 @@
     <v-divider />
 
     <v-list density="compact" nav>
-      <v-list-item prepend-icon="mdi-car" title="Araçlar" to="/vehicles" />
       <v-list-item
-        prepend-icon="mdi-car-multiple"
+        prepend-icon="mdi-car-side"
+        title="Araçlar"
+        to="/vehicles"
+        color="primary"
+      />
+      <v-list-item
+        prepend-icon="mdi-car-select"
         title="Görevdeki Araçlar"
         to="/vehiclesOnTask"
+        color="primary"
       />
-      <v-list-item prepend-icon="mdi-calendar-check" title="Görevler" />
+      <v-list-item
+        prepend-icon="mdi-archive"
+        title="Görev Arşivi"
+        to="/archive"
+        color="primary"
+      />
+      <v-list-item
+        prepend-icon="mdi-calendar-check"
+        title="Ön Tanımlı Görevler"
+        color="primary"
+      />
     </v-list>
 
     <template v-slot:append>
@@ -33,6 +49,7 @@
         variant="text"
         icon="mdi-arrow-left-right"
         @click.stop="hover = !hover"
+        color="primary"
       />
     </template>
   </v-navigation-drawer>
