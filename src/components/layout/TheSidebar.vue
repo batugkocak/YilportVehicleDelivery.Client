@@ -10,9 +10,9 @@
           ></v-img>
         </template>
 
-        <template v-slot:append v-if="!hover">
+        <!-- <template v-slot:append v-if="!hover">
           <v-btn elevation="0" icon="mdi-exit-to-app" @click="logout"> </v-btn>
-        </template>
+        </template> -->
       </v-list-item>
     </v-list>
     <v-divider />
@@ -44,6 +44,13 @@
     </v-list>
 
     <template v-slot:append>
+      <v-btn
+        elevation="0"
+        icon="mdi-exit-to-app"
+        @click="logout"
+        class="ml-1"
+      />
+      <v-spacer></v-spacer>
       <v-btn
         class="ml-1"
         variant="text"
