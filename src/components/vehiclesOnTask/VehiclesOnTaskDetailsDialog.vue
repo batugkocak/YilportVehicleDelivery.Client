@@ -65,7 +65,7 @@
           </div>
         </div>
 
-        <div class="space-between">
+        <!-- <div class="space-between">
           <div class="d-flex align-center">
             <v-icon icon="mdi-calendar-range-outline" />
             <div>
@@ -80,7 +80,7 @@
               <v-card-text>{{ getHour(vehicleOnTask.returnDate) }}</v-card-text>
             </div>
           </div>
-        </div>
+        </div> -->
       </v-card>
       <v-card-actions>
         <v-btn color="primary" block @click="closeDialog">Kapat</v-btn>

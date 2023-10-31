@@ -65,7 +65,7 @@
           </div>
         </div>
         <v-card elevation="2" class="px-5">
-          <v-card-text v-if="vehicle.note != null">
+          <v-card-text v-if="vehicle.note">
             {{ vehicle.note }}
           </v-card-text>
           <v-card-text v-else

@@ -9,7 +9,8 @@ export const departments = {
 };
 
 export const vehiclesOnTask = {
-  url: "https://localhost:7060/VehicleOnTasks/ForTable",
+  url: "https://localhost:7060/VehicleOnTasks/ForNormalTable",
+  archiveUrl: "https://localhost:7060/VehicleOnTasks/ForArchiveTable",
   byId: (vehicleOnTaskId) =>
     `https://localhost:7060/VehicleOnTasks/Details/${vehicleOnTaskId}`,
 };
@@ -18,9 +19,11 @@ export const predefinedTasks = {
 };
 export const vehicles = {
   url: "https://localhost:7060/Vehicles",
-  byIdDetails: (carId) => `https://localhost:7060/Vehicles/${carId}/Details`,
   detailsForTable: "https://localhost:7060/Vehicles/DetailsForTable",
+  update: "https://localhost:7060/Vehicles/Update",
+  byIdDetails: (carId) => `https://localhost:7060/Vehicles/${carId}/Details`,
   byId: (carId) => `https://localhost:7060/Vehicles/${carId}`,
+  delete: (carId) => `https://localhost:7060/Vehicles/Delete/${carId}`,
 };
 
 export const owners = {

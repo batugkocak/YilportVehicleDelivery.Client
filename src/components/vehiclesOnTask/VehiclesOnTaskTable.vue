@@ -43,18 +43,6 @@
       </td>
     </template>
 
-    <template v-slot:item.returnDate="{ item }">
-      <td>
-        {{ getDate(item.returnDate) }}
-      </td>
-    </template>
-
-    <template v-slot:item.returnHour="{ item }">
-      <td>
-        {{ getHour(item.returnDate) }}
-      </td>
-    </template>
-
     <template v-slot:item.actions="{ item }">
       <v-btn
         class="ma-1"
@@ -134,12 +122,12 @@ export default {
           align: "start",
           key: "givenDate",
         },
-
         {
-          title: "Dönüş Tarihi",
+          title: "Veriliş Saati",
           align: "start",
-          key: "returnDate",
+          key: "givenHour",
         },
+
         {
           title: "",
           align: "start",

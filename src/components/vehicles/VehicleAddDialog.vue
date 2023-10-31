@@ -1,7 +1,8 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
     <v-card class="pa-5 mt-2">
-      <v-form @submit.prevent="">
+      <p>{{ valid }}</p>
+      <v-form @submit.prevent="postVehicle" v-model="valid">
         <v-text-field
           v-model="insertedVehicle.plate"
           label="Plaka"
@@ -35,7 +36,7 @@
           :rules="[ruleRequired]"
         />
         <v-autocomplete
-          v-model="insertedVehicle.owner"
+          v-model="insertedVehicle.ownerId"
           label="Sahip"
           :items="owners"
           item-title="name"
@@ -46,7 +47,7 @@
           :rules="[ruleRequired]"
         ></v-autocomplete>
         <v-select
-          v-model="insertedVehicle.brand"
+          v-model="insertedVehicle.brandId"
           label="Marka"
           :items="brands"
           item-title="name"
@@ -58,7 +59,7 @@
           :rules="[ruleRequired]"
         />
         <v-text-field
-          v-model="insertedVehicle.model"
+          v-model="insertedVehicle.modelName"
           label="Model"
           prepend-icon="mdi-car-outline"
           :rules="[ruleRequired, (v) => ruleMaxLength(v, 15)]"
@@ -83,7 +84,7 @@
           :rules="[ruleRequired]"
         />
         <v-autocomplete
-          v-model="insertedVehicle.department"
+          v-model="insertedVehicle.departmentId"
           label="Departman"
           :items="departments"
           item-title="name"
@@ -116,7 +117,13 @@
         <v-row class="mt-3">
           <v-spacer />
           <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
-          <v-btn type="submit" color="success" class="ml-5 mr-5">Ekle</v-btn>
+          <v-btn
+            type="submit"
+            color="success"
+            class="ml-5 mr-5"
+            :disabled="!valid"
+            >Ekle</v-btn
+          >
         </v-row>
       </v-form>
     </v-card>
@@ -126,7 +133,12 @@
 <script>
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
-import { departments, owners, brands } from "@/common/config/apiConfig";
+import {
+  vehicles,
+  departments,
+  owners,
+  brands,
+} from "@/common/config/apiConfig";
 
 import FuelType from "@/common/constants/fuelType";
 import VehicleColor from "@/common/constants/vehicleColor";
@@ -135,22 +147,23 @@ import VehicleType from "@/common/constants/vehicleType";
 
 export default {
   props: ["modelValue"],
-  emits: ["update:modelValue", "open-snackbar"],
+  emits: ["update:modelValue", "open-snackbar", "add-vehicle"],
   data() {
     return {
       ...rules,
+      valid: false,
       insertedVehicle: {
         plate: "",
         type: "",
         color: "",
-        owner: "",
-        brand: "",
-        model: "",
+        ownerId: "",
+        brandId: "",
+        modelName: "",
         modelYear: "",
         fuelType: "",
-        department: "",
+        departmentId: "",
         status: "",
-        note: "",
+        note: null,
       },
       departments: [],
       brands: [],
@@ -162,6 +175,42 @@ export default {
   methods: {
     closeDialog() {
       this.$emit("update:modelValue", false);
+    },
+    async postVehicle() {
+      await api
+        .post(vehicles.url, this.insertedVehicle)
+        .then((res) => {
+          console.log(res);
+          this.isSuccess = true;
+          this.snackBarMessage = res.data;
+        })
+        .catch((err) => {
+          this.isSuccess = false;
+          this.snackBarMessage = err.response.data;
+        })
+        .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+          this.$emit("add-vehicle");
+          this.closeDialog();
+          this.insertedVehicle = {
+            plate: "",
+            type: "",
+            color: "",
+            ownerId: "",
+            brandId: "",
+            modelName: "",
+            modelYear: "",
+            fuelType: "",
+            departmentId: "",
+            status: "",
+            note: "",
+          };
+        });
+    },
+    trimInserts() {
+      this.insertedVehicle.plate = this.insertedVehicle.plate.trim();
+      this.insertedVehicle.modelName = this.insertedVehicle.modelName.trim();
+      this.insertedVehicle.note = this.insertedVehicle.note.trim();
     },
     async getDepartments() {
       if (this.departments.length) {

@@ -5,13 +5,27 @@
     @toggle-edit="openEditDialog"
     @toggle-delete="openDeleteDialog"
     @open-snackbar="openSnackbar"
+    ref="vehicleTable"
   />
   <!-- TODO: Add snackbar to axios methods -->
   <!-- TODO: Add checkplate function to frontend as well -->
   <vehicle-details-dialog v-model="detailDialog" :id="selectedVehicleId" />
-  <vehicle-add-dialog v-model="addDialog" @open-snackbar="openSnackbar" />
-  <vehicle-edit-dialog v-model="editDialog" :id="selectedVehicleId" />
-  <vehicle-delete-dialog v-model="deleteDialog" :id="selectedVehicleId" />
+  <vehicle-add-dialog
+    v-model="addDialog"
+    @open-snackbar="openSnackbar"
+    @add-vehicle="updateTable"
+  />
+  <vehicle-edit-dialog
+    v-model="editDialog"
+    :id="selectedVehicleId"
+    @update-vehicle="updateTable"
+  />
+  <vehicle-delete-dialog
+    v-model="deleteDialog"
+    :id="selectedVehicleId"
+    @delete-vehicle="updateTable"
+    @open-snackbar="openSnackbar"
+  />
 </template>
 
 <script>
@@ -60,6 +74,9 @@ export default {
         isSuccess: isSuccess,
         message: message,
       });
+    },
+    updateTable() {
+      this.$refs.vehicleTable.fetchVehicles();
     },
   },
 };

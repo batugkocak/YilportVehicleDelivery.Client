@@ -5,22 +5,39 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green" @click="dialog = false">Vazgeç</v-btn>
-        <v-btn color="red" @click="deleteCar">Evet, sil</v-btn>
+        <v-btn color="red" @click="deleteVehicle">Evet, sil</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import api from "@/services/httpService";
+import { vehicles } from "@/common/config/apiConfig";
 export default {
   props: ["modelValue", "id"],
-  emits: ["update:modelValue", "open-snackbar"],
+  emits: ["update:modelValue", "open-snackbar", "delete-vehicle"],
 
   methods: {
-    deleteCar() {
-      console.log("Araba silindi: ");
-      console.log(this.id);
-      this.closeDialog();
+    async deleteVehicle() {
+      await api
+        .post(vehicles.delete(this.id))
+        .then((res) => {
+          console.log(res);
+          this.isSuccess = true;
+          this.snackBarMessage = res.data;
+          this.$emit("delete-vehicle");
+        })
+        .catch((err) => {
+          console.log(err);
+          this.isSuccess = false;
+          this.snackBarMessage = err.response.data;
+        })
+        .finally(() => {
+          console.log("Finally");
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+          this.closeDialog();
+        });
     },
     closeDialog() {
       this.$emit("update:modelValue", false);

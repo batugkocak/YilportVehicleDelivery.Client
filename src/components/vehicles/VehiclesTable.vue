@@ -115,7 +115,6 @@ export default {
         })
         .finally(() => {
           this.isTableLoading = false;
-
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },

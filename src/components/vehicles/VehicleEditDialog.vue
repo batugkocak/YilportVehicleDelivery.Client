@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" class="dialog" v-if="vehicle" max-width="500">
     <v-card class="pa-5 mt-2">
       <v-card-text> Düzenle: {{ tempPlate }} </v-card-text>
-      <v-form>
+      <v-form @submit.prevent="updateVehicle">
         <v-text-field
           v-model="vehicle.plate"
           label="Plaka"
@@ -108,8 +108,8 @@
           v-model="vehicle.note"
           label="Not"
           prepend-icon="mdi-note-edit"
-          :rules="[(v) => ruleMaxLength(v, 200)]"
-          :counter="200"
+          :rules="[(v) => ruleMaxLength(v, 230)]"
+          :counter="230"
         >
         </v-text-field>
         <v-row class="mt-3">
@@ -120,9 +120,7 @@
           <v-btn color="red" @click="closeDialog" class="ml-5 mr-5">
             Vazgeç
           </v-btn>
-          <v-btn type="submit" color="success" @click="updateCar(vehicle)">
-            Düzenle
-          </v-btn>
+          <v-btn type="submit" color="success"> Düzenle </v-btn>
         </v-row>
       </v-form>
     </v-card>
@@ -146,8 +144,8 @@ import VehicleStatus from "@/common/constants/vehicleStatus";
 import VehicleType from "@/common/constants/vehicleType";
 
 export default {
-  props: ["modelValue", "id"],
-  emits: ["update:modelValue"],
+  props: ["modelValue", "id", ""],
+  emits: ["update:modelValue", "update-vehicle"],
   data() {
     return {
       ...baseRules,
@@ -159,6 +157,24 @@ export default {
     };
   },
   methods: {
+    async updateVehicle() {
+      await api
+        .post(vehicles.update, this.vehicle)
+        .then((res) => {
+          console.log(res);
+          this.isSuccess = true;
+          this.snackBarMessage = res.data;
+        })
+        .catch((err) => {
+          this.isSuccess = false;
+          this.snackBarMessage = err.response.data;
+        })
+        .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+          this.$emit("update-vehicle");
+          this.closeDialog();
+        });
+    },
     closeDialog() {
       this.$emit("update:modelValue", false);
     },
