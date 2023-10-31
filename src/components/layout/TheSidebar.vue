@@ -9,6 +9,10 @@
             class="mr-2"
           ></v-img>
         </template>
+
+        <template v-slot:append v-if="!hover">
+          <v-btn elevation="0" icon="mdi-exit-to-app" @click="logout"> </v-btn>
+        </template>
       </v-list-item>
     </v-list>
     <v-divider />
@@ -35,10 +39,16 @@
 </template>
 <script>
 export default {
+  emits: ["logout"],
   data() {
     return {
       hover: false,
     };
+  },
+  methods: {
+    logout() {
+      this.$emit("logout");
+    },
   },
 };
 </script>

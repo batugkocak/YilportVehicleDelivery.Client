@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-data-table
+    :loading="isTableLoading"
     :headers="headers"
     :items="vehicles"
     :hover="true"
@@ -94,10 +95,13 @@ export default {
       searchText: "",
       snackBarMessage: "",
       isSuccess: false,
+
+      isTableLoading: false,
     };
   },
   methods: {
     async fetchVehicles() {
+      this.isTableLoading = true;
       await api
         .get(vehicles.detailsForTable)
         .then((response) => {
@@ -110,6 +114,8 @@ export default {
           this.isSuccess = false;
         })
         .finally(() => {
+          this.isTableLoading = false;
+
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },

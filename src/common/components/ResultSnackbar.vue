@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="showSnackbar" :color="snackBarColor" timeout="1500">
+  <v-snackbar v-model="showSnackbar" :color="snackBarColor" :timeout="timer">
     {{ message }}
   </v-snackbar>
 </template>
@@ -12,7 +12,7 @@ export default {
       showSnackbar: false,
       message: "",
       isSuccess: false,
-      timer: 3000,
+      timer: 2500,
     };
   },
   methods: {
@@ -20,6 +20,7 @@ export default {
       this.isSuccess = data.isSuccess;
       this.message = data.message;
       this.showSnackbar = true;
+      this.timer = data.timer || 2000;
     },
   },
   computed: {

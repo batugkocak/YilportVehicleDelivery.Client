@@ -126,12 +126,7 @@
 <script>
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
-import {
-  vehicles,
-  departments,
-  owners,
-  brands,
-} from "@/common/config/apiConfig";
+import { departments, owners, brands } from "@/common/config/apiConfig";
 
 import FuelType from "@/common/constants/fuelType";
 import VehicleColor from "@/common/constants/vehicleColor";

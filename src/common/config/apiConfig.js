@@ -31,6 +31,11 @@ export const drivers = {
   url: "https://localhost:7060/Drivers",
 };
 
+export const auth = {
+  login: "https://localhost:7060/Auth/login",
+  register: "https://localhost:7060/Auth/register",
+};
+
 //TODO: Decide wheter using "Separate Endpoints" or "Base URL with Concatenation"
 // API'de bazılarını ?vehicleID=1 şeklinde bazılarını da /1 şeklinde kullanıyoruz. Bunları standartlaştır, ona göre burayı da düzenle
 //gerekirse buraya sadece base apileri koy, /Vehicles cart curtları sayfalara tek tek koy.

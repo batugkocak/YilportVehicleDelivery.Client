@@ -7,6 +7,7 @@
     @open-snackbar="openSnackbar"
   />
   <!-- TODO: Add snackbar to axios methods -->
+  <!-- TODO: Add checkplate function to frontend as well -->
   <vehicle-details-dialog v-model="detailDialog" :id="selectedVehicleId" />
   <vehicle-add-dialog v-model="addDialog" @open-snackbar="openSnackbar" />
   <vehicle-edit-dialog v-model="editDialog" :id="selectedVehicleId" />

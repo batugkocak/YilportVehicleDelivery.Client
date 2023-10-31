@@ -54,7 +54,6 @@
           item-value="id"
           required
           prepend-icon="mdi-watermark"
-          :loading="load"
           no-data-text="Markalar getiriliyor, lütfen bekleyin..."
           :rules="[ruleRequired]"
         />
@@ -139,6 +138,8 @@ import {
   departments,
 } from "@/common/config/apiConfig";
 
+import baseRules from "@/common/rules/rules";
+
 import FuelType from "@/common/constants/fuelType";
 import VehicleColor from "@/common/constants/vehicleColor";
 import VehicleStatus from "@/common/constants/vehicleStatus";
@@ -149,6 +150,7 @@ export default {
   emits: ["update:modelValue"],
   data() {
     return {
+      ...baseRules,
       vehicle: null,
       brands: [],
       departments: [],
@@ -168,7 +170,6 @@ export default {
         })
         .finally(() => {
           this.tempPlate = this.vehicle.plate;
-          console.log(this.vehicle);
         });
     },
     async getDepartments() {
@@ -178,7 +179,6 @@ export default {
       await api
         .get(departments.url)
         .then((res) => {
-          console.log(res);
           this.departments = res.data.data;
           this.isSuccess = true;
           this.snackBarMessage = res.data.message;
@@ -202,7 +202,8 @@ export default {
           this.snackBarMessage = res.data.message;
         })
         .catch((err) => {
-          console.log(err);
+          this.isSuccess = false;
+          this.snackBarMessage = err.data.message;
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
