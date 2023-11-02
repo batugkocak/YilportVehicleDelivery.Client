@@ -1,7 +1,9 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-data-table
+  <v-data-table-server
+    v-model:items-per-page="itemsPerPage"
     :headers="headers"
+    :items-length="totalItems"
     :items="vehiclesOnTask"
     :loading="isLoading"
     :search="searchText"
@@ -10,27 +12,28 @@
     loading-text="Araçlar yükleniyor..."
     no-data-text="Kayıtlı araç yok."
     items-per-page-text="Sayfa başına araç:"
+    @update:options="fetchVehiclesOnTaskArchive"
   >
     <template v-slot:top>
       <v-toolbar>
         <v-toolbar-title>GÖREV ARŞİV</v-toolbar-title>
         <v-responsive max-width="200" class="pa-1">
-          <label for="givenDate">Veriliş Tarihi</label>
+          <label for="firstGivenDateInput">Başlangıç Veriliş Tarihi</label>
           <input
-            v-model="filterGivenDate"
+            v-model="filterFirstGivenDate"
             type="date"
-            id="givenDate"
+            id="firstGivenDateInput"
             name="Veriliş Tarihi"
             min="2015-01-01"
             lang="tr"
           />
         </v-responsive>
         <v-responsive max-width="200" class="pa-1">
-          <label for="returnDate">Dönüş Tarihi</label>
+          <label for="lastGivenDateInput">Son Veriliş Tarihi</label>
           <input
-            v-model="filterReturnDate"
+            v-model="filterLastGivenDate"
             type="date"
-            id="givenDate"
+            id="lastGivenDateInput"
             name="Veriliş Tarihi"
             min="2015-01-01"
             max="now"
@@ -75,7 +78,7 @@
       >
       </v-btn>
     </template>
-  </v-data-table>
+  </v-data-table-server>
   <h1>{{ filterGivenDate }}</h1>
   <h1>{{ filterReturnDate }}</h1>
 </template>
@@ -147,19 +150,29 @@ export default {
       snackBarMessage: "",
       isSuccess: false,
       isLoading: false,
-      filterGivenDate: null,
-      filterReturnDate: null,
+      filterFirstGivenDate: null,
+      filterLastGivenDate: null,
+      itemsPerPage: 10,
+      totalItems: 0,
+      page: 0,
     };
   },
   methods: {
-    async fetchVehiclesOnTaskArchive() {
+    async fetchVehiclesOnTaskArchive({ page, itemsPerPage }) {
       this.isLoading = true;
       await api
-        .get(vehiclesOnTask.archiveUrl)
+        .get(
+          vehiclesOnTask.archiveUrl +
+            `?Page=${page - 1}` +
+            `&Size=${itemsPerPage}` +
+            `&FirstGivenDate`
+        )
         .then((response) => {
-          this.vehiclesOnTask = response.data.data;
+          console.log(response.data.data.totalItems);
+          this.vehiclesOnTask = response.data.data.items;
           this.snackBarMessage = response.data.message;
           this.isSuccess = response.data.success;
+          this.totalItems = response.data.data.totalCount;
         })
         .catch(() => {
           this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
