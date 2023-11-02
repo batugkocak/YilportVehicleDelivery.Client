@@ -3,9 +3,9 @@
   <v-data-table
     :headers="headers"
     :items="vehiclesOnTask"
-    :hover="true"
+    :loading="isLoading"
     :search="searchText"
-    density="comfortable"
+    density="compact"
     class="elevation-1"
     loading-text="Araçlar yükleniyor..."
     no-data-text="Kayıtlı araç yok."
@@ -14,19 +14,30 @@
     <template v-slot:top>
       <v-toolbar>
         <v-toolbar-title>GÖREV ARŞİV</v-toolbar-title>
-        <v-spacer />
-        <v-responsive max-width="150" class="mt-2 mr-3">
-          <v-text-field
-            variant="solo"
-            label="Ara"
-            v-model="searchText"
-            bg-color="grey-lighten-4"
-            elevation-0
-            :clearable="true"
-            :flat="true"
-            placeholder="Plaka, Departman, ..."
-          ></v-text-field>
+        <v-responsive max-width="200" class="pa-1">
+          <label for="givenDate">Veriliş Tarihi</label>
+          <input
+            v-model="filterGivenDate"
+            type="date"
+            id="givenDate"
+            name="Veriliş Tarihi"
+            min="2015-01-01"
+            lang="tr"
+          />
         </v-responsive>
+        <v-responsive max-width="200" class="pa-1">
+          <label for="returnDate">Dönüş Tarihi</label>
+          <input
+            v-model="filterReturnDate"
+            type="date"
+            id="givenDate"
+            name="Veriliş Tarihi"
+            min="2015-01-01"
+            max="now"
+            lang="tr"
+          />
+        </v-responsive>
+        <v-btn @click="exportExcel"> EXCEL</v-btn>
       </v-toolbar>
     </template>
 
@@ -65,22 +76,17 @@
       </v-btn>
     </template>
   </v-data-table>
+  <h1>{{ filterGivenDate }}</h1>
+  <h1>{{ filterReturnDate }}</h1>
 </template>
 
 <script>
 import api from "@/services/httpService";
 import { vehiclesOnTask } from "@/common/config/apiConfig";
-import baseRules from "@/common/rules/rules.js";
-
+import baseRules from "@/common/rules/rules";
+import XLSX from "xlsx";
 export default {
-  emits: [
-    "open-snackbar",
-    "toggle-details",
-    "toggle-add",
-    "toggle-edit",
-    "toggle-delete",
-    "toggle-finish",
-  ],
+  emits: ["open-snackbar", "toggle-details"],
   data() {
     return {
       ...baseRules,
@@ -137,12 +143,17 @@ export default {
           width: "150",
         },
       ],
+
       snackBarMessage: "",
       isSuccess: false,
+      isLoading: false,
+      filterGivenDate: null,
+      filterReturnDate: null,
     };
   },
   methods: {
     async fetchVehiclesOnTaskArchive() {
+      this.isLoading = true;
       await api
         .get(vehiclesOnTask.archiveUrl)
         .then((response) => {
@@ -156,22 +167,17 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+          this.isLoading = false;
         });
-    },
-    openAddDialog() {
-      this.$emit("toggle-add");
-    },
-    openEditDialog(id) {
-      this.$emit("toggle-edit", id);
     },
     openDetailsDialog(id) {
       this.$emit("toggle-details", id);
     },
-    openDeleteDialog(id) {
-      this.$emit("toggle-delete", id);
-    },
-    openFinishDialog(id) {
-      this.$emit("toggle-finish", id);
+    exportExcel() {
+      const data = XLSX.utils.json_to_sheet(this.vehiclesOnTask);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, data, "data");
+      XLSX.writeFile(wb, "test.xlsx");
     },
     getHour(fullDate) {
       if (fullDate === "0001-01-01T00:00:00") {
