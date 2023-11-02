@@ -2,11 +2,13 @@
 <template>
   <v-data-table-server
     v-model:items-per-page="itemsPerPage"
+    v-model:page="page"
     :headers="headers"
     :items-length="totalItems"
     :items="vehiclesOnTask"
     :loading="isLoading"
     :search="searchText"
+    item-value="id"
     density="compact"
     class="elevation-1"
     loading-text="Araçlar yükleniyor..."
@@ -79,8 +81,6 @@
       </v-btn>
     </template>
   </v-data-table-server>
-  <h1>{{ filterGivenDate }}</h1>
-  <h1>{{ filterReturnDate }}</h1>
 </template>
 
 <script>
@@ -152,23 +152,20 @@ export default {
       isLoading: false,
       filterFirstGivenDate: null,
       filterLastGivenDate: null,
-      itemsPerPage: 10,
       totalItems: 0,
-      page: 0,
+      itemsPerPage: 10,
+      page: 1,
     };
   },
   methods: {
     async fetchVehiclesOnTaskArchive({ page, itemsPerPage }) {
       this.isLoading = true;
+      console.log(page);
       await api
         .get(
-          vehiclesOnTask.archiveUrl +
-            `?Page=${page - 1}` +
-            `&Size=${itemsPerPage}` +
-            `&FirstGivenDate`
+          vehiclesOnTask.archiveUrl + `?Page=${page - 1}&Size=${itemsPerPage}`
         )
         .then((response) => {
-          console.log(response.data.data.totalItems);
           this.vehiclesOnTask = response.data.data.items;
           this.snackBarMessage = response.data.message;
           this.isSuccess = response.data.success;
@@ -218,7 +215,10 @@ export default {
     },
   },
   created() {
-    this.fetchVehiclesOnTaskArchive();
+    this.fetchVehiclesOnTaskArchive({
+      page: this.page,
+      itemsPerPage: this.itemsPerPage,
+    });
   },
 };
 </script>
