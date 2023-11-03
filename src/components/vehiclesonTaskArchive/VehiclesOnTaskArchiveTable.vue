@@ -107,38 +107,45 @@ export default {
         },
 
         {
+          sortable: false,
           title: "Talep Eden Departman",
           align: "start",
           key: "departmentName",
         },
         {
+          sortable: false,
           title: "Görev Niteliği",
           align: "start",
           key: "taskDefinition",
         },
 
         {
+          sortable: false,
           title: "Veriliş Tarihi",
           align: "start",
           key: "givenDate",
         },
         {
+          sortable: false,
           title: "Veriliş Saati",
           align: "start",
           key: "givenHour",
         },
         {
+          sortable: false,
           title: "Dönüş Tarihi",
           align: "start",
           key: "returnDate",
         },
         {
+          sortable: false,
           title: "Dönüş Saati",
           align: "start",
           key: "returnHour",
         },
 
         {
+          sortable: false,
           title: "",
           align: "start",
           key: "actions",
