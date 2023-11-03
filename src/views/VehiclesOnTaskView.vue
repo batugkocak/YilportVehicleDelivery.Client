@@ -23,7 +23,12 @@
     :id="selectedVehicleId"
     @finish-task="updateTable"
   />
-  <vehicles-on-task-edit-dialog v-model="editDialog" :id="selectedVehicleId" />
+  <vehicles-on-task-edit-dialog
+    v-model="editDialog"
+    :id="selectedVehicleId"
+    @update-task="updateTable"
+    @open-snackbar="openSnackbar"
+  />
   <vehicles-on-task-delete-dialog
     v-model="deleteDialog"
     :id="selectedVehicleId"

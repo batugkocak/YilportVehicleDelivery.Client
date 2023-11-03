@@ -25,6 +25,11 @@ export const vehiclesOnTask = {
 
   finishUrl: (vehicleOnTaskId) =>
     `https://localhost:7060/VehicleOnTasks/Finish/${vehicleOnTaskId}`,
+
+  editUrl: "https://localhost:7060/VehicleOnTasks/Update",
+
+  get: (vehicleOnTaskId) =>
+    `https://localhost:7060/VehicleOnTasks/${vehicleOnTaskId}`,
 };
 export const predefinedTasks = {
   url: "https://localhost:7060/PredefinedTasks",
