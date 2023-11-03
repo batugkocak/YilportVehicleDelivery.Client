@@ -44,7 +44,7 @@
             @change="fetchVehiclesOnTaskArchive"
           />
         </v-responsive>
-        <v-btn @click="exportExcel"> EXCEL</v-btn>
+        <v-btn @click="exportExcel" color="primary">EXCEL çıktısı al</v-btn>
       </v-toolbar>
     </template>
 
@@ -222,6 +222,39 @@ export default {
     },
     async exportExcel() {
       await this.fetchVehiclesForExcel();
+
+      const customHeaders = {
+        vehiclesOnTaskId: "x",
+        vehicleId: "y",
+        vehiclePlate: "Plaka",
+        driverName: "Sürücü Adı",
+        departmentName: "Departman",
+        authorizedPerson: "Yetkili Kişi",
+        address: "Adres",
+        taskDefinition: "Görev Niteliği - Adı",
+        givenDate: "Veriliş Tarihi",
+        returnDate: "Dönüş Tarihi",
+      };
+
+      // Sütun İsimlerini Değiştir
+      this.vehiclesToExportExcel = this.vehiclesToExportExcel.map((item) => {
+        const newItem = {};
+        for (const oldColumn in customHeaders) {
+          const newColumn = customHeaders[oldColumn];
+          newItem[newColumn] = item[oldColumn];
+        }
+        return newItem;
+      });
+
+      // Id içeren sütunları sil
+      const excludedColumns = ["x", "y"];
+      this.vehiclesToExportExcel = this.vehiclesToExportExcel.map((item) => {
+        for (const column of excludedColumns) {
+          delete item[column];
+        }
+        return item;
+      });
+
       const data = XLSX.utils.json_to_sheet(this.vehiclesToExportExcel);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, data, "data");

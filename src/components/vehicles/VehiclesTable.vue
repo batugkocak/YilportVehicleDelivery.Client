@@ -11,6 +11,7 @@
     loading-text="Araçlar yükleniyor..."
     no-data-text="Kayıtlı araç yok."
     items-per-page-text="Sayfa başına araç:"
+    :items-per-page-options="[10, 20, -1]"
   >
     <template v-slot:top>
       <v-toolbar>
