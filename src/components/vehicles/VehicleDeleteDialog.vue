@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog v-model="dialog" max-width="500">
     <v-card>
       <v-card-text> Aracı silmek istediğinize emin misiniz?</v-card-text>
       <v-card-actions>

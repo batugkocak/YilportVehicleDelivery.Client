@@ -28,6 +28,7 @@
             name="Veriliş Tarihi"
             min="2015-01-01"
             lang="tr"
+            @change="fetchVehiclesOnTaskArchive"
           />
         </v-responsive>
         <v-responsive max-width="200" class="pa-1">
@@ -40,6 +41,7 @@
             min="2015-01-01"
             max="now"
             lang="tr"
+            @change="fetchVehiclesOnTaskArchive"
           />
         </v-responsive>
         <v-btn @click="exportExcel"> EXCEL</v-btn>
@@ -86,13 +88,11 @@
 <script>
 import api from "@/services/httpService";
 import { vehiclesOnTask } from "@/common/config/apiConfig";
-import baseRules from "@/common/rules/rules";
 import XLSX from "xlsx";
 export default {
   emits: ["open-snackbar", "toggle-details"],
   data() {
     return {
-      ...baseRules,
       vehiclesOnTask: [],
       searchText: "",
       headers: [
@@ -147,24 +147,32 @@ export default {
         },
       ],
 
+      //Snackbar:
       snackBarMessage: "",
       isSuccess: false,
+
       isLoading: false,
-      filterFirstGivenDate: null,
-      filterLastGivenDate: null,
+
+      filterFirstGivenDate: "",
+      filterLastGivenDate: "",
+
       totalItems: 0,
       itemsPerPage: 10,
       page: 1,
+
+      vehiclesToExportExcel: [],
     };
   },
   methods: {
-    async fetchVehiclesOnTaskArchive({ page, itemsPerPage }) {
+    async fetchVehiclesOnTaskArchive() {
       this.isLoading = true;
-      console.log(page);
       await api
-        .get(
-          vehiclesOnTask.archiveUrl + `?Page=${page - 1}&Size=${itemsPerPage}`
-        )
+        .get(vehiclesOnTask.archiveUrl, {
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          firstGivenDate: this.filterFirstGivenDate,
+          lastGivenDate: this.filterLastGivenDate,
+        })
         .then((response) => {
           this.vehiclesOnTask = response.data.data.items;
           this.snackBarMessage = response.data.message;
@@ -180,14 +188,42 @@ export default {
           this.isLoading = false;
         });
     },
+
+    async fetchVehiclesForExcel() {
+      await api
+        .get(vehiclesOnTask.archiveDetailsUrl, {
+          firstGivenDate: this.filterFirstGivenDate,
+          lastGivenDate: this.filterLastGivenDate,
+        })
+        .then((response) => {
+          this.vehiclesToExportExcel = response.data.data;
+          this.snackBarMessage = "Excel çıktısı alınıyor...";
+          this.isSuccess = response.data.success;
+          console.log(response.data);
+        })
+        .catch(() => {
+          this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
+          this.isSuccess = false;
+        })
+        .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+          this.isLoading = false;
+        });
+    },
     openDetailsDialog(id) {
       this.$emit("toggle-details", id);
     },
-    exportExcel() {
-      const data = XLSX.utils.json_to_sheet(this.vehiclesOnTask);
+    async exportExcel() {
+      await this.fetchVehiclesForExcel();
+      const data = XLSX.utils.json_to_sheet(this.vehiclesToExportExcel);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, data, "data");
-      XLSX.writeFile(wb, "test.xlsx");
+      let excelName = "GorevArsiv";
+      if (this.filterFirstGivenDate !== "")
+        excelName = excelName + "-Sonrasi=" + this.filterFirstGivenDate;
+      if (this.filterLastGivenDate !== "")
+        excelName = excelName + "-Oncesi=" + this.filterLastGivenDate;
+      XLSX.writeFile(wb, excelName + ".xlsx");
     },
     getHour(fullDate) {
       if (fullDate === "0001-01-01T00:00:00") {

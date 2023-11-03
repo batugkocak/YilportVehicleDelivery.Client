@@ -8,11 +8,14 @@ export const departments = {
   byId: (departmentId) => `${departments.getAll}/${departmentId}`,
 };
 
+//https://localhost:7060/VehicleOnTasks/Details?firstGivenDate=2023-10-01&lastGivenDate=2023-11-03
+
 export const vehiclesOnTask = {
   url: "https://localhost:7060/VehicleOnTasks/ForNormalTable",
   archiveUrl: "https://localhost:7060/VehicleOnTasks/ForArchiveTable",
   byId: (vehicleOnTaskId) =>
     `https://localhost:7060/VehicleOnTasks/Details/${vehicleOnTaskId}`,
+  archiveDetailsUrl: "https://localhost:7060/VehicleOnTasks/Details",
 };
 export const predefinedTasks = {
   url: "https://localhost:7060/PredefinedTasks",
