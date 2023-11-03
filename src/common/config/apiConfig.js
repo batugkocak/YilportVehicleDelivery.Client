@@ -11,11 +11,20 @@ export const departments = {
 //https://localhost:7060/VehicleOnTasks/Details?firstGivenDate=2023-10-01&lastGivenDate=2023-11-03
 
 export const vehiclesOnTask = {
+  add: "https://localhost:7060/VehicleOnTasks",
+
+  delete: (vehicleOnTaskId) =>
+    `https://localhost:7060/VehicleOnTasks/Delete/${vehicleOnTaskId}`,
+
   url: "https://localhost:7060/VehicleOnTasks/ForNormalTable",
   archiveUrl: "https://localhost:7060/VehicleOnTasks/ForArchiveTable",
   byId: (vehicleOnTaskId) =>
     `https://localhost:7060/VehicleOnTasks/Details/${vehicleOnTaskId}`,
+
   archiveDetailsUrl: "https://localhost:7060/VehicleOnTasks/Details",
+
+  finishUrl: (vehicleOnTaskId) =>
+    `https://localhost:7060/VehicleOnTasks/Finish/${vehicleOnTaskId}`,
 };
 export const predefinedTasks = {
   url: "https://localhost:7060/PredefinedTasks",

@@ -6,10 +6,12 @@
     @toggle-delete="openDeleteDialog"
     @toggle-finish="openFinishDialog"
     @open-snackbar="openSnackbar"
+    ref="vehicleOnTaskTable"
   />
   <vehicles-on-task-add-dialog
     @open-snackbar="openSnackbar"
     v-model="addDialog"
+    @add-task="updateTable"
   />
   <vehicles-on-task-details-dialog
     @open-snackbar="openSnackbar"
@@ -19,11 +21,14 @@
   <vehicles-on-task-finish-dialog
     v-model="finishDialog"
     :id="selectedVehicleId"
+    @finish-task="updateTable"
   />
   <vehicles-on-task-edit-dialog v-model="editDialog" :id="selectedVehicleId" />
   <vehicles-on-task-delete-dialog
     v-model="deleteDialog"
     :id="selectedVehicleId"
+    @open-snackbar="openSnackbar"
+    @delete-task="updateTable"
   />
 
   <router-view />
@@ -82,6 +87,9 @@ export default {
         isSuccess: isSuccess,
         message: message,
       });
+    },
+    updateTable() {
+      this.$refs.vehicleOnTaskTable.fetchVehiclesOnTask();
     },
   },
 };

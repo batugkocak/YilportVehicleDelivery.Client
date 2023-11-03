@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
     <v-card class="pa-2 mt-2">
-      <v-form @submit.prevent="">
+      <v-form @submit.prevent="addTaskToVehicle" v-model="valid">
         <v-card elevation="2" class="pa-5 ma-2">
           <v-card-title>Araç Bilgileri</v-card-title>
           <v-autocomplete
@@ -80,10 +80,16 @@
           />
         </v-card>
 
-        <v-row class="mt-3">
+        <v-row class="ma-3">
           <v-spacer />
           <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
-          <v-btn type="submit" color="success" class="ml-2 mr-2">Ekle</v-btn>
+          <v-btn
+            type="submit"
+            color="success"
+            class="ml-2 mr-2"
+            :disabled="!valid"
+            >Ekle</v-btn
+          >
         </v-row>
       </v-form>
     </v-card>
@@ -92,6 +98,7 @@
 
 <script>
 import api from "@/services/httpService";
+import { vehiclesOnTask } from "@/common/config/apiConfig";
 import {
   departments,
   vehicles,
@@ -101,11 +108,10 @@ import {
 import baseRules from "@/common/rules/rules";
 export default {
   props: ["modelValue"],
-  emits: ["update:modelValue", "open-snackbar"],
+  emits: ["update:modelValue", "open-snackbar", "add-task"],
   data() {
     return {
       newVehicleOnTask: {
-        id: null,
         vehicleId: null,
         driverId: null,
         departmentId: null,
@@ -121,6 +127,11 @@ export default {
       ...baseRules,
       addressMaxLength: 50,
       taskDefinitionMaxLength: 20,
+
+      snackBarMessage: "",
+      isSuccess: false,
+
+      valid: false,
     };
   },
   methods: {
@@ -197,6 +208,33 @@ export default {
       this.newVehicleOnTask.departmentId = task.departmentId;
       this.newVehicleOnTask.address = task.address;
       this.newVehicleOnTask.taskDefinition = task.name;
+    },
+    async addTaskToVehicle() {
+      await api
+        .post(vehiclesOnTask.add, this.newVehicleOnTask)
+        .then((res) => {
+          this.snackBarMessage = res.data;
+          this.isSuccess = true;
+          this.newVehicleOnTask = {
+            vehicleId: null,
+            driverId: null,
+            departmentId: null,
+            authorizedPerson: "",
+            address: "",
+            taskDefinition: "",
+          };
+          this.chosenPredefinedTaskId = null;
+          this.closeDialog();
+          this.$emit("add-task");
+        })
+        .catch((err) => {
+          console.log(err);
+          this.snackBarMessage = err.response.data;
+          this.isSuccess = false;
+        })
+        .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+        });
     },
   },
 
