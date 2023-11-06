@@ -32,24 +32,36 @@
         to="/archive"
         color="primary"
       />
+
       <v-list-item
-        prepend-icon="mdi-calendar-check"
-        title="Ön Tanımlı Görevler"
-        :to="{ name: 'PredefinedTasks' }"
+        prepend-icon="mdi-menu"
+        title="Diğer Tablolar"
         color="primary"
-      />
-      <v-list-item
-        prepend-icon="mdi-account"
-        title="Sürücüler"
-        :to="{ name: 'Drivers' }"
-        color="primary"
-      />
-      <v-list-item
-        prepend-icon="mdi-account-tie"
-        title="Araç Sahipleri"
-        :to="{ name: 'Owners' }"
-        color="primary"
-      />
+        :to="$route.name"
+      >
+        <v-menu location="bottom" activator="parent">
+          <v-list>
+            <v-list-item
+              prepend-icon="mdi-calendar-check"
+              title="Ön Tanımlı Görevler"
+              :to="{ name: 'PredefinedTasks' }"
+              color="primary"
+            />
+            <v-list-item
+              prepend-icon="mdi-account"
+              title="Sürücüler"
+              :to="{ name: 'Drivers' }"
+              color="primary"
+            />
+            <v-list-item
+              prepend-icon="mdi-account-tie"
+              title="Araç Sahipleri"
+              :to="{ name: 'Owners' }"
+              color="primary"
+            />
+          </v-list>
+        </v-menu>
+      </v-list-item>
     </v-list>
 
     <template v-slot:append>

@@ -5,19 +5,20 @@
     :headers="headers"
     :items="predefinedTasks"
     :hover="true"
-    :search="searchText"
     density="comfortable"
     class="elevation-1"
     loading-text="Görevler yükleniyor..."
     no-data-text="Kayıtlı görev yok."
-    items-per-page-text="Sayfa başına araç:"
+    items-per-page="-1"
   >
     <template v-slot:top>
       <v-toolbar>
         <v-toolbar-title>Ön Tanımlı Görevler</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click="openAddDialog"> Yeni Görev Ekle </v-btn>
       </v-toolbar>
     </template>
-    <template v-slot:bottom> </template>
+    <template v-slot:bottom></template>
   </v-data-table>
 </template>
 
@@ -25,13 +26,7 @@
 import api from "@/services/httpService";
 import { predefinedTasks } from "@/common/config/apiConfig";
 export default {
-  emits: [
-    "toggle-detail",
-    "open-snackbar",
-    "toggle-add",
-    "toggle-edit",
-    "toggle-delete",
-  ],
+  emits: ["toggle-add", "add-task", "open-snackbar"],
   data() {
     return {
       predefinedTasks: [],
@@ -43,21 +38,43 @@ export default {
           sortable: false,
           key: "name",
         },
-        { title: "Departman", align: "start", key: "departmentId" },
-        { title: "Adres", align: "start", key: "address" },
+        {
+          title: "İlgili Departman",
+          align: "start",
+          key: "departmentId",
+        },
+        {
+          title: "GidilenAdres",
+          align: "start",
+          key: "address",
+        },
       ],
-      searchText: "",
-      snackBarMessage: "",
+
       isSuccess: false,
+      snackBarMessage: "",
 
       isTableLoading: false,
     };
   },
   methods: {
     async fetchPredefinedTasks() {
-      await api.get(predefinedTasks.url).then((response) => {
-        this.predefinedTasks = response.data.data;
-      });
+      this.isTableLoading = true;
+      await api
+        .get(predefinedTasks.url)
+        .then((response) => {
+          this.isSuccess = true;
+          this.snackBarMessage = response.data.message;
+          this.predefinedTasks = response.data.data;
+          this.$emit("add-task");
+        })
+        .catch()
+        .finally(() => {
+          this.isTableLoading = false;
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+        });
+    },
+    openAddDialog() {
+      this.$emit("toggle-add");
     },
   },
 
