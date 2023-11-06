@@ -9,10 +9,6 @@
             class="mr-2"
           ></v-img>
         </template>
-
-        <!-- <template v-slot:append v-if="!hover">
-          <v-btn elevation="0" icon="mdi-exit-to-app" @click="logout"> </v-btn>
-        </template> -->
       </v-list-item>
     </v-list>
     <v-divider />
@@ -39,6 +35,19 @@
       <v-list-item
         prepend-icon="mdi-calendar-check"
         title="Ön Tanımlı Görevler"
+        :to="{ name: 'PredefinedTasks' }"
+        color="primary"
+      />
+      <v-list-item
+        prepend-icon="mdi-account"
+        title="Sürücüler"
+        :to="{ name: 'Drivers' }"
+        color="primary"
+      />
+      <v-list-item
+        prepend-icon="mdi-account-tie"
+        title="Araç Sahipleri"
+        :to="{ name: 'Owners' }"
         color="primary"
       />
     </v-list>

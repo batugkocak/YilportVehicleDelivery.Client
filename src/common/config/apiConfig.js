@@ -31,9 +31,7 @@ export const vehiclesOnTask = {
   get: (vehicleOnTaskId) =>
     `https://localhost:7060/VehicleOnTasks/${vehicleOnTaskId}`,
 };
-export const predefinedTasks = {
-  url: "https://localhost:7060/PredefinedTasks",
-};
+
 export const vehicles = {
   url: "https://localhost:7060/Vehicles",
   detailsForTable: "https://localhost:7060/Vehicles/DetailsForTable",
@@ -42,7 +40,9 @@ export const vehicles = {
   byId: (carId) => `https://localhost:7060/Vehicles/${carId}`,
   delete: (carId) => `https://localhost:7060/Vehicles/Delete/${carId}`,
 };
-
+export const predefinedTasks = {
+  url: "https://localhost:7060/PredefinedTasks",
+};
 export const owners = {
   url: "https://localhost:7060/Owners",
 };

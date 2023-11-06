@@ -4,6 +4,9 @@ import VehiclesView from "@/views/VehiclesView.vue";
 import VehiclesOnTaskView from "@/views/VehiclesOnTaskView.vue";
 import VehiclesOnTaskArchiveView from "@/views/VehiclesOnTaskArchiveView.vue";
 import LoginView from "@/views/LoginView.vue";
+import PredefinedTasksView from "@/views/PredefinedTasksView.vue";
+import DriversView from "@/views/DriversView.vue";
+import OwnersView from "@/views/OwnersView.vue";
 
 import { isTokenExpired } from "@/services/authService";
 
@@ -31,6 +34,21 @@ const routes = [
     path: "/archive",
     name: "Archive",
     component: VehiclesOnTaskArchiveView,
+  },
+  {
+    path: "/predefinedTasks",
+    name: "PredefinedTasks",
+    component: PredefinedTasksView,
+  },
+  {
+    path: "/drivers",
+    name: "Drivers",
+    component: DriversView,
+  },
+  {
+    path: "/owners",
+    name: "Owners",
+    component: OwnersView,
   },
 ];
 
