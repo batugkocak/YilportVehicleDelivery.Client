@@ -4,7 +4,7 @@
       <v-card-text> Görevi bitirmek istediğinize emin misiniz?</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue" @click="finishDialog = false">Vazgeç</v-btn>
+        <v-btn color="blue" @click="closeDialog">Vazgeç</v-btn>
         <v-btn color="green" @click="finishTask">Evet, bitir</v-btn>
       </v-card-actions>
     </v-card>

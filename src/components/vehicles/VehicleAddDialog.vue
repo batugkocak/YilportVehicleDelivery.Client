@@ -1,7 +1,6 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
     <v-card class="pa-5 mt-2">
-      <p>{{ valid }}</p>
       <v-form @submit.prevent="postVehicle" v-model="valid">
         <v-text-field
           v-model="insertedVehicle.plate"

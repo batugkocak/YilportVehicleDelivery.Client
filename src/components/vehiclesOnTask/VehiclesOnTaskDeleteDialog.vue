@@ -7,7 +7,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green" @click="deleteDialog = false">Vazgeç</v-btn>
+        <v-btn color="green" @click="closeDialog">Vazgeç</v-btn>
         <v-btn color="red" @click="deleteTask">Evet, sil</v-btn>
       </v-card-actions>
     </v-card>

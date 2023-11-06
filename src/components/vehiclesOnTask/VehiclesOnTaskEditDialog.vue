@@ -66,7 +66,7 @@
         </v-card>
         <v-row class="mt-3">
           <v-spacer />
-          <v-btn color="red" @click="addDialog = false"> Vazgeç </v-btn>
+          <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
           <v-btn type="submit" color="success" class="ml-5 mr-5">Düzenle</v-btn>
         </v-row>
       </v-form>

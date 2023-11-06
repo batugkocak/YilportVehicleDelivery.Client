@@ -14,12 +14,9 @@
       <v-card-text> Çıkış yapmak istediğinize emin misiniz? </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red" text="Evet" @click="logoutUser"></v-btn>
-        <v-btn
-          color="green"
-          text="Vazgeç"
-          @click="isLoggingOut = false"
-        ></v-btn>
+
+        <v-btn color="green" text="Vazgeç" @click="isLoggingOut = false" />
+        <v-btn color="red" text="Evet" @click="logoutUser" />
       </v-card-actions>
     </v-card>
   </v-dialog>

@@ -36,7 +36,7 @@
       <v-list-item
         prepend-icon="mdi-menu"
         title="Diğer Tablolar"
-        color="primary"
+        :active="false"
         :to="$route.name"
       >
         <v-menu location="bottom" activator="parent">

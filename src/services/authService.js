@@ -13,4 +13,31 @@ function isTokenExpired(token) {
   return true;
 }
 
-export { isTokenExpired };
+function getLoginTime(token) {
+  try {
+    const decoded = jwt.decode(token);
+    if (decoded && decoded.nbf) {
+      const date = new Date(decoded.nbf * 1000);
+      return date.toLocaleString();
+    }
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+}
+
+function getRole(token) {
+  try {
+    const decoded = jwt.decode(token);
+    if (decoded && decoded.sub) {
+      const sub = decoded.sub;
+      return {
+        sub: sub,
+      };
+    }
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+  return null; // Return null if "sub" is not found or there was an error
+}
+
+export { isTokenExpired, getRole, getLoginTime };
