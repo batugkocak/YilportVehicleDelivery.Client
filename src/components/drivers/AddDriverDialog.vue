@@ -16,7 +16,7 @@
           v-model="driver.departmentId"
           label="Departman"
           :items="departments"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           @click="getDepartments"
           prepend-icon="mdi-form-select"
@@ -92,7 +92,7 @@ export default {
         return;
       }
       await api
-        .get(departments.url)
+        .get(departments.selectBox)
         .then((res) => {
           this.departments = res.data.data;
         })

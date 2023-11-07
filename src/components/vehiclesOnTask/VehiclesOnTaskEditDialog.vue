@@ -8,7 +8,7 @@
             label="Araç Plakası"
             v-model="fetchedVehicleOnTask.vehicleId"
             :items="vehicles"
-            item-title="plate"
+            item-title="selectBoxValue"
             item-value="id"
             placeholder="16YH1616"
             prepend-icon="mdi-card-text"
@@ -19,7 +19,7 @@
             label="Sürücü"
             v-model="fetchedVehicleOnTask.driverId"
             :items="drivers"
-            item-title="name"
+            item-title="selectBoxValue"
             item-value="id"
             prepend-icon="mdi-account"
             no-data-text="Araç Sürücüleri getiriliyor, lütfen bekleyin..."
@@ -52,7 +52,7 @@
             label="Departman"
             v-model="fetchedVehicleOnTask.departmentId"
             :items="departments"
-            item-title="name"
+            item-title="selectBoxValue"
             item-value="id"
             prepend-icon="mdi-form-select"
             no-data-text="Departmanlar getiriliyor, lütfen bekleyin..."
@@ -135,7 +135,7 @@ export default {
 
     async getVehicles() {
       await api
-        .get(vehicles.detailsForTable)
+        .get(vehicles.selectBox)
         .then((response) => {
           this.vehicles = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -151,7 +151,7 @@ export default {
     },
     async getDrivers() {
       await api
-        .get(drivers.url)
+        .get(drivers.selectBox)
         .then((response) => {
           this.drivers = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -167,7 +167,7 @@ export default {
     },
     async getDepartments() {
       await api
-        .get(departments.url)
+        .get(departments.selectBox)
         .then((response) => {
           this.departments = response.data.data;
           this.snackBarMessage = response.data.message;

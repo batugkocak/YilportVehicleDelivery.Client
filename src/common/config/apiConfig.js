@@ -1,10 +1,13 @@
 export const brands = {
   url: "https://localhost:7060/Brands",
+  selectBox: "https://localhost:7060/Brands/ForSelectBox",
+
   byId: (brandId) => `${brands.getAll}/${brandId}`,
 };
 
 export const departments = {
   url: "https://localhost:7060/Departments",
+  selectBox: "https://localhost:7060/Departments/ForSelectBox",
   byId: (departmentId) => `${departments.getAll}/${departmentId}`,
 };
 
@@ -36,19 +39,24 @@ export const vehicles = {
   url: "https://localhost:7060/Vehicles",
   detailsForTable: "https://localhost:7060/Vehicles/DetailsForTable",
   update: "https://localhost:7060/Vehicles/Update",
+  selectBox: "https://localhost:7060/Vehicles/ForSelectBox",
   byIdDetails: (carId) => `https://localhost:7060/Vehicles/${carId}/Details`,
   byId: (carId) => `https://localhost:7060/Vehicles/${carId}`,
   delete: (carId) => `https://localhost:7060/Vehicles/Delete/${carId}`,
 };
 export const predefinedTasks = {
   url: "https://localhost:7060/PredefinedTasks",
+  details: "https://localhost:7060/PredefinedTasks/Details",
 };
 export const owners = {
   url: "https://localhost:7060/Owners",
+  selectBox: "https://localhost:7060/Owners/ForSelectBox",
 };
 
 export const drivers = {
   url: "https://localhost:7060/Drivers",
+  details: "https://localhost:7060/Drivers/Details",
+  selectBox: "https://localhost:7060/Drivers/ForSelectBox",
 };
 
 export const auth = {

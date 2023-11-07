@@ -8,7 +8,7 @@
             label="Araç Plakası"
             v-model="newVehicleOnTask.vehicleId"
             :items="vehicles"
-            item-title="plate"
+            item-title="selectBoxValue"
             item-value="id"
             placeholder="16YH1616"
             @click="getVehicles"
@@ -20,7 +20,7 @@
             label="Sürücü"
             v-model="newVehicleOnTask.driverId"
             :items="drivers"
-            item-title="name"
+            item-title="selectBoxValue"
             item-value="id"
             prepend-icon="mdi-account"
             @click="getDrivers"
@@ -66,7 +66,7 @@
             label="Departman"
             v-model="newVehicleOnTask.departmentId"
             :items="departments"
-            item-title="name"
+            item-title="selectBoxValue"
             item-value="id"
             prepend-icon="mdi-form-select"
             @click="getDepartments"
@@ -139,8 +139,11 @@ export default {
       this.$emit("update:modelValue", false);
     },
     async getVehicles() {
+      if (this.vehicles.length) {
+        return;
+      }
       await api
-        .get(vehicles.detailsForTable)
+        .get(vehicles.selectBox)
         .then((response) => {
           this.vehicles = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -155,8 +158,11 @@ export default {
         });
     },
     async getDrivers() {
+      if (this.drivers.length) {
+        return;
+      }
       await api
-        .get(drivers.url)
+        .get(drivers.selectBox)
         .then((response) => {
           this.drivers = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -171,8 +177,11 @@ export default {
         });
     },
     async getDepartments() {
+      if (this.departments.length) {
+        return;
+      }
       await api
-        .get(departments.url)
+        .get(departments.selectBox)
         .then((response) => {
           this.departments = response.data.data;
           this.snackBarMessage = response.data.message;

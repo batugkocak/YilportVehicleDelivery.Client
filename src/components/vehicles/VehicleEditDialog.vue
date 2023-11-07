@@ -40,7 +40,7 @@
           v-model="vehicle.ownerId"
           label="Sahip"
           :items="owners"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           prepend-icon="mdi-account-tie"
           no-data-text="Araç Sahipleri getiriliyor, lütfen bekleyin..."
@@ -50,7 +50,7 @@
           v-model="vehicle.brandId"
           label="Marka"
           :items="brands"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           required
           prepend-icon="mdi-watermark"
@@ -86,7 +86,7 @@
           v-model="vehicle.departmentId"
           label="Departman"
           :items="departments"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           prepend-icon="mdi-form-select"
           no-data-text="Departmanlar getiriliyor, lütfen bekleyin..."
@@ -193,7 +193,7 @@ export default {
         return;
       }
       await api
-        .get(departments.url)
+        .get(departments.selectBox)
         .then((res) => {
           this.departments = res.data.data;
           this.isSuccess = true;
@@ -211,7 +211,7 @@ export default {
         return;
       }
       await api
-        .get(owners.url)
+        .get(owners.selectBox)
         .then((res) => {
           this.owners = res.data.data;
           this.isSuccess = true;
@@ -230,7 +230,7 @@ export default {
         return;
       }
       await api
-        .get(brands.url)
+        .get(brands.selectBox)
         .then((res) => {
           this.brands = res.data.data;
           this.isSuccess = true;

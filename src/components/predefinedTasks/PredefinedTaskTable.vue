@@ -41,10 +41,10 @@ export default {
         {
           title: "İlgili Departman",
           align: "start",
-          key: "departmentId",
+          key: "departmentName",
         },
         {
-          title: "GidilenAdres",
+          title: "Gidilen Adres",
           align: "start",
           key: "address",
         },
@@ -60,7 +60,7 @@ export default {
     async fetchPredefinedTasks() {
       this.isTableLoading = true;
       await api
-        .get(predefinedTasks.url)
+        .get(predefinedTasks.details)
         .then((response) => {
           this.isSuccess = true;
           this.snackBarMessage = response.data.message;

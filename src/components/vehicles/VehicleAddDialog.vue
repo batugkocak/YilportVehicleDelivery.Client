@@ -38,18 +38,22 @@
           v-model="insertedVehicle.ownerId"
           label="Sahip"
           :items="owners"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           prepend-icon="mdi-account-tie"
           @click="getOwners"
           no-data-text="Araç Sahipleri getiriliyor, lütfen bekleyin..."
           :rules="[ruleRequired]"
-        ></v-autocomplete>
+        >
+          <template v-slot:append>
+            <v-btn icon="mdi-plus" elevation="0"></v-btn>
+          </template>
+        </v-autocomplete>
         <v-select
           v-model="insertedVehicle.brandId"
           label="Marka"
           :items="brands"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           required
           prepend-icon="mdi-watermark"
@@ -86,7 +90,7 @@
           v-model="insertedVehicle.departmentId"
           label="Departman"
           :items="departments"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           prepend-icon="mdi-form-select"
           @click="getDepartments"
@@ -121,8 +125,8 @@
             color="success"
             class="ml-5 mr-5"
             :disabled="!valid"
-            >Ekle</v-btn
-          >
+            >Ekle
+          </v-btn>
         </v-row>
       </v-form>
     </v-card>
@@ -216,7 +220,7 @@ export default {
         return;
       }
       await api
-        .get(departments.url)
+        .get(departments.selectBox)
         .then((res) => {
           console.log(res);
           this.departments = res.data.data;
@@ -235,7 +239,7 @@ export default {
         return;
       }
       await api
-        .get(owners.url)
+        .get(owners.selectBox)
         .then((res) => {
           this.owners = res.data.data;
           this.isSuccess = true;
@@ -253,7 +257,7 @@ export default {
         return;
       }
       await api
-        .get(brands.url)
+        .get(brands.selectBox)
         .then((res) => {
           this.brands = res.data.data;
           this.isSuccess = true;

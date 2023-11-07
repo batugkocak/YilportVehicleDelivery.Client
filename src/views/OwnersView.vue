@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import OwnersTable from "@/components/others/OwnersTable";
+import OwnersTable from "@/components/owners/OwnersTable";
 
 export default {
   components: {

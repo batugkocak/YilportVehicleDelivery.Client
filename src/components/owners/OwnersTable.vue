@@ -3,7 +3,7 @@
   <v-data-table
     :loading="isTableLoading"
     :headers="headers"
-    :items="drivers"
+    :items="owners"
     :hover="true"
     :search="searchText"
     density="comfortable"
@@ -11,12 +11,12 @@
     loading-text="Sürücüler yükleniyor..."
     no-data-text="Kayıtlı sürücü yok."
     items-per-page-text="Sayfa başına araç:"
+    items-per-page="-1"
+    max-width="300px"
   >
     <template v-slot:top>
       <v-toolbar>
-        <v-toolbar-title>Sürücüler</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="openAddDialog"> Yeni Sürücü Ekle </v-btn>
+        <v-toolbar-title>Araç Sahipleri</v-toolbar-title>
       </v-toolbar>
     </template>
     <template v-slot:bottom> </template>
@@ -25,7 +25,7 @@
 
 <script>
 import api from "@/services/httpService";
-import { drivers } from "@/common/config/apiConfig";
+import { owners } from "@/common/config/apiConfig";
 export default {
   emits: [
     "toggle-detail",
@@ -36,7 +36,7 @@ export default {
   ],
   data() {
     return {
-      drivers: [],
+      owners: [],
       headers: [
         { title: "id", align: " d-none", key: "id" },
         {
@@ -44,10 +44,8 @@ export default {
           align: "start",
           sortable: false,
           key: "name",
+          width: 200,
         },
-        { title: "Soy Adı", align: "start", key: "surname" },
-        { title: "Departmanı", align: "start", key: "departmentName" },
-        { title: "Görevi", align: "start", key: "mission" },
       ],
       searchText: "",
       snackBarMessage: "",
@@ -57,26 +55,15 @@ export default {
     };
   },
   methods: {
-    async fetchDrivers() {
-      await api
-        .get(drivers.details)
-        .then((response) => {
-          this.drivers = response.data.data;
-          console.log(response.data.message);
-          this.isSuccess = true;
-          this.snackBarMessage = response.data.message;
-        })
-        .finally(() => {
-          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-        });
-    },
-    openAddDialog() {
-      this.$emit("toggle-add");
+    async fetchOwners() {
+      await api.get(owners.url).then((response) => {
+        this.owners = response.data.data;
+      });
     },
   },
 
   created() {
-    this.fetchDrivers();
+    this.fetchOwners();
   },
 };
 </script>

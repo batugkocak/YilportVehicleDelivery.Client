@@ -11,7 +11,7 @@
           v-model="predefinedTask.departmentId"
           label="Departman"
           :items="departments"
-          item-title="name"
+          item-title="selectBoxValue"
           item-value="id"
           @click="getDepartments"
           prepend-icon="mdi-form-select"
@@ -22,7 +22,6 @@
           prepend-icon="mdi-map-marker"
           v-model="predefinedTask.address"
         />
-
         <v-row class="mt-3">
           <v-spacer />
           <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
@@ -77,7 +76,7 @@ export default {
         return;
       }
       await api
-        .get(departments.url)
+        .get(departments.selectBox)
         .then((res) => {
           console.log(res);
           this.departments = res.data.data;
