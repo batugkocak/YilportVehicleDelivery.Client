@@ -236,12 +236,19 @@ export default {
         returnDate: "Dönüş Tarihi",
       };
 
-      // Sütun İsimlerini Değiştir
+      // Sütun İsimlerini Değiştir ve Tarihleri Dönüştür
       this.vehiclesToExportExcel = this.vehiclesToExportExcel.map((item) => {
         const newItem = {};
         for (const oldColumn in customHeaders) {
           const newColumn = customHeaders[oldColumn];
-          newItem[newColumn] = item[oldColumn];
+          if (oldColumn === "givenDate" || oldColumn === "returnDate") {
+            const tarih = new Date(item[oldColumn]);
+            newItem[newColumn] = `${tarih.getDate()}/${
+              tarih.getMonth() + 1
+            }/${tarih.getFullYear()} ${tarih.getHours()}:${tarih.getMinutes()}:${tarih.getSeconds()}`;
+          } else {
+            newItem[newColumn] = item[oldColumn];
+          }
         }
         return newItem;
       });
@@ -265,6 +272,7 @@ export default {
         excelName = excelName + "-Oncesi=" + this.filterLastGivenDate;
       XLSX.writeFile(wb, excelName + ".xlsx");
     },
+
     getHour(fullDate) {
       if (fullDate === "0001-01-01T00:00:00") {
         return "-";
