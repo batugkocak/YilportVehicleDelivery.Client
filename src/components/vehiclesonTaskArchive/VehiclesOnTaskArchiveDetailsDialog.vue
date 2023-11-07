@@ -48,11 +48,20 @@
 
         <v-divider />
 
-        <div class="d-flex align-center">
-          <v-icon icon="mdi-calendar-range" />
-          <div>
-            <v-card-title> Veriliş Tarihi </v-card-title>
-            <v-card-text>{{ vehicleOnTask.givenDateFormatted }}</v-card-text>
+        <div class="space-between">
+          <div class="d-flex align-center">
+            <v-icon icon="mdi-calendar-range" />
+            <div>
+              <v-card-title> Veriliş Tarihi </v-card-title>
+              <v-card-text>{{ vehicleOnTask.givenDateFormatted }}</v-card-text>
+            </div>
+          </div>
+          <div class="d-flex align-center">
+            <v-icon icon="mdi-calendar-range-outline" />
+            <div>
+              <v-card-title> Dönüş Tarihi </v-card-title>
+              <v-card-text>{{ vehicleOnTask.returnDateFormatted }}</v-card-text>
+            </div>
           </div>
         </div>
       </v-card>
@@ -80,6 +89,7 @@ export default {
       this.$emit("update:modelValue", false);
     },
     async getVehicle() {
+      console.log(this.id);
       await api
         .get(vehiclesOnTask.byId(this.id))
         .then((response) => {

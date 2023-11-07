@@ -48,30 +48,6 @@
       </v-toolbar>
     </template>
 
-    <template v-slot:item.givenDate="{ item }">
-      <td>
-        {{ getDate(item.givenDate) }}
-      </td>
-    </template>
-
-    <template v-slot:item.givenHour="{ item }">
-      <td>
-        {{ getHour(item.givenDate) }}
-      </td>
-    </template>
-
-    <template v-slot:item.returnDate="{ item }">
-      <td>
-        {{ getDate(item.returnDate) }}
-      </td>
-    </template>
-
-    <template v-slot:item.returnHour="{ item }">
-      <td>
-        {{ getHour(item.returnDate) }}
-      </td>
-    </template>
-
     <template v-slot:item.actions="{ item }">
       <v-btn
         class="ma-1"
@@ -117,31 +93,19 @@ export default {
           title: "Görev Niteliği",
           align: "start",
           key: "taskDefinition",
-        },
-
-        {
-          sortable: false,
-          title: "Veriliş Tarihi",
-          align: "start",
-          key: "givenDate",
+          width: "400",
         },
         {
           sortable: false,
-          title: "Veriliş Saati",
+          title: "Veriliş",
           align: "start",
-          key: "givenHour",
+          key: "givenDateFormatted",
         },
         {
           sortable: false,
-          title: "Dönüş Tarihi",
+          title: "Dönüş",
           align: "start",
-          key: "returnDate",
-        },
-        {
-          sortable: false,
-          title: "Dönüş Saati",
-          align: "start",
-          key: "returnHour",
+          key: "returnDateFormatted",
         },
 
         {
@@ -227,13 +191,15 @@ export default {
         vehiclesOnTaskId: "x",
         vehicleId: "y",
         vehiclePlate: "Plaka",
-        driverName: "Sürücü Adı",
+        driverName: "Sürücü",
         departmentName: "Departman",
         authorizedPerson: "Yetkili Kişi",
         address: "Adres",
         taskDefinition: "Görev Niteliği - Adı",
-        givenDate: "Veriliş Tarihi",
-        returnDate: "Dönüş Tarihi",
+        givenDate: "z",
+        givenDateFormatted: "Veriliş Tarihi",
+        returnDate: "k",
+        returnDateFormatted: "Dönüş Tarihi",
       };
 
       // Sütun İsimlerini Değiştir ve Tarihleri Dönüştür
@@ -241,20 +207,13 @@ export default {
         const newItem = {};
         for (const oldColumn in customHeaders) {
           const newColumn = customHeaders[oldColumn];
-          if (oldColumn === "givenDate" || oldColumn === "returnDate") {
-            const tarih = new Date(item[oldColumn]);
-            newItem[newColumn] = `${tarih.getDate()}/${
-              tarih.getMonth() + 1
-            }/${tarih.getFullYear()} ${tarih.getHours()}:${tarih.getMinutes()}:${tarih.getSeconds()}`;
-          } else {
-            newItem[newColumn] = item[oldColumn];
-          }
+          newItem[newColumn] = item[oldColumn];
         }
         return newItem;
       });
 
       // Id içeren sütunları sil
-      const excludedColumns = ["x", "y"];
+      const excludedColumns = ["x", "y", "z", "k"];
       this.vehiclesToExportExcel = this.vehiclesToExportExcel.map((item) => {
         for (const column of excludedColumns) {
           delete item[column];
@@ -271,31 +230,6 @@ export default {
       if (this.filterLastGivenDate !== "")
         excelName = excelName + "-Oncesi=" + this.filterLastGivenDate;
       XLSX.writeFile(wb, excelName + ".xlsx");
-    },
-
-    getHour(fullDate) {
-      if (fullDate === "0001-01-01T00:00:00") {
-        return "-";
-      }
-      return fullDate.split("T")[1];
-    },
-    getDate(fullDate) {
-      if (fullDate === "0001-01-01T00:00:00") {
-        return "-";
-      }
-
-      const oldDate = new Date(fullDate.split("T")[0]);
-
-      const newDate =
-        (oldDate.getDate() < 10 ? "0" : "") +
-        oldDate.getDate() +
-        "-" +
-        (oldDate.getMonth() + 1 < 10 ? "0" : "") +
-        (oldDate.getMonth() + 1) +
-        "-" +
-        oldDate.getFullYear();
-
-      return newDate;
     },
   },
   created() {

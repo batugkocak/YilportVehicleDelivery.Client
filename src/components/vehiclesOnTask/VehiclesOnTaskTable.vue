@@ -31,18 +31,6 @@
       </v-toolbar>
     </template>
 
-    <template v-slot:item.givenDate="{ item }">
-      <td>
-        {{ getDate(item.givenDate) }}
-      </td>
-    </template>
-
-    <template v-slot:item.givenHour="{ item }">
-      <td>
-        {{ getHour(item.givenDate) }}
-      </td>
-    </template>
-
     <template v-slot:item.actions="{ item }">
       <v-btn
         class="ma-1"
@@ -116,16 +104,10 @@ export default {
           align: "start",
           key: "taskDefinition",
         },
-
         {
-          title: "Veriliş Tarihi",
+          title: "Veriliş",
           align: "start",
-          key: "givenDate",
-        },
-        {
-          title: "Veriliş Saati",
-          align: "start",
-          key: "givenHour",
+          key: "givenDateFormatted",
         },
 
         {
@@ -171,30 +153,6 @@ export default {
     },
     openFinishDialog(id) {
       this.$emit("toggle-finish", id);
-    },
-    getHour(fullDate) {
-      if (fullDate === "0001-01-01T00:00:00") {
-        return "-";
-      }
-      return fullDate.split("T")[1];
-    },
-    getDate(fullDate) {
-      if (fullDate === "0001-01-01T00:00:00") {
-        return "-";
-      }
-
-      const oldDate = new Date(fullDate.split("T")[0]);
-
-      const newDate =
-        (oldDate.getDate() < 10 ? "0" : "") +
-        oldDate.getDate() +
-        "-" +
-        (oldDate.getMonth() + 1 < 10 ? "0" : "") +
-        (oldDate.getMonth() + 1) +
-        "-" +
-        oldDate.getFullYear();
-
-      return newDate;
     },
   },
 

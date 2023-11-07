@@ -3,14 +3,21 @@
     @toggle-details="openDetailsDialog"
     @open-snackbar="openSnackbar"
   />
+  <vehicles-on-task-archive-details-dialog
+    :id="selectedVehicleId"
+    v-model="detailDialog"
+  >
+  </vehicles-on-task-archive-details-dialog>
 </template>
 
 <script>
 import VehiclesOnTaskArchiveTable from "@/components/vehiclesOnTaskArchive/VehiclesOnTaskArchiveTable.vue";
+import VehiclesOnTaskArchiveDetailsDialog from "@/components/vehiclesOnTaskArchive/VehiclesOnTaskArchiveDetailsDialog.vue";
 
 export default {
   components: {
     VehiclesOnTaskArchiveTable,
+    VehiclesOnTaskArchiveDetailsDialog,
   },
   data() {
     return {
