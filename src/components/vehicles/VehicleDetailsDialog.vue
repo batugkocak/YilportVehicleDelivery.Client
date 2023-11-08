@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <v-dialog v-model="dialog" v-if="vehicle" max-width="500">
+  <v-dialog v-model="dialog" v-if="vehicle" max-width="600">
     <v-card
       class="pa-2"
       prepend-icon="mdi-car"

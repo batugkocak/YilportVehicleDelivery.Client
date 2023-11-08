@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500">
+  <v-dialog v-model="dialog" max-width="600">
     <v-card class="pa-5 mt-2">
       <v-form @submit.prevent="postVehicle" v-model="valid">
         <v-text-field

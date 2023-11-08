@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" class="dialog" v-if="vehicle" max-width="500">
+  <v-dialog v-model="dialog" class="dialog" v-if="vehicle" max-width="600">
     <v-card class="pa-5 mt-2">
       <v-card-text> Düzenle: {{ tempPlate }} </v-card-text>
       <v-form @submit.prevent="updateVehicle">

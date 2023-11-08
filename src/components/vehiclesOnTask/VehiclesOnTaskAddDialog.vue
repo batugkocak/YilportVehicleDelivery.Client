@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500">
+  <v-dialog v-model="dialog" max-width="600">
     <v-card class="pa-2 mt-2">
       <v-form @submit.prevent="addTaskToVehicle" v-model="valid">
         <v-card elevation="2" class="pa-5 ma-2">

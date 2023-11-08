@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" v-if="vehicleOnTask" max-width="500">
+  <v-dialog v-model="dialog" v-if="vehicleOnTask" max-width="600">
     <v-card
       prepend-icon="mdi-car"
       :title="vehicleOnTask.vehiclePlate"

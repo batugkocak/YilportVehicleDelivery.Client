@@ -116,6 +116,7 @@ export default {
           key: "actions",
           fixed: true,
           width: "150",
+          sortable: false,
         },
       ],
       snackBarMessage: "",

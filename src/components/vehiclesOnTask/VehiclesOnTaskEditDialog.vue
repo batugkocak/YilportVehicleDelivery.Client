@@ -1,10 +1,10 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px" v-if="fetchedVehicleOnTask">
+  <v-dialog v-model="dialog" max-width="600px" v-if="fetchedVehicleOnTask">
     <v-card class="dialogCard">
       <v-form v-model="valid" @submit.prevent="editTaskOfVehicle">
         <v-card elevation="2" class="dialogCard">
           <v-card-title>Görevde Olan Araç Düzenleme</v-card-title>
-          <v-autocomplete
+          <!-- <v-autocomplete
             label="Araç Plakası"
             v-model="fetchedVehicleOnTask.vehicleId"
             :items="vehicles"
@@ -14,7 +14,7 @@
             prepend-icon="mdi-card-text"
             no-data-text="Plakalar getiriliyor, lütfen bekleyin..."
             :rules="[ruleRequired]"
-          />
+          /> -->
           <v-select
             label="Sürücü"
             v-model="fetchedVehicleOnTask.driverId"
