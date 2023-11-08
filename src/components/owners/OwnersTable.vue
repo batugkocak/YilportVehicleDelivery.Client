@@ -5,49 +5,66 @@
     :headers="headers"
     :items="owners"
     :hover="true"
-    :search="searchText"
     density="comfortable"
     class="elevation-1"
-    loading-text="Sürücüler yükleniyor..."
-    no-data-text="Kayıtlı sürücü yok."
-    items-per-page-text="Sayfa başına araç:"
+    loading-text="Sahipler yükleniyor..."
+    no-data-text="Kayıtlı araç yok."
+    width="20%"
     items-per-page="-1"
-    max-width="300px"
   >
     <template v-slot:top>
       <v-toolbar>
-        <v-toolbar-title>Araç Sahipleri</v-toolbar-title>
+        <v-toolbar-title>ARAÇ SAHİPLERİ</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click="openAddDialog"> Sahip Ekle </v-btn>
       </v-toolbar>
     </template>
-    <template v-slot:bottom> </template>
+    <template v-slot:item.actions="{ item }">
+      <v-btn
+        class="ma-1"
+        color="blue"
+        icon="mdi-pencil"
+        size="small"
+        @click="openEditDialog(item.id)"
+      ></v-btn>
+      <v-btn
+        class="ma-1"
+        color="blue"
+        icon="mdi-delete"
+        size="small"
+        @click="openDeleteDialog(item.id)"
+      ></v-btn>
+    </template>
+    <template v-slot:bottom></template>
   </v-data-table>
 </template>
 
 <script>
 import api from "@/services/httpService";
 import { owners } from "@/common/config/apiConfig";
+
 export default {
-  emits: [
-    "toggle-detail",
-    "open-snackbar",
-    "toggle-add",
-    "toggle-edit",
-    "toggle-delete",
-  ],
+  emits: ["open-snackbar", "toggle-add", "toggle-edit", "toggle-delete"],
   data() {
     return {
       owners: [],
       headers: [
-        { title: "id", align: " d-none", key: "id" },
         {
-          title: "Adı",
+          title: "Ad",
           align: "start",
           sortable: false,
           key: "name",
-          width: 200,
+        },
+        {
+          title: "",
+          key: "actions",
+          align: "start",
+          sortable: false,
+          fixed: true,
+          width: "150",
         },
       ],
-      searchText: "",
+
       snackBarMessage: "",
       isSuccess: false,
 
@@ -56,9 +73,32 @@ export default {
   },
   methods: {
     async fetchOwners() {
-      await api.get(owners.url).then((response) => {
-        this.owners = response.data.data;
-      });
+      this.isTableLoading = true;
+      await api
+        .get(owners.url)
+        .then((response) => {
+          this.owners = response.data.data;
+          this.snackBarMessage = response.data.message;
+          this.isSuccess = response.data.success;
+        })
+        .catch(() => {
+          this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
+          this.isSuccess = false;
+        })
+        .finally(() => {
+          this.isTableLoading = false;
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+        });
+    },
+
+    openEditDialog(id) {
+      this.$emit("toggle-edit", id);
+    },
+    openAddDialog() {
+      this.$emit("toggle-add");
+    },
+    openDeleteDialog(id) {
+      this.$emit("toggle-delete", id);
     },
   },
 
