@@ -1,67 +1,67 @@
-export const brands = {
-  url: "https://localhost:7060/Brands",
-  selectBox: "https://localhost:7060/Brands/ForSelectBox",
-
-  byId: (brandId) => `${brands.getAll}/${brandId}`,
-};
-
-export const departments = {
-  url: "https://localhost:7060/Departments",
-  selectBox: "https://localhost:7060/Departments/ForSelectBox",
-  byId: (departmentId) => `${departments.getAll}/${departmentId}`,
-};
-
-//https://localhost:7060/VehicleOnTasks/Details?firstGivenDate=2023-10-01&lastGivenDate=2023-11-03
+const base = "https://localhost:7060";
 
 export const vehiclesOnTask = {
-  add: "https://localhost:7060/VehicleOnTasks",
+  add: base + "/VehicleOnTasks",
 
   delete: (vehicleOnTaskId) =>
-    `https://localhost:7060/VehicleOnTasks/Delete/${vehicleOnTaskId}`,
+    base + `/VehicleOnTasks/Delete/${vehicleOnTaskId}`,
 
-  url: "https://localhost:7060/VehicleOnTasks/ForNormalTable",
-  archiveUrl: "https://localhost:7060/VehicleOnTasks/ForArchiveTable",
+  url: base + "/VehicleOnTasks/ForNormalTable",
+  archiveUrl: base + "/VehicleOnTasks/ForArchiveTable",
   byId: (vehicleOnTaskId) =>
-    `https://localhost:7060/VehicleOnTasks/Details/${vehicleOnTaskId}`,
+    base + `/VehicleOnTasks/Details/${vehicleOnTaskId}`,
 
   archiveDetailsUrl: "https://localhost:7060/VehicleOnTasks/Details",
 
   finishUrl: (vehicleOnTaskId) =>
-    `https://localhost:7060/VehicleOnTasks/Finish/${vehicleOnTaskId}`,
+    base + `/VehicleOnTasks/Finish/${vehicleOnTaskId}`,
 
-  editUrl: "https://localhost:7060/VehicleOnTasks/Update",
+  editUrl: base + "/VehicleOnTasks/Update",
 
-  get: (vehicleOnTaskId) =>
-    `https://localhost:7060/VehicleOnTasks/${vehicleOnTaskId}`,
+  get: (vehicleOnTaskId) => base + `/VehicleOnTasks/${vehicleOnTaskId}`,
 };
 
 export const vehicles = {
-  url: "https://localhost:7060/Vehicles",
-  detailsForTable: "https://localhost:7060/Vehicles/DetailsForTable",
-  update: "https://localhost:7060/Vehicles/Update",
-  selectBox: "https://localhost:7060/Vehicles/ForSelectBox",
-  byIdDetails: (carId) => `https://localhost:7060/Vehicles/${carId}/Details`,
-  byId: (carId) => `https://localhost:7060/Vehicles/${carId}`,
-  delete: (carId) => `https://localhost:7060/Vehicles/Delete/${carId}`,
+  url: base + "/Vehicles",
+  detailsForTable: base + "/Vehicles/DetailsForTable",
+  update: base + "/Vehicles/Update",
+  selectBox: base + "/Vehicles/ForSelectBox",
+  byIdDetails: (carId) => base + `/Vehicles/${carId}/Details`,
+  byId: (carId) => base + `/Vehicles/${carId}`,
+  delete: (carId) => base + `/Vehicles/Delete/${carId}`,
 };
 export const predefinedTasks = {
-  url: "https://localhost:7060/PredefinedTasks",
-  details: "https://localhost:7060/PredefinedTasks/Details",
+  url: base + "/PredefinedTasks",
+  details: base + "/PredefinedTasks/Details",
 };
 export const owners = {
-  url: "https://localhost:7060/Owners",
-  selectBox: "https://localhost:7060/Owners/ForSelectBox",
+  url: base + "/Owners",
+  selectBox: base + "/Owners/ForSelectBox",
+  byId: (ownerId) => base + `/Owners/${ownerId}`,
+  delete: (ownerId) => base + `/Owners/Delete/${ownerId}`,
 };
 
 export const drivers = {
-  url: "https://localhost:7060/Drivers",
-  details: "https://localhost:7060/Drivers/Details",
-  selectBox: "https://localhost:7060/Drivers/ForSelectBox",
+  url: base + "/Drivers",
+  details: base + "/Drivers/Details",
+  selectBox: base + "/Drivers/ForSelectBox",
+  delete: (driverId) => base + `/Drivers/Delete/${driverId}`,
+  byId: (driverId) => base + `/Drivers/${driverId}`,
 };
 
 export const auth = {
-  login: "https://localhost:7060/Auth/login",
-  register: "https://localhost:7060/Auth/register",
+  login: base + "/Auth/login",
+  register: base + "/Auth/register",
+};
+export const brands = {
+  url: base + "/Brands",
+  selectBox: base + "/Brands/ForSelectBox",
+  byId: (brandId) => `${brands.getAll}/${brandId}`,
+};
+
+export const departments = {
+  url: base + "/Departments",
+  selectBox: base + "/Departments/ForSelectBox",
 };
 
 //TODO: Decide wheter using "Separate Endpoints" or "Base URL with Concatenation"
