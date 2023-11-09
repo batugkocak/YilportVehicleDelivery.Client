@@ -75,7 +75,7 @@ export default {
     async fetchOwners() {
       this.isTableLoading = true;
       await api
-        .get(owners.url)
+        .get(owners.forTable)
         .then((response) => {
           this.owners = response.data.data;
           this.snackBarMessage = response.data.message;

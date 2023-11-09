@@ -5,51 +5,84 @@
     :headers="headers"
     :items="drivers"
     :hover="true"
-    :search="searchText"
     density="comfortable"
     class="elevation-1"
     loading-text="Sürücüler yükleniyor..."
     no-data-text="Kayıtlı sürücü yok."
-    items-per-page-text="Sayfa başına araç:"
+    width="20%"
+    items-per-page="-1"
   >
     <template v-slot:top>
       <v-toolbar>
-        <v-toolbar-title>Sürücüler</v-toolbar-title>
+        <v-toolbar-title>SÜRÜCÜLER</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="openAddDialog"> Yeni Sürücü Ekle </v-btn>
+        <v-btn color="primary" @click="openAddDialog"> Sürücü Ekle </v-btn>
       </v-toolbar>
     </template>
-    <template v-slot:bottom> </template>
+    <template v-slot:item.actions="{ item }">
+      <v-btn
+        class="ma-1"
+        color="blue"
+        icon="mdi-pencil"
+        size="small"
+        @click="openEditDialog(item.id)"
+      ></v-btn>
+      <v-btn
+        class="ma-1"
+        color="blue"
+        icon="mdi-delete"
+        size="small"
+        @click="openDeleteDialog(item.id)"
+      ></v-btn>
+    </template>
+    <template v-slot:bottom></template>
   </v-data-table>
 </template>
 
 <script>
 import api from "@/services/httpService";
 import { drivers } from "@/common/config/apiConfig";
+
 export default {
-  emits: [
-    "toggle-detail",
-    "open-snackbar",
-    "toggle-add",
-    "toggle-edit",
-    "toggle-delete",
-  ],
+  emits: ["open-snackbar", "toggle-add", "toggle-edit", "toggle-delete"],
   data() {
     return {
       drivers: [],
       headers: [
-        { title: "id", align: " d-none", key: "id" },
         {
-          title: "Adı",
+          title: "Ad",
           align: "start",
           sortable: false,
           key: "name",
         },
-        { title: "Soy Adı", align: "start", key: "surname" },
-        { title: "Departmanı", align: "start", key: "departmentName" },
-        { title: "Görevi", align: "start", key: "mission" },
+        {
+          title: "Soyad",
+          align: "start",
+          sortable: false,
+          key: "surname",
+        },
+        {
+          title: "Departman",
+          align: "start",
+          sortable: false,
+          key: "departmentName",
+        },
+        {
+          title: "Görev",
+          align: "start",
+          sortable: false,
+          key: "mission",
+        },
+        {
+          title: "",
+          key: "actions",
+          align: "start",
+          sortable: false,
+          fixed: true,
+          width: "150",
+        },
       ],
-      searchText: "",
+
       snackBarMessage: "",
       isSuccess: false,
 
@@ -58,20 +91,32 @@ export default {
   },
   methods: {
     async fetchDrivers() {
+      this.isTableLoading = true;
       await api
-        .get(drivers.details)
+        .get(drivers.forTable)
         .then((response) => {
           this.drivers = response.data.data;
-          console.log(response.data.message);
-          this.isSuccess = true;
           this.snackBarMessage = response.data.message;
+          this.isSuccess = response.data.success;
+        })
+        .catch(() => {
+          this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
+          this.isSuccess = false;
         })
         .finally(() => {
+          this.isTableLoading = false;
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },
+
+    openEditDialog(id) {
+      this.$emit("toggle-edit", id);
+    },
     openAddDialog() {
       this.$emit("toggle-add");
+    },
+    openDeleteDialog(id) {
+      this.$emit("toggle-delete", id);
     },
   },
 
