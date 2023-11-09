@@ -7,16 +7,33 @@
     :hover="true"
     density="comfortable"
     class="elevation-1"
-    loading-text="Görevler yükleniyor..."
-    no-data-text="Kayıtlı görev yok."
+    loading-text="Ön tanımlı görevler yükleniyor..."
+    no-data-text="Kayıtlı sürücü yok."
+    width="20%"
     items-per-page="-1"
   >
     <template v-slot:top>
       <v-toolbar>
-        <v-toolbar-title>Ön Tanımlı Görevler</v-toolbar-title>
+        <v-toolbar-title>ÖN TANIMLI GÖREVLER</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="openAddDialog"> Yeni Görev Ekle </v-btn>
+        <v-btn color="primary" @click="openAddDialog"> Görev Ekle </v-btn>
       </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-btn
+        class="ma-1"
+        color="blue"
+        icon="mdi-pencil"
+        size="small"
+        @click="openEditDialog(item.id)"
+      ></v-btn>
+      <v-btn
+        class="ma-1"
+        color="blue"
+        icon="mdi-delete"
+        size="small"
+        @click="openDeleteDialog(item.id)"
+      ></v-btn>
     </template>
     <template v-slot:bottom></template>
   </v-data-table>
@@ -25,15 +42,15 @@
 <script>
 import api from "@/services/httpService";
 import { predefinedTasks } from "@/common/config/apiConfig";
+
 export default {
-  emits: ["toggle-add", "add-task", "open-snackbar"],
+  emits: ["open-snackbar", "toggle-add", "toggle-edit", "toggle-delete"],
   data() {
     return {
       predefinedTasks: [],
       headers: [
-        { title: "id", align: " d-none", key: "id" },
         {
-          title: "Görev Niteliği / Adı ",
+          title: "Görev Niteliği / Adı",
           align: "start",
           sortable: false,
           key: "name",
@@ -41,17 +58,27 @@ export default {
         {
           title: "İlgili Departman",
           align: "start",
+          sortable: false,
           key: "departmentName",
         },
         {
           title: "Gidilen Adres",
           align: "start",
+          sortable: false,
           key: "address",
+        },
+        {
+          title: "",
+          key: "actions",
+          align: "start",
+          sortable: false,
+          fixed: true,
+          width: "150",
         },
       ],
 
-      isSuccess: false,
       snackBarMessage: "",
+      isSuccess: false,
 
       isTableLoading: false,
     };
@@ -60,21 +87,30 @@ export default {
     async fetchPredefinedTasks() {
       this.isTableLoading = true;
       await api
-        .get(predefinedTasks.details)
+        .get(predefinedTasks.forTable)
         .then((response) => {
-          this.isSuccess = true;
-          this.snackBarMessage = response.data.message;
           this.predefinedTasks = response.data.data;
-          this.$emit("add-task");
+          this.snackBarMessage = response.data.message;
+          this.isSuccess = response.data.success;
         })
-        .catch()
+        .catch(() => {
+          this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
+          this.isSuccess = false;
+        })
         .finally(() => {
           this.isTableLoading = false;
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },
+
+    openEditDialog(id) {
+      this.$emit("toggle-edit", id);
+    },
     openAddDialog() {
       this.$emit("toggle-add");
+    },
+    openDeleteDialog(id) {
+      this.$emit("toggle-delete", id);
     },
   },
 

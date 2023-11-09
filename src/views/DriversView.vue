@@ -14,7 +14,7 @@
   <driver-edit-dialog
     v-model="editDialog"
     :id="selectedDriverId"
-    @update-owner="updateTable"
+    @update-driver="updateTable"
     @open-snackbar="openSnackbar"
   />
   <driver-delete-dialog

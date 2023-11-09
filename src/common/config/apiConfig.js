@@ -35,6 +35,8 @@ export const predefinedTasks = {
   details: base + "/PredefinedTasks/Details",
   forTable: base + "/PredefinedTasks/ForTable",
   update: base + "/PredefinedTasks/Update",
+  delete: (taskId) => base + `/PredefinedTasks/Delete/${taskId}`,
+  byId: (taskId) => base + `/PredefinedTasks/${taskId}`,
 };
 export const owners = {
   url: base + "/Owners",
