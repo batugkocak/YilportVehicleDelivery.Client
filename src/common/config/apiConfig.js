@@ -33,10 +33,14 @@ export const vehicles = {
 export const predefinedTasks = {
   url: base + "/PredefinedTasks",
   details: base + "/PredefinedTasks/Details",
+  forTable: base + "/PredefinedTasks/ForTable",
+  update: base + "/PredefinedTasks/Update",
 };
 export const owners = {
   url: base + "/Owners",
+  forTable: base + "/Owners/ForTable",
   selectBox: base + "/Owners/ForSelectBox",
+  update: base + "/Owners/Update",
   byId: (ownerId) => base + `/Owners/${ownerId}`,
   delete: (ownerId) => base + `/Owners/Delete/${ownerId}`,
 };
@@ -45,6 +49,8 @@ export const drivers = {
   url: base + "/Drivers",
   details: base + "/Drivers/Details",
   selectBox: base + "/Drivers/ForSelectBox",
+  forTable: base + "/Drivers/ForTable",
+  update: base + "/Drivers/Update",
   delete: (driverId) => base + `/Drivers/Delete/${driverId}`,
   byId: (driverId) => base + `/Drivers/${driverId}`,
 };
@@ -66,4 +72,4 @@ export const departments = {
 
 //TODO: Decide wheter using "Separate Endpoints" or "Base URL with Concatenation"
 // API'de bazılarını ?vehicleID=1 şeklinde bazılarını da /1 şeklinde kullanıyoruz. Bunları standartlaştır, ona göre burayı da düzenle
-//gerekirse buraya sadece base apileri koy, /Vehicles cart curtları sayfalara tek tek koy.
+// gerekirse buraya sadece base apileri koy, /Vehicles cart curtları sayfalara tek tek koy.
