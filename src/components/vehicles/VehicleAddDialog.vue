@@ -48,7 +48,11 @@
           :rules="[ruleRequired]"
         >
           <template v-slot:append>
-            <v-btn icon="mdi-plus" elevation="0"></v-btn>
+            <v-btn
+              icon="mdi-plus"
+              elevation="0"
+              @click="openOwnerAddDialog"
+            ></v-btn>
           </template>
         </v-autocomplete>
         <v-select
@@ -133,6 +137,7 @@
       </v-form>
     </v-card>
   </v-dialog>
+  <owner-add-dialog v-model="ownerAddDialog" @add-owner="afterOwnerAdded" />
 </template>
 
 <script>
@@ -149,10 +154,14 @@ import FuelType from "@/common/constants/fuelType";
 import VehicleColor from "@/common/constants/vehicleColor";
 import VehicleStatus from "@/common/constants/vehicleStatus";
 import VehicleType from "@/common/constants/vehicleType";
+import OwnerAddDialog from "../owners/OwnerAddDialog.vue";
 
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue", "open-snackbar", "add-vehicle"],
+  components: {
+    OwnerAddDialog,
+  },
   data() {
     return {
       ...rules,
@@ -176,6 +185,7 @@ export default {
       isSuccess: false,
       plateExists: false,
       snackBarMessage: "",
+      ownerAddDialog: false,
     };
   },
   methods: {
@@ -252,6 +262,13 @@ export default {
           this.plateExists = true;
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
+    },
+    openOwnerAddDialog() {
+      this.ownerAddDialog = true;
+    },
+    afterOwnerAdded() {
+      this.owners = [];
+      this.getOwners();
     },
     async getOwners() {
       if (this.owners.length) {
