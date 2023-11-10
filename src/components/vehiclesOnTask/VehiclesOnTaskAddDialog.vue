@@ -35,7 +35,7 @@
             label="Aşağıdakileri otomatik doldurmak için hazır görev seçin"
             v-model="chosenPredefinedTaskId"
             :items="predefinedTasks"
-            item-title="name"
+            item-title="selectBoxValue"
             item-value="id"
             @click="getPredefinedTasks"
             @update:model-value="fillWithChosenTask(chosenPredefinedTaskId)"
@@ -196,9 +196,8 @@ export default {
         });
     },
     async getPredefinedTasks() {
-      this.getDepartments();
       await api
-        .get(predefinedTasks.url)
+        .get(predefinedTasks.selectBox)
         .then((response) => {
           this.predefinedTasks = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -213,10 +212,12 @@ export default {
         });
     },
     async fillWithChosenTask(taskId) {
-      var task = this.predefinedTasks.find((x) => x.id === taskId);
-      this.newVehicleOnTask.departmentId = task.departmentId;
-      this.newVehicleOnTask.address = task.address;
-      this.newVehicleOnTask.taskDefinition = task.name;
+      this.getDepartments();
+      return api.get(predefinedTasks.byId(taskId)).then((result) => {
+        this.newVehicleOnTask.departmentId = result.data.data.departmentId;
+        this.newVehicleOnTask.address = result.data.data.address;
+        this.newVehicleOnTask.taskDefinition = result.data.data.name;
+      });
     },
     async addTaskToVehicle() {
       await api

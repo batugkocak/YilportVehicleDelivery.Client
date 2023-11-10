@@ -61,6 +61,8 @@ export default {
           console.log(res);
           this.isSuccess = true;
           this.snackBarMessage = res.data;
+          this.$emit("add-owner");
+          this.closeDialog();
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -68,8 +70,6 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$emit("add-owner");
-          this.closeDialog();
           this.owner = {
             name: "",
           };

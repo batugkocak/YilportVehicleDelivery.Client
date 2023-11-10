@@ -110,7 +110,8 @@ export default {
           this.snackBarMessage = response.data.message;
           this.isSuccess = response.data.success;
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log(error.response);
           this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
           this.isSuccess = false;
         })

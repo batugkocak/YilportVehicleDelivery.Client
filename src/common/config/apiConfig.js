@@ -26,6 +26,7 @@ export const vehicles = {
   detailsForTable: base + "/Vehicles/DetailsForTable",
   update: base + "/Vehicles/Update",
   selectBox: base + "/Vehicles/ForSelectBox",
+  checkPlate: (plate) => base + `/Vehicles/CheckPlate?plate=${plate}`,
   byIdDetails: (carId) => base + `/Vehicles/${carId}/Details`,
   byId: (carId) => base + `/Vehicles/${carId}`,
   delete: (carId) => base + `/Vehicles/Delete/${carId}`,
@@ -35,6 +36,7 @@ export const predefinedTasks = {
   details: base + "/PredefinedTasks/Details",
   forTable: base + "/PredefinedTasks/ForTable",
   update: base + "/PredefinedTasks/Update",
+  selectBox: base + "/PredefinedTasks/ForSelectBox",
   delete: (taskId) => base + `/PredefinedTasks/Delete/${taskId}`,
   byId: (taskId) => base + `/PredefinedTasks/${taskId}`,
 };

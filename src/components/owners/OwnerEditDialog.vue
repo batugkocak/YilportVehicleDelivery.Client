@@ -56,6 +56,8 @@ export default {
         .then((res) => {
           this.isSuccess = true;
           this.snackBarMessage = res.data;
+          this.$emit("update-owner");
+          this.closeDialog();
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -63,20 +65,16 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$emit("update-owner");
-          this.closeDialog();
         });
     },
     closeDialog() {
       this.$emit("update:modelValue", false);
     },
     async getOwner() {
-
       api
         .get(owners.byId(this.id))
         .then((response) => {
           this.owner = response.data.data;
-
         })
         .finally(() => {
           this.tempName = this.owner.name;

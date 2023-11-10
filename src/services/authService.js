@@ -1,10 +1,11 @@
-import jwt from "vue-jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 function isTokenExpired(token) {
   try {
-    const decoded = jwt.decode(token);
+    const decoded = jwtDecode(token);
     if (decoded && decoded.exp) {
       const currentTime = Math.floor(Date.now() / 1000);
+      console.log(decoded);
       return decoded.exp < currentTime;
     }
   } catch (error) {
@@ -15,7 +16,7 @@ function isTokenExpired(token) {
 
 function getLoginTime(token) {
   try {
-    const decoded = jwt.decode(token);
+    const decoded = jwtDecode(token);
     if (decoded && decoded.nbf) {
       const date = new Date(decoded.nbf * 1000);
       return date.toLocaleString();
@@ -27,7 +28,7 @@ function getLoginTime(token) {
 
 function getRole(token) {
   try {
-    const decoded = jwt.decode(token);
+    const decoded = jwtDecode(token);
     if (decoded && decoded.sub) {
       const sub = decoded.sub;
       return {

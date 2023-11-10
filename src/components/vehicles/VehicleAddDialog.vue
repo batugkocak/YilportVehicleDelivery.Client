@@ -6,6 +6,7 @@
           v-model="insertedVehicle.plate"
           label="Plaka"
           placeholder="16YH1616"
+          @update:focused="isPlateExists"
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
@@ -13,6 +14,7 @@
             (v) => ruleMaxLength(v, 10),
           ]"
           :counter="10"
+          :error-messages="plateExists ? ['Böyle bir plaka var.'] : []"
         />
         <v-select
           v-model="insertedVehicle.type"
@@ -172,6 +174,7 @@ export default {
       brands: [],
       owners: [],
       isSuccess: false,
+      plateExists: false,
       snackBarMessage: "",
     };
   },
@@ -231,6 +234,22 @@ export default {
           console.log(err);
         })
         .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+        });
+    },
+    async isPlateExists() {
+      if (this.insertedVehicle.plate === "") {
+        return;
+      }
+      api
+        .get(vehicles.checkPlate(this.insertedVehicle.plate))
+        .then(() => {
+          this.plateExists = false;
+        })
+        .catch((response) => {
+          this.snackBarMessage = response.response.data;
+          this.isSuccess = false;
+          this.plateExists = true;
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },
