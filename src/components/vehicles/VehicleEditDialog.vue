@@ -159,7 +159,7 @@ export default {
   methods: {
     async updateVehicle() {
       await api
-        .post(vehicles.update, this.vehicle)
+        .update(vehicles.update, this.vehicle)
         .then((res) => {
           console.log(res);
           this.isSuccess = true;

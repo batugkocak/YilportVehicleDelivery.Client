@@ -82,7 +82,7 @@ export default {
   methods: {
     async updatePredefinedTask() {
       await api
-        .post(predefinedTasks.update, this.predefinedTask)
+        .update(predefinedTasks.update, this.predefinedTask)
         .then((res) => {
           this.isSuccess = true;
           this.snackBarMessage = res.data;

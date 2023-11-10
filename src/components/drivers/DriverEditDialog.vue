@@ -87,7 +87,7 @@ export default {
   methods: {
     async updateDriver() {
       await api
-        .post(drivers.update, this.driver)
+        .update(drivers.update, this.driver)
         .then((res) => {
           this.isSuccess = true;
           this.snackBarMessage = res.data;

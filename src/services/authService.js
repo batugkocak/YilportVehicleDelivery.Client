@@ -26,7 +26,7 @@ function getLoginTime(token) {
   }
 }
 
-function getRole(token) {
+function getUserName(token) {
   try {
     const decoded = jwtDecode(token);
     if (decoded && decoded.sub) {
@@ -41,4 +41,4 @@ function getRole(token) {
   return null; // Return null if "sub" is not found or there was an error
 }
 
-export { isTokenExpired, getRole, getLoginTime };
+export { isTokenExpired, getUserName, getLoginTime };

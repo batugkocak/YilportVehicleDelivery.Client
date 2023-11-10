@@ -117,7 +117,7 @@ export default {
 
     async editTaskOfVehicle() {
       await api
-        .post(vehiclesOnTask.editUrl, this.fetchedVehicleOnTask)
+        .update(vehiclesOnTask.editUrl, this.fetchedVehicleOnTask)
         .then((response) => {
           this.snackBarMessage = response.data;
           this.isSuccess = true;

@@ -52,7 +52,7 @@ export default {
   methods: {
     async updateOwner() {
       await api
-        .post(owners.update, this.owner)
+        .update(owners.update, this.owner)
         .then((res) => {
           this.isSuccess = true;
           this.snackBarMessage = res.data;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getUserName } from "./authService";
 
 const defaultTimeOut = 5000;
 
@@ -21,6 +22,16 @@ async function get(url, queryParams = {}) {
 
 async function post(url, data = {}) {
   const config = await getHeaders();
+  data.creator = getUserName(localStorage.getItem("jwt")).sub;
+  return axios.post(url, data, {
+    timeout: defaultTimeOut,
+    headers: config.headers,
+  });
+}
+
+async function update(url, data = {}) {
+  const config = await getHeaders();
+  data.changer = getUserName(localStorage.getItem("jwt")).sub;
   return axios.post(url, data, {
     timeout: defaultTimeOut,
     headers: config.headers,
@@ -30,4 +41,5 @@ async function post(url, data = {}) {
 export default {
   get,
   post,
+  update,
 };
