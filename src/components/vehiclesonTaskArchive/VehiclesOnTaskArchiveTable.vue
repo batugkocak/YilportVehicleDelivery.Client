@@ -19,20 +19,31 @@
     <template v-slot:top>
       <v-toolbar>
         <v-toolbar-title>GÖREV ARŞİV</v-toolbar-title>
+        <v-responsive max-width="200" class="pa-1 mt-2 mr-2">
+          <v-select
+            :items="dateTypes"
+            item-title="name"
+            item-value="value"
+            density="compact"
+            label="Tarih Filtre"
+            v-model="chosenDataType"
+            @update:model-value="fetchVehiclesOnTaskArchive"
+          ></v-select>
+        </v-responsive>
         <v-responsive max-width="200" class="pa-1">
-          <label for="firstGivenDateInput">Başlangıç Veriliş Tarihi</label>
+          <label for="firstGivenDateInput">Başlangıç Tarihi</label>
           <input
             v-model="filterFirstGivenDate"
             type="date"
             id="firstGivenDateInput"
             name="Veriliş Tarihi"
-            min="2015-01-01"
+            min="2020-01-01"
             lang="tr"
             @change="fetchVehiclesOnTaskArchive"
           />
         </v-responsive>
         <v-responsive max-width="200" class="pa-1">
-          <label for="lastGivenDateInput">Son Veriliş Tarihi</label>
+          <label for="lastGivenDateInput">Bitiş Tarihi</label>
           <input
             v-model="filterLastGivenDate"
             type="date"
@@ -117,6 +128,11 @@ export default {
           width: "150",
         },
       ],
+      dateTypes: [
+        { name: "Veriliş Tarihi", value: "givenDate" },
+        { name: "Dönüş Tarihi", value: "returnDate" },
+      ],
+      chosenDataType: "givenDate",
 
       //Snackbar:
       snackBarMessage: "",
@@ -141,8 +157,9 @@ export default {
         .get(vehiclesOnTask.archiveUrl, {
           page: this.page - 1,
           size: this.itemsPerPage,
-          firstGivenDate: this.filterFirstGivenDate,
-          lastGivenDate: this.filterLastGivenDate,
+          firstDate: this.filterFirstGivenDate,
+          lastDate: this.filterLastGivenDate,
+          dateType: this.chosenDataType,
         })
         .then((response) => {
           this.vehiclesOnTask = response.data.data.items;
@@ -163,8 +180,9 @@ export default {
     async fetchVehiclesForExcel() {
       await api
         .get(vehiclesOnTask.archiveDetailsUrl, {
-          firstGivenDate: this.filterFirstGivenDate,
-          lastGivenDate: this.filterLastGivenDate,
+          firstDate: this.filterFirstGivenDate,
+          lastDate: this.filterLastGivenDate,
+          dateType: this.chosenDataType,
         })
         .then((response) => {
           this.vehiclesToExportExcel = response.data.data;
@@ -225,6 +243,16 @@ export default {
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, data, "data");
       let excelName = "GorevArsiv";
+      if (
+        this.chosenDataType === "givenDate" &&
+        (this.filterFirstGivenDate !== "" || this.filterLastGivenDate !== "")
+      )
+        excelName = excelName + "(VerilisTarihi)";
+      if (
+        this.chosenDataType === "returnDate" &&
+        (this.filterFirstGivenDate !== "" || this.filterLastGivenDate !== "")
+      )
+        excelName = excelName + "(DonusTarihi)";
       if (this.filterFirstGivenDate !== "")
         excelName = excelName + "-Sonrasi=" + this.filterFirstGivenDate;
       if (this.filterLastGivenDate !== "")
