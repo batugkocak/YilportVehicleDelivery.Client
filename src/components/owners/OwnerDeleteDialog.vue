@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
     <v-card>
-      <v-card-text> Sahibi silmek istediğinize emin misiniz?</v-card-text>
+      <v-card-text>
+        Sahibi silmek istediğinize emin misiniz? Lütfen bu sahibe ait araç
+        olmadığından emin olun.
+      </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green" @click="dialog = false">Vazgeç</v-btn>

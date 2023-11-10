@@ -1,12 +1,13 @@
 <template>
-  <owners-table
-    @toggle-add="openAddDialog"
-    @toggle-edit="openEditDialog"
-    @toggle-delete="openDeleteDialog"
-    @open-snackbar="openSnackbar"
-    ref="ownerTable"
-  />
-
+  <v-card width="500px" class="mr-auto">
+    <owners-table
+      @toggle-add="openAddDialog"
+      @toggle-edit="openEditDialog"
+      @toggle-delete="openDeleteDialog"
+      @open-snackbar="openSnackbar"
+      ref="ownerTable"
+    />
+  </v-card>
   <owner-add-dialog
     v-model="addDialog"
     @add-owner="updateTable"
@@ -71,5 +72,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

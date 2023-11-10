@@ -1,5 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="400">
+    <v-toolbar title="Sahip Ekle" />
+
     <v-card class="pa-5 mt-2">
       <v-form @submit.prevent="postOwner" v-model="valid">
         <v-text-field
@@ -10,9 +12,9 @@
           :rules="[
             ruleRequired,
             (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 30),
+            (v) => ruleMaxLength(v, 25),
           ]"
-          :counter="30"
+          :counter="25"
         />
 
         <v-row class="mt-3">
