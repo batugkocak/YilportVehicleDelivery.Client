@@ -7,6 +7,8 @@ import LoginView from "@/views/LoginView.vue";
 import PredefinedTasksView from "@/views/PredefinedTasksView.vue";
 import DriversView from "@/views/DriversView.vue";
 import OwnersView from "@/views/OwnersView.vue";
+import DepartmentsView from "@/views/DepartmentsView.vue";
+import BrandsView from "@/views/BrandsView.vue";
 
 import { isTokenExpired } from "@/services/authService";
 
@@ -49,6 +51,16 @@ const routes = [
     path: "/owners",
     name: "Owners",
     component: OwnersView,
+  },
+  {
+    path: "/departments",
+    name: "Departments",
+    component: DepartmentsView,
+  },
+  {
+    path: "/brands",
+    name: "Brands",
+    component: BrandsView,
   },
 ];
 

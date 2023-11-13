@@ -32,7 +32,12 @@
         to="/archive"
         color="primary"
       />
-
+      <v-list-item
+        prepend-icon="mdi-calendar-check"
+        title="Ön Tanımlı Görevler"
+        :to="{ name: 'PredefinedTasks' }"
+        color="primary"
+      />
       <v-list-item
         prepend-icon="mdi-menu"
         title="Diğer Tablolar"
@@ -41,12 +46,6 @@
       >
         <v-menu location="bottom" activator="parent">
           <v-list>
-            <v-list-item
-              prepend-icon="mdi-calendar-check"
-              title="Ön Tanımlı Görevler"
-              :to="{ name: 'PredefinedTasks' }"
-              color="primary"
-            />
             <v-list-item
               prepend-icon="mdi-account"
               title="Sürücüler"
@@ -57,6 +56,18 @@
               prepend-icon="mdi-account-tie"
               title="Araç Sahipleri"
               :to="{ name: 'Owners' }"
+              color="primary"
+            />
+            <v-list-item
+              prepend-icon="mdi-account-details"
+              title="Departmanlar"
+              :to="{ name: 'Departments' }"
+              color="primary"
+            />
+            <v-list-item
+              prepend-icon="mdi-watermark"
+              title="Markalar"
+              :to="{ name: 'Brands' }"
               color="primary"
             />
           </v-list>

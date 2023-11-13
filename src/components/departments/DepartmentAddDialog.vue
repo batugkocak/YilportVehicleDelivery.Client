@@ -1,11 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="400">
     <v-card class="pa-5 mt-2">
-      <v-form @submit.prevent="postOwner" v-model="valid">
+      <v-form @submit.prevent="postDepartment" v-model="valid">
         <v-text-field
-          v-model="owner.name"
+          v-model="department.name"
           label="İsim"
-          placeholder="Yılport"
+          placeholder="Bilgi Teknolojileri"
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
@@ -14,7 +14,6 @@
           ]"
           :counter="25"
         />
-
         <v-row class="mt-3">
           <v-spacer />
           <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
@@ -34,15 +33,15 @@
 <script>
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
-import { owners } from "@/common/config/apiConfig";
+import { departments } from "@/common/config/apiConfig";
 export default {
   props: ["modelValue"],
-  emits: ["update:modelValue", "open-snackbar", "add-owner"],
+  emits: ["update:modelValue", "open-snackbar", "add-department"],
   data() {
     return {
       ...rules,
       valid: false,
-      owner: {
+      department: {
         name: "",
       },
 
@@ -54,14 +53,14 @@ export default {
     closeDialog() {
       this.$emit("update:modelValue", false);
     },
-    async postOwner() {
+    async postDepartment() {
       await api
-        .post(owners.url, this.owner)
+        .post(departments.url, this.department)
         .then((res) => {
           console.log(res);
           this.isSuccess = true;
           this.snackBarMessage = res.data;
-          this.$emit("add-owner");
+          this.$emit("add-department");
           this.closeDialog();
         })
         .catch((err) => {
@@ -70,13 +69,13 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.owner = {
+          this.department = {
             name: "",
           };
         });
     },
     trimInserts() {
-      this.owner.name = this.owner.name.trim();
+      this.department.name = this.department.name.trim();
     },
   },
   computed: {

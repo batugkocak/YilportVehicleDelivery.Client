@@ -75,6 +75,10 @@ export const brands = {
 export const departments = {
   url: base + "/Departments",
   selectBox: base + "/Departments/ForSelectBox",
+  forTable: base + "/Departments/ForTable",
+  update: base + "/Departments/Update",
+  delete: (departmentId) => base + `/Departments/Delete/${departmentId}`,
+  byId: (departmentId) => base + `/Departments/${departmentId}`,
 };
 
 //TODO: Decide wheter using "Separate Endpoints" or "Base URL with Concatenation"
