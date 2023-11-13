@@ -40,4 +40,18 @@ function getUserName(token) {
   return null; // Return null if "sub" is not found or there was an error
 }
 
-export { isTokenExpired, getUserName, getLoginTime };
+function getRoles(token) {
+  try {
+    const decoded = jwtDecode(token);
+
+    if (decoded && decoded.roles) {
+      const roles = decoded.roles;
+      return roles;
+    }
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+  return null; // Return null if "sub" is not found or there was an error
+}
+
+export { isTokenExpired, getUserName, getLoginTime, getRoles };
