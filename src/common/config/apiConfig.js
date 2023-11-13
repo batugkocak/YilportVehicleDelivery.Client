@@ -66,7 +66,10 @@ export const auth = {
 export const brands = {
   url: base + "/Brands",
   selectBox: base + "/Brands/ForSelectBox",
-  byId: (brandId) => `${brands.getAll}/${brandId}`,
+  forTable: base + "/Brands/ForTable",
+  update: base + "/Brands/Update",
+  delete: (brandId) => base + `/Brands/Delete/${brandId}`,
+  byId: (brandId) => base + `/Brands/${brandId}`,
 };
 
 export const departments = {
