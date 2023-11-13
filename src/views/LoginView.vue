@@ -62,7 +62,7 @@ export default {
     async login() {
       this.user.username = this.user.username.trim();
       api
-        .post(auth.login, this.user)
+        .login(auth.login, this.user)
         .then((result) => {
           if (result.data.token) {
             localStorage.setItem("jwt", result.data.token);

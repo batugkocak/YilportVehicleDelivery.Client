@@ -29,6 +29,12 @@ async function post(url, data = {}) {
   });
 }
 
+async function login(url, data = {}) {
+  return axios.post(url, data, {
+    timeout: defaultTimeOut,
+  });
+}
+
 async function update(url, data = {}) {
   const config = await getHeaders();
   data.changer = getUserName(localStorage.getItem("jwt")).sub;
@@ -42,4 +48,5 @@ export default {
   get,
   post,
   update,
+  login,
 };

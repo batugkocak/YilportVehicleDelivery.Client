@@ -79,10 +79,12 @@ export default {
           sortable: false,
           key: "plate",
         },
+        { title: "Sahip", align: "start", key: "owner" },
+
         { title: "id", align: " d-none", key: "id" },
-        { title: "Tip", align: "end", key: "type" },
-        { title: "Marka", align: "end", key: "brand" },
-        { title: "Model", align: "end", key: "modelName" },
+        { title: "Tip", align: "start", key: "type" },
+        { title: "Marka", align: "start", key: "brand" },
+        { title: "Model", align: "start", key: "modelName" },
         { title: "Durumu", align: "start", key: "status" },
         {
           title: "",

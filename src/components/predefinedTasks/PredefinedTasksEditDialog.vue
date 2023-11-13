@@ -108,8 +108,7 @@ export default {
           this.predefinedTask = response.data.data;
         })
         .finally(() => {
-          this.tempName =
-            this.predefinedTask.name + " " + this.predefinedTask.surname;
+          this.tempName = this.predefinedTask.name;
         });
     },
     async getDepartments() {

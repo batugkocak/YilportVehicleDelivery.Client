@@ -4,11 +4,13 @@ import VehiclesView from "@/views/VehiclesView.vue";
 import VehiclesOnTaskView from "@/views/VehiclesOnTaskView.vue";
 import VehiclesOnTaskArchiveView from "@/views/VehiclesOnTaskArchiveView.vue";
 import LoginView from "@/views/LoginView.vue";
-import PredefinedTasksView from "@/views/PredefinedTasksView.vue";
-import DriversView from "@/views/DriversView.vue";
-import OwnersView from "@/views/OwnersView.vue";
-import DepartmentsView from "@/views/DepartmentsView.vue";
-import BrandsView from "@/views/BrandsView.vue";
+
+//Lazy Load:
+const BrandsView = () => import("@/views/BrandsView.vue");
+const DepartmentsView = () => import("@/views/DepartmentsView.vue");
+const OwnersView = () => import("@/views/OwnersView.vue");
+const DriversView = () => import("@/views/DriversView.vue");
+const PredefinedTasksView = () => import("@/views/PredefinedTasksView.vue");
 
 import { isTokenExpired } from "@/services/authService";
 
