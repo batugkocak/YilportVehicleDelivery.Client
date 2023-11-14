@@ -1,9 +1,9 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px" v-if="fetchedVehicleOnTask">
-    <v-card class="dialogCard">
+    <v-card class="dialogCard" prepend-icon="mdi-car" title="Test" hover>
       <v-form v-model="valid" @submit.prevent="editTaskOfVehicle">
         <v-card elevation="2" class="dialogCard">
-          <v-card-title>Görevde Olan Araç Düzenleme</v-card-title>
+          <v-card-title>Sürücü</v-card-title>
           <!-- <v-autocomplete
             label="Araç Plakası"
             v-model="fetchedVehicleOnTask.vehicleId"
@@ -108,7 +108,7 @@ export default {
     closeDialog() {
       this.$emit("update:modelValue", false);
     },
-    async fetchVehicle() {
+    async fetchVehicleOnTask() {
       await api.get(vehiclesOnTask.get(this.id)).then((response) => {
         console.log(response.data.data);
         this.fetchedVehicleOnTask = response.data.data;
@@ -133,21 +133,15 @@ export default {
         });
     },
 
-    async getVehicles() {
+    async fetchVehicle() {
       await api
-        .get(vehicles.selectBox)
+        .get(vehicles.byId(this.fetchedVehicleOnTask.vehicleId))
         .then((response) => {
-          this.vehicles = response.data.data;
-          this.snackBarMessage = response.data.message;
-          this.isSuccess = response.data.success;
+          console.log(response);
         })
-        .catch(() => {
-          this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
-          this.isSuccess = false;
+        .catch((err) => {
+          console.log(err);
         });
-      // .finally(() => {
-      //   this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-      // });
     },
     async getDrivers() {
       await api
@@ -160,10 +154,8 @@ export default {
         .catch(() => {
           this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
           this.isSuccess = false;
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
-      // .finally(() => {
-      //   this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-      // });
     },
     async getDepartments() {
       await api
@@ -176,10 +168,8 @@ export default {
         .catch(() => {
           this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
           this.isSuccess = false;
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
-      // .finally(() => {
-      //   this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-      // });
     },
   },
   computed: {
@@ -196,9 +186,9 @@ export default {
     dialog: {
       handler(newValue) {
         if (newValue) {
-          this.getVehicles();
           this.getDepartments();
           this.getDrivers();
+          this.fetchVehicleOnTask();
           this.fetchVehicle();
         }
       },

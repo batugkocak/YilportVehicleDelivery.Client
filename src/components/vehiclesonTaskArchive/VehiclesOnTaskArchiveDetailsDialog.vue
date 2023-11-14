@@ -7,8 +7,6 @@
       hover
       class="pa-5 ma-2"
     >
-      <v-card-text style="float: right; margin-right: 0"></v-card-text>
-
       <v-card elevation="3" class="pa-5 ma-2">
         <div class="d-flex align-center">
           <v-icon icon="mdi-account" />
