@@ -2,9 +2,31 @@
   <v-card class="pa-5 mt-2">
     <v-form @submit.prevent="postDriver" v-model="valid">
       <v-text-field
+        v-model="newUser.firstName"
+        label="Ad"
+        prepend-inner-icon="mdi-account-outline"
+        :rules="[
+          ruleRequired,
+          (v) => ruleMinLength(v, 4),
+          (v) => ruleMaxLength(v, 30),
+        ]"
+        :counter="30"
+      />
+      <v-text-field
+        v-model="newUser.lastName"
+        label="Soyad"
+        prepend-inner-icon="mdi-account"
+        :rules="[
+          ruleRequired,
+          (v) => ruleMinLength(v, 4),
+          (v) => ruleMaxLength(v, 30),
+        ]"
+        :counter="30"
+      />
+      <v-text-field
         v-model="newUser.username"
         label="Kullanıcı Adı"
-        prepend-icon="mdi-card-text"
+        prepend-inner-icon="mdi-account-circle"
         :rules="[
           ruleRequired,
           (v) => ruleMinLength(v, 4),
@@ -16,29 +38,7 @@
         v-model="newUser.password"
         label="Şifre"
         type="password"
-        prepend-icon="mdi-card-text"
-        :rules="[
-          ruleRequired,
-          (v) => ruleMinLength(v, 4),
-          (v) => ruleMaxLength(v, 30),
-        ]"
-        :counter="30"
-      />
-      <v-text-field
-        v-model="newUser.firstName"
-        label="Ad"
-        prepend-icon="mdi-card-text"
-        :rules="[
-          ruleRequired,
-          (v) => ruleMinLength(v, 4),
-          (v) => ruleMaxLength(v, 30),
-        ]"
-        :counter="30"
-      />
-      <v-text-field
-        v-model="newUser.lastName"
-        label="Soyad"
-        prepend-icon="mdi-card-text"
+        prepend-inner-icon="mdi-key"
         :rules="[
           ruleRequired,
           (v) => ruleMinLength(v, 4),
@@ -53,8 +53,7 @@
         item-value="value"
         density="compact"
         label="Kullanıcı Rolü"
-        v-model="chosenDataType"
-        @update:model-value="fetchVehiclesOnTaskArchive"
+        v-model="newUser.roleId"
       ></v-select>
       <v-row class="mt-3">
         <v-spacer />
@@ -75,8 +74,6 @@
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
 
-
-
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue", "open-snackbar"],
@@ -88,7 +85,7 @@ export default {
         username: "",
         firstName: "",
         lastName: "",
-        roleId: "",
+        roleId: 1,
         password: "",
       },
       roles: [
@@ -135,6 +132,9 @@ export default {
       this.newUser.firstName = this.newUser.firstName.trim();
       this.newUser.lastName = this.newUser.lastName.trim();
       this.newUser.username = this.newUser.username.trim();
+    },
+    postDriver() {
+      console.log(this.newUser);
     },
   },
   computed: {

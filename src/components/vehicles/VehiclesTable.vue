@@ -29,9 +29,7 @@
             placeholder="Plaka, Tip, Marka, ..."
           ></v-text-field>
         </v-responsive>
-        <v-btn color="primary" @click="openAddDialog" v-role="`user`">
-          Araç Ekle
-        </v-btn>
+        <v-btn color="primary" @click="openAddDialog"> Araç Ekle </v-btn>
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
@@ -48,7 +46,6 @@
         icon="mdi-pencil"
         size="small"
         @click="openEditDialog(item.id)"
-        v-role="`user`"
       ></v-btn>
       <v-btn
         class="ma-1"
@@ -56,7 +53,6 @@
         icon="mdi-delete"
         size="small"
         @click="openDeleteDialog(item.id)"
-        v-role="`user`"
       ></v-btn> </template
   ></v-data-table>
 </template>

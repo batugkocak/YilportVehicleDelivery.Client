@@ -15,6 +15,14 @@
 
     <v-list density="compact" nav>
       <v-list-item
+        prepend-icon="mdi-shield-crown"
+        title="Admin"
+        to="/admin"
+        color="primary"
+        v-role="`admin`"
+      />
+
+      <v-list-item
         prepend-icon="mdi-car-side"
         title="Araçlar"
         to="/vehicles"

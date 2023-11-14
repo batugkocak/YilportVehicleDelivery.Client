@@ -11,8 +11,9 @@ const DepartmentsView = () => import("@/views/DepartmentsView.vue");
 const OwnersView = () => import("@/views/OwnersView.vue");
 const DriversView = () => import("@/views/DriversView.vue");
 const PredefinedTasksView = () => import("@/views/PredefinedTasksView.vue");
+const AdminView = () => import("@/views/AdminView.vue");
 
-import { isTokenExpired } from "@/services/authService";
+import { isTokenExpired, getRoles } from "@/services/authService";
 
 const routes = [
   {
@@ -64,6 +65,11 @@ const routes = [
     name: "Brands",
     component: BrandsView,
   },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: AdminView,
+  },
 ];
 
 const router = createRouter({
@@ -73,6 +79,11 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem("jwt");
+  let userRoles = [];
+  if (token) {
+    userRoles = getRoles(token);
+  }
+
   if (to.name !== "Login" && !token) {
     next({ name: "Login" });
     localStorage.removeItem("jwt");
@@ -83,6 +94,8 @@ router.beforeEach(async (to, from, next) => {
         isExpired: true,
       },
     });
+  } else if (!userRoles.includes("admin") && to.name === "Admin") {
+    next({ name: "Vehicles" });
   } else next();
 });
 
