@@ -14,10 +14,10 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 30),
+            (v) => ruleMinLength(v, vehicleOnTaskRules.NAME_MIN_LENGTH),
+            (v) => ruleMaxLength(v, vehicleOnTaskRules.NAME_MAX_LENGTH),
           ]"
-          :counter="30"
+          :counter="vehicleOnTaskRules.NAME_MAX_LENGTH"
         />
         <v-autocomplete
           v-model="predefinedTask.departmentId"
@@ -37,10 +37,9 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 30),
+            (v) => ruleMaxLength(v, vehicleOnTaskRules.ADDRESS_LENGTH),
           ]"
-          :counter="30"
+          :counter="vehicleOnTaskRules.ADDRESS_LENGTH"
         />
 
         <v-row class="mt-3">
@@ -61,6 +60,7 @@
 <script>
 import api from "@/services/httpService";
 import { predefinedTasks, departments } from "@/common/config/apiConfig";
+import { vehicleOnTaskRules } from "@/common/constants/validations";
 
 import baseRules from "@/common/rules/rules";
 
@@ -69,6 +69,7 @@ export default {
   emits: ["update:modelValue", "update-task"],
   data() {
     return {
+      vehicleOnTaskRules,
       ...baseRules,
       predefinedTask: {
         name: "",

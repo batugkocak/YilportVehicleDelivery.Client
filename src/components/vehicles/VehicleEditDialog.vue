@@ -11,10 +11,10 @@
           @update:model-value="checkPlate"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 10),
+            (v) => ruleMinLength(v, vehicleRules.PLATE_MIN_LENGTH),
+            (v) => ruleMaxLength(v, vehicleRules.PLATE_MAX_LENGTH),
           ]"
-          :counter="10"
+          :counter="vehicleRules.PLATE_MAX_LENGTH"
         />
         <v-select
           v-model="vehicle.type"
@@ -61,8 +61,11 @@
           v-model="vehicle.modelName"
           label="Model"
           prepend-icon="mdi-car-outline"
-          :rules="[ruleRequired, (v) => ruleMaxLength(v, 15)]"
-          :counter="15"
+          :rules="[
+            ruleRequired,
+            (v) => ruleMaxLength(v, vehicleRules.MODEL_NAME_LENGTH),
+          ]"
+          :counter="vehicleRules.MODEL_NAME_LENGTH"
         />
         <v-text-field
           v-model="vehicle.modelYear"
@@ -108,8 +111,8 @@
           v-model="vehicle.note"
           label="Not"
           prepend-icon="mdi-note-edit"
-          :rules="[(v) => ruleMaxLength(v, 230)]"
-          :counter="230"
+          :rules="[(v) => ruleMaxLength(v, vehicleRules.NOTE_LENGTH)]"
+          :counter="vehicleRules.NOTE_LENGTH"
         >
         </v-text-field>
         <v-row class="mt-3">
@@ -136,6 +139,8 @@ import {
   departments,
 } from "@/common/config/apiConfig";
 
+import { vehicleRules } from "@/common/constants/validations";
+
 import baseRules from "@/common/rules/rules";
 
 import FuelType from "@/common/constants/fuelType";
@@ -148,6 +153,7 @@ export default {
   emits: ["update:modelValue", "update-vehicle"],
   data() {
     return {
+      vehicleRules,
       ...baseRules,
       vehicle: null,
       brands: [],

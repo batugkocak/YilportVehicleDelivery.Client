@@ -9,10 +9,9 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 30),
+            (v) => ruleMaxLength(v, driverRules.MISSION_LENGTH),
           ]"
-          :counter="30"
+          :counter="driverRules.MISSION_LENGTH"
         />
         <v-text-field
           v-model="driver.surname"
@@ -20,10 +19,10 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 30),
+
+            (v) => ruleMaxLength(v, driverRules.SURNAME_LENGTH),
           ]"
-          :counter="30"
+          :counter="driverRules.SURNAME_LENGTH"
         />
         <v-text-field
           v-model="driver.mission"
@@ -31,10 +30,9 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 30),
+            (v) => ruleMaxLength(v, driverRules.MISSION_LENGTH),
           ]"
-          :counter="30"
+          :counter="driverRules.MISSION_LENGTH"
         />
         <v-autocomplete
           v-model="driver.departmentId"
@@ -67,12 +65,14 @@ import api from "@/services/httpService";
 import { drivers, departments } from "@/common/config/apiConfig";
 
 import baseRules from "@/common/rules/rules";
+import { driverRules } from "@/common/constants/validations";
 
 export default {
   props: ["modelValue", "id"],
   emits: ["update:modelValue", "update-driver"],
   data() {
     return {
+      driverRules,
       ...baseRules,
       driver: {
         name: "",

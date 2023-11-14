@@ -10,10 +10,10 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 30),
+
+            (v) => ruleMaxLength(v, departmentRules.NAME_LENGTH),
           ]"
-          :counter="30"
+          :counter="departmentRules.NAME_LENGTH"
         />
 
         <v-row class="mt-3">
@@ -34,7 +34,7 @@
 <script>
 import api from "@/services/httpService";
 import { departments } from "@/common/config/apiConfig";
-
+import { departmentRules } from "@/common/constants/validations";
 import baseRules from "@/common/rules/rules";
 
 export default {
@@ -42,6 +42,7 @@ export default {
   emits: ["update:modelValue", "update-department", "open-snackbar"],
   data() {
     return {
+      departmentRules,
       ...baseRules,
       department: {
         name: "",

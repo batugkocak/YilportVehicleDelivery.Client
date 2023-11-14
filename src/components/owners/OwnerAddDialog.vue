@@ -9,10 +9,10 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 25),
+
+            (v) => ruleMaxLength(v, ownerRules.NAME_LENGTH),
           ]"
-          :counter="25"
+          :counter="ownerRules.NAME_LENGTH"
         />
 
         <v-row class="mt-3">
@@ -35,11 +35,13 @@
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
 import { owners } from "@/common/config/apiConfig";
+import { ownerRules } from "@/common/constants/validations";
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue", "open-snackbar", "add-owner"],
   data() {
     return {
+      ownerRules,
       ...rules,
       valid: false,
       owner: {

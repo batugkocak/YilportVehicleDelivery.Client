@@ -10,10 +10,10 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 10),
+            (v) => ruleMinLength(v, vehicleRules.PLATE_MIN_LENGTH),
+            (v) => ruleMaxLength(v, vehicleRules.PLATE_MAX_LENGTH),
           ]"
-          :counter="10"
+          :counter="vehicleRules.PLATE_MAX_LENGTH"
           :error-messages="plateExists ? ['Böyle bir plaka var.'] : []"
         />
         <v-select
@@ -71,8 +71,11 @@
           v-model="insertedVehicle.modelName"
           label="Model"
           prepend-icon="mdi-car-outline"
-          :rules="[ruleRequired, (v) => ruleMaxLength(v, 15)]"
-          :counter="15"
+          :rules="[
+            ruleRequired,
+            (v) => ruleMaxLength(v, vehicleRules.MODEL_NAME_LENGTH),
+          ]"
+          :counter="vehicleRules.MODEL_NAME_LENGTH"
         />
         <v-text-field
           v-model="insertedVehicle.modelYear"
@@ -119,8 +122,8 @@
           v-model="insertedVehicle.note"
           label="Not"
           prepend-icon="mdi-note-edit"
-          :rules="[(v) => ruleMaxLength(v, 200)]"
-          :counter="200"
+          :rules="[(v) => ruleMaxLength(v, vehicleRules.NOTE_LENGTH)]"
+          :counter="vehicleRules.NOTE_LENGTH"
         >
         </v-text-field>
         <v-row class="mt-3">
@@ -156,6 +159,8 @@ import VehicleStatus from "@/common/constants/vehicleStatus";
 import VehicleType from "@/common/constants/vehicleType";
 import OwnerAddDialog from "../owners/OwnerAddDialog.vue";
 
+import { vehicleRules } from "@/common/constants/validations";
+
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue", "open-snackbar", "add-vehicle"],
@@ -164,6 +169,7 @@ export default {
   },
   data() {
     return {
+      vehicleRules,
       ...rules,
       valid: false,
       insertedVehicle: {

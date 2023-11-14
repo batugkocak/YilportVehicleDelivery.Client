@@ -9,10 +9,10 @@
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
-            (v) => ruleMinLength(v, 4),
-            (v) => ruleMaxLength(v, 15),
+
+            (v) => ruleMaxLength(v, brandRules.NAME_LENGTH),
           ]"
-          :counter="25"
+          :counter="brandRules.NAME_LENGTH"
         />
 
         <v-row class="mt-3">
@@ -35,11 +35,13 @@
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
 import { brands } from "@/common/config/apiConfig";
+import { brandRules } from "@/common/constants/validations";
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue", "open-snackbar", "add-brand"],
   data() {
     return {
+      brandRules,
       ...rules,
       valid: false,
       brand: {

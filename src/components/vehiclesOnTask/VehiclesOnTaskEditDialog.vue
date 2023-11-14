@@ -34,16 +34,19 @@
             prepend-icon="mdi-details"
             :rules="[
               ruleRequired,
-              (v) => ruleMaxLength(v, taskDefinitionMaxLength),
+              (v) => ruleMaxLength(v, vehicleOnTaskRules.NAME_LENGTH),
             ]"
-            :counter="taskDefinitionMaxLength"
+            :counter="vehicleOnTaskRules.NAME_LENGTH"
           />
           <v-text-field
             label="Gidilen Adres"
             v-model="fetchedVehicleOnTask.address"
             prepend-icon="mdi-details"
-            :rules="[ruleRequired, (v) => ruleMaxLength(v, addressMaxLength)]"
-            :counter="addressMaxLength"
+            :rules="[
+              ruleRequired,
+              (v) => ruleMaxLength(v, vehicleOnTaskRules.ADDRESS_LENGTH),
+            ]"
+            :counter="vehicleOnTaskRules.ADDRESS_LENGTH"
           />
         </v-card>
         <v-card elevation="2" class="dialogCard">
@@ -62,6 +65,12 @@
             label="Yetkili"
             v-model="fetchedVehicleOnTask.authorizedPerson"
             prepend-icon="mdi-account-tie"
+            :rules="[
+              ruleRequired,
+              (v) =>
+                ruleMaxLength(v, vehicleOnTaskRules.AUTHORIZED_PERSON_LENGTH),
+            ]"
+            :counter="vehicleOnTaskRules.AUTHORIZED_PERSON_LENGTH"
           />
         </v-card>
         <v-row class="mt-3">
@@ -83,11 +92,13 @@ import {
   departments,
 } from "@/common/config/apiConfig";
 import baseRules from "@/common/rules/rules";
+import { vehicleOnTaskRules } from "@/common/constants/validations";
 export default {
   props: ["modelValue", "id"],
   emits: ["update:modelValue", "open-snackbar"],
   data() {
     return {
+      vehicleOnTaskRules,
       valid: false,
 
       fetchedVehicleOnTask: null,
