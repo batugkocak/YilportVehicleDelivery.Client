@@ -2,13 +2,7 @@
   <v-container class="login-container" background-color="primary">
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
-        <v-img
-          src="@/assets/YPH_Mainlogo_titled.png"
-          class="login-logo"
-        ></v-img>
-
-        <p>-- Soldaki resim geçici --</p>
-
+        <v-img src="@/assets/YPH_Mainlogo_titled.png" class="mb-8" />
         <v-form @submit.prevent="login">
           <v-text-field
             v-model="user.username"
@@ -28,9 +22,14 @@
           ></v-text-field>
           <v-spacer />
 
-          <v-btn prepend-icon="mdi-key" block class="login-button" type="submit"
-            >Giriş Yap</v-btn
+          <v-btn
+            prepend-icon="mdi-key"
+            block
+            class="login-button"
+            type="submit"
           >
+            Giriş Yap
+          </v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -67,11 +66,9 @@ export default {
           if (result.data.token) {
             localStorage.setItem("jwt", result.data.token);
             this.$router.push("/vehicles");
-            console.log(result);
           }
         })
         .catch((error) => {
-          console.log(error);
           this.showSnackbar(false, error.response.data);
         });
     },

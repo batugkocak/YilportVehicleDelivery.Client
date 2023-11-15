@@ -42,6 +42,9 @@ function getUserName(token) {
 
 function getRoles(token) {
   try {
+    if (token === null) {
+      return;
+    }
     const decoded = jwtDecode(token);
 
     if (decoded && decoded.roles) {
