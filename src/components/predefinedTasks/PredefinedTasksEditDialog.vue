@@ -34,7 +34,7 @@
         <v-text-field
           v-model="predefinedTask.address"
           label="Adres"
-          prepend-icon="mdi-card-text"
+          prepend-icon="mdi-map-marker"
           :rules="[
             ruleRequired,
             (v) => ruleMaxLength(v, vehicleOnTaskRules.ADDRESS_LENGTH),
@@ -66,7 +66,7 @@ import baseRules from "@/common/rules/rules";
 
 export default {
   props: ["modelValue", "id"],
-  emits: ["update:modelValue", "update-task"],
+  emits: ["update:modelValue", "update-task", "open-snackbar"],
   data() {
     return {
       vehicleOnTaskRules,
@@ -87,6 +87,8 @@ export default {
         .then((res) => {
           this.isSuccess = true;
           this.snackBarMessage = res.data;
+          this.$emit("update-task");
+          this.closeDialog();
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -94,8 +96,6 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$emit("update-task");
-          this.closeDialog();
         });
     },
     closeDialog() {
@@ -105,11 +105,17 @@ export default {
       api
         .get(predefinedTasks.byId(this.id))
         .then((response) => {
-          console.log(response.data.data);
           this.predefinedTask = response.data.data;
+          this.isSuccess = true;
+          this.snackBarMessage = response.data.message;
+        })
+        .catch((err) => {
+          this.snackBarMessage = err.response.data;
+          this.isSuccess = false;
         })
         .finally(() => {
           this.tempName = this.predefinedTask.name;
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },
     async getDepartments() {

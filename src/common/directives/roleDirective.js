@@ -5,7 +5,7 @@ export const RoleDirective = (el, binding, vnode) => {
   const userRole = getRoles(localStorage.getItem("jwt"));
   const requiredRole = binding.value;
 
-  if (userRole !== requiredRole && userRole !== "admin") {
+  if (userRole !== "admin" && userRole !== requiredRole) {
     el.style.opacity = 0.5;
     el.style.pointerEvents = "none";
   }

@@ -199,21 +199,13 @@ export default {
       this.$emit("update:modelValue", false);
     },
     async postVehicle() {
+      this.trimInserts();
       await api
         .post(vehicles.url, this.insertedVehicle)
         .then((res) => {
-          console.log(res);
           this.isSuccess = true;
           this.snackBarMessage = res.data;
-        })
-        .catch((err) => {
-          this.isSuccess = false;
-          this.snackBarMessage = err.response.data;
-        })
-        .finally(() => {
-          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
           this.$emit("add-vehicle");
-          this.closeDialog();
           this.insertedVehicle = {
             plate: "",
             type: "",
@@ -227,6 +219,14 @@ export default {
             status: "",
             note: "",
           };
+          this.closeDialog();
+        })
+        .catch((err) => {
+          this.isSuccess = false;
+          this.snackBarMessage = err.response.data;
+        })
+        .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },
     trimInserts() {
@@ -247,7 +247,8 @@ export default {
           this.snackBarMessage = res.data.message;
         })
         .catch((err) => {
-          console.log(err);
+          this.snackBarMessage = err.response.data;
+          this.isSuccess = false;
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);

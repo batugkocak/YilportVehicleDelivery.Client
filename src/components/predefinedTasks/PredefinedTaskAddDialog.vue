@@ -28,7 +28,7 @@
         <v-text-field
           v-model="predefinedTask.address"
           label="Adres"
-          prepend-icon="mdi-card-text"
+          prepend-icon="mdi-map-marker"
           :rules="[
             ruleRequired,
             (v) => ruleMaxLength(v, vehicleOnTaskRules.ADDRESS_LENGTH),
@@ -82,9 +82,10 @@ export default {
       await api
         .post(predefinedTasks.url, this.predefinedTask)
         .then((res) => {
-          console.log(res);
           this.isSuccess = true;
           this.snackBarMessage = res.data;
+          this.$emit("add-task");
+          this.closeDialog();
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -92,8 +93,6 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$emit("add-task");
-          this.closeDialog();
           this.predefinedTask = {
             name: "",
             departmentId: null,

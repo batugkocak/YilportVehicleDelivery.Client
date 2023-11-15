@@ -5,7 +5,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green" @click="dialog = false">Vazgeç</v-btn>
-        <v-btn color="red" @click="deleteOwner">Evet, sil</v-btn>
+        <v-btn color="red" @click="deleteDriver">Evet, sil</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -16,28 +16,24 @@ import api from "@/services/httpService";
 import { drivers } from "@/common/config/apiConfig";
 export default {
   props: ["modelValue", "id"],
-  emits: ["update:modelValue", "open-snackbar", "delete-owner"],
+  emits: ["update:modelValue", "open-snackbar", "delete-driver"],
 
   methods: {
-    async deleteOwner() {
-      console.log(this.id);
+    async deleteDriver() {
       await api
         .post(drivers.delete(this.id))
         .then((res) => {
-          console.log(res);
           this.isSuccess = true;
           this.snackBarMessage = res.data;
           this.$emit("delete-driver");
+          this.closeDialog();
         })
         .catch((err) => {
-          console.log(err);
           this.isSuccess = false;
           this.snackBarMessage = err.response.data;
         })
         .finally(() => {
-          console.log("Finally");
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.closeDialog();
         });
     },
     closeDialog() {

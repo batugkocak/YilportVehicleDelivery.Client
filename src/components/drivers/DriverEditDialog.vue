@@ -6,7 +6,7 @@
         <v-text-field
           v-model="driver.name"
           label="İsim"
-          prepend-icon="mdi-card-text"
+          prepend-icon="mdi-account"
           :rules="[
             ruleRequired,
             (v) => ruleMaxLength(v, driverRules.MISSION_LENGTH),
@@ -16,7 +16,7 @@
         <v-text-field
           v-model="driver.surname"
           label="Soyisim"
-          prepend-icon="mdi-card-text"
+          prepend-icon="mdi-account-outline"
           :rules="[
             ruleRequired,
 
@@ -91,6 +91,8 @@ export default {
         .then((res) => {
           this.isSuccess = true;
           this.snackBarMessage = res.data;
+          this.$emit("update-driver");
+          this.closeDialog();
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -98,8 +100,6 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$emit("update-driver");
-          this.closeDialog();
         });
     },
     closeDialog() {

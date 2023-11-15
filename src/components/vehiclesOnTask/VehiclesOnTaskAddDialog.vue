@@ -16,7 +16,7 @@
             no-data-text="Plakalar getiriliyor, lütfen bekleyin..."
             :rules="[ruleRequired]"
           />
-          <v-select
+          <v-autocomplete
             label="Sürücü"
             v-model="newVehicleOnTask.driverId"
             :items="drivers"
@@ -45,9 +45,10 @@
           <v-text-field
             label="Görevin Niteliği"
             v-model="newVehicleOnTask.taskDefinition"
-            prepend-icon="mdi-details"
+            prepend-icon="mdi-format-title"
             :rules="[
               ruleRequired,
+              (v) => ruleMinLength(v, vehicleOnTaskRules.NAME_MIN_LENGTH),
               (v) => ruleMaxLength(v, vehicleOnTaskRules.NAME_MAX_LENGTH),
             ]"
             :counter="vehicleOnTaskRules.NAME_MAX_LENGTH"
@@ -55,7 +56,7 @@
           <v-text-field
             label="Gidilen Adres"
             v-model="newVehicleOnTask.address"
-            prepend-icon="mdi-details"
+            prepend-icon="mdi-map-marker"
             :rules="[
               ruleRequired,
               (v) => ruleMaxLength(v, vehicleOnTaskRules.ADDRESS_LENGTH),
@@ -81,7 +82,6 @@
             v-model="newVehicleOnTask.authorizedPerson"
             prepend-icon="mdi-account-tie"
             :rules="[
-              ruleRequired,
               (v) =>
                 ruleMaxLength(v, vehicleOnTaskRules.AUTHORIZED_PERSON_LENGTH),
             ]"
@@ -146,6 +146,32 @@ export default {
     };
   },
   methods: {
+    async addTaskToVehicle() {
+      await api
+        .post(vehiclesOnTask.add, this.newVehicleOnTask)
+        .then((res) => {
+          this.snackBarMessage = res.data;
+          this.isSuccess = true;
+          this.newVehicleOnTask = {
+            vehicleId: null,
+            driverId: null,
+            departmentId: null,
+            authorizedPerson: "",
+            address: "",
+            taskDefinition: "",
+          };
+          this.chosenPredefinedTaskId = null;
+          this.closeDialog();
+          this.$emit("add-task");
+        })
+        .catch((err) => {
+          this.snackBarMessage = err.response.data;
+          this.isSuccess = false;
+        })
+        .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+        });
+    },
     closeDialog() {
       this.$emit("update:modelValue", false);
     },
@@ -159,13 +185,14 @@ export default {
           this.vehicles = response.data.data;
           this.snackBarMessage = response.data.message;
           this.isSuccess = response.data.success;
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         })
         .catch(() => {
-          this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
           this.isSuccess = false;
+          this.snackBarMessage = "Araca görev tanımlanamadı.";
         })
         .finally(() => {
-          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
+          this.snackBarMessage = "Bilinmeyen hata meydana geldi.";
         });
     },
     async getDrivers() {
@@ -229,33 +256,6 @@ export default {
         this.newVehicleOnTask.address = result.data.data.address;
         this.newVehicleOnTask.taskDefinition = result.data.data.name;
       });
-    },
-    async addTaskToVehicle() {
-      await api
-        .post(vehiclesOnTask.add, this.newVehicleOnTask)
-        .then((res) => {
-          this.snackBarMessage = res.data;
-          this.isSuccess = true;
-          this.newVehicleOnTask = {
-            vehicleId: null,
-            driverId: null,
-            departmentId: null,
-            authorizedPerson: "",
-            address: "",
-            taskDefinition: "",
-          };
-          this.chosenPredefinedTaskId = null;
-          this.closeDialog();
-          this.$emit("add-task");
-        })
-        .catch((err) => {
-          console.log(err);
-          this.snackBarMessage = err.response.data;
-          this.isSuccess = false;
-        })
-        .finally(() => {
-          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-        });
     },
   },
 

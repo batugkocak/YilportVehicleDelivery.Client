@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" class="dialog" v-if="vehicle" max-width="600">
     <v-card class="pa-5 mt-2">
       <v-card-text> Düzenle: {{ tempPlate }} </v-card-text>
-      <v-form @submit.prevent="updateVehicle">
+      <v-form @submit.prevent="updateVehicle" v-model="valid">
         <v-text-field
           v-model="vehicle.plate"
           label="Plaka"
@@ -123,7 +123,9 @@
           <v-btn color="red" @click="closeDialog" class="ml-5 mr-5">
             Vazgeç
           </v-btn>
-          <v-btn type="submit" color="success"> Düzenle </v-btn>
+          <v-btn type="submit" color="success" :disabled="!valid">
+            Düzenle
+          </v-btn>
         </v-row>
       </v-form>
     </v-card>
@@ -153,6 +155,7 @@ export default {
   emits: ["update:modelValue", "update-vehicle"],
   data() {
     return {
+      valid: false,
       vehicleRules,
       ...baseRules,
       vehicle: null,
@@ -170,6 +173,8 @@ export default {
           console.log(res);
           this.isSuccess = true;
           this.snackBarMessage = res.data;
+          this.$emit("update-vehicle");
+          this.closeDialog();
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -177,8 +182,6 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$emit("update-vehicle");
-          this.closeDialog();
         });
     },
     closeDialog() {

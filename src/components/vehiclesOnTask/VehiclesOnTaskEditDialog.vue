@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px" v-if="fetchedVehicleOnTask">
-    <v-card class="dialogCard" prepend-icon="mdi-car" title="Test" hover>
+    <v-card class="dialogCard" hover>
       <v-form v-model="valid" @submit.prevent="editTaskOfVehicle">
         <v-card elevation="2" class="dialogCard">
           <v-card-title>Sürücü</v-card-title>
@@ -15,7 +15,7 @@
             no-data-text="Plakalar getiriliyor, lütfen bekleyin..."
             :rules="[ruleRequired]"
           /> -->
-          <v-select
+          <v-autocomplete
             label="Sürücü"
             v-model="fetchedVehicleOnTask.driverId"
             :items="drivers"
@@ -34,9 +34,10 @@
             prepend-icon="mdi-details"
             :rules="[
               ruleRequired,
-              (v) => ruleMaxLength(v, vehicleOnTaskRules.NAME_LENGTH),
+              (v) => ruleMinLength(v, vehicleOnTaskRules.NAME_MIN_LENGTH),
+              (v) => ruleMaxLength(v, vehicleOnTaskRules.NAME_MAX_LENGTH),
             ]"
-            :counter="vehicleOnTaskRules.NAME_LENGTH"
+            :counter="vehicleOnTaskRules.NAME_MAX_LENGTH"
           />
           <v-text-field
             label="Gidilen Adres"
@@ -66,7 +67,6 @@
             v-model="fetchedVehicleOnTask.authorizedPerson"
             prepend-icon="mdi-account-tie"
             :rules="[
-              ruleRequired,
               (v) =>
                 ruleMaxLength(v, vehicleOnTaskRules.AUTHORIZED_PERSON_LENGTH),
             ]"
@@ -132,6 +132,7 @@ export default {
         .then((response) => {
           this.snackBarMessage = response.data;
           this.isSuccess = true;
+          this.$emit("update-task");
           this.closeDialog();
         })
         .catch(() => {
@@ -139,7 +140,6 @@ export default {
           this.isSuccess = false;
         })
         .finally(() => {
-          this.$emit("update-task");
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },

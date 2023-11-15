@@ -40,7 +40,7 @@
           <v-icon icon="mdi-account-tie" />
           <div>
             <v-card-title> Yetkili Kişi </v-card-title>
-            <v-card-text>{{ vehicleOnTask.authorizedPerson }}</v-card-text>
+            <v-card-text>{{ authorizedPersonComputed }}</v-card-text>
           </div>
         </div>
 
@@ -87,7 +87,6 @@ export default {
       this.$emit("update:modelValue", false);
     },
     async getVehicle() {
-      console.log(this.id);
       await api
         .get(vehiclesOnTask.byId(this.id))
         .then((response) => {
@@ -112,6 +111,10 @@ export default {
       set() {
         this.closeDialog();
       },
+    },
+    authorizedPersonComputed() {
+      if (this.vehicleOnTask.authorizedPerson === "") return "-";
+      else return this.vehicleOnTask.authorizedPerson;
     },
   },
   watch: {
