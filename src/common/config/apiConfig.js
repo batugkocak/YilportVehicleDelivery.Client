@@ -63,6 +63,9 @@ export const auth = {
   login: base + "/Auth/login",
   register: base + "/Auth/register",
 };
+export const users = {
+  forTable: base + "/Users/ForTable",
+};
 export const brands = {
   url: base + "/Brands",
   selectBox: base + "/Brands/ForSelectBox",

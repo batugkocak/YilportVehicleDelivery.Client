@@ -27,7 +27,7 @@
             placeholder="Plaka, Departman, ..."
           ></v-text-field>
         </v-responsive>
-        <v-btn color="primary" @click="openAddDialog" v-role="`user`">
+        <v-btn color="primary" @click="openAddDialog" v-role="[`user`]">
           Araç Görevlendir
         </v-btn>
       </v-toolbar>
@@ -47,7 +47,7 @@
         color="green"
         icon="mdi-check"
         size="x-small"
-        v-role="`user`"
+        v-role="[`user`]"
         @click="openFinishDialog(item.id)"
       ></v-btn>
       <v-btn
@@ -55,7 +55,7 @@
         color="primary"
         icon="mdi-pencil"
         size="x-small"
-        v-role="`user`"
+        v-role="[`user`]"
         @click="openEditDialog(item.id)"
       ></v-btn>
       <v-btn
@@ -63,7 +63,7 @@
         color="blue"
         icon="mdi-delete"
         size="x-small"
-        v-role="`user`"
+        v-role="[`user`]"
         @click="openDeleteDialog(item.id)"
       ></v-btn>
     </template>

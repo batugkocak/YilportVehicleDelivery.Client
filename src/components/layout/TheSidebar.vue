@@ -16,10 +16,10 @@
     <v-list density="compact" nav>
       <v-list-item
         prepend-icon="mdi-shield-crown"
-        title="Admin"
+        title="Yönetim"
         to="/admin"
         color="primary"
-        v-role="`admin`"
+        v-role="[`admin`, `superuser`]"
       />
 
       <v-list-item

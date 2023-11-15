@@ -92,9 +92,11 @@ router.beforeEach(async (to, from, next) => {
     next({
       name: "Login",
     });
-  } else if (!userRoles.includes("admin") && to.name === "Admin") {
-    next({ name: "Vehicles" });
-  } else next();
+  }
+  // else if (!userRoles.includes("admin") && to.name === "Admin") {
+  //   next({ name: "Vehicles" });
+  // }
+  else next();
 });
 
 export default router;

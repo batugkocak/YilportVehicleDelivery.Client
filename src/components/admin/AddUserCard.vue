@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-5 mt-2">
+  <v-card class="pa-5 mt-2" title="Kullanıcı Ekle" elevation="0">
     <v-form @submit.prevent="postDriver" v-model="valid">
       <v-text-field
         v-model="newUser.firstName"
@@ -52,7 +52,7 @@
         item-title="name"
         item-value="value"
         density="compact"
-        label="Kullanıcı Rolü"
+        label="Kullanıcı Tipi"
         v-model="newUser.roleId"
       ></v-select>
       <v-row class="mt-3">
@@ -85,16 +85,16 @@ export default {
         username: "",
         firstName: "",
         lastName: "",
-        roleId: 1,
+        roleId: 3,
         password: "",
       },
       roles: [
         {
-          name: "user",
-          value: 1,
+          name: "Sürücü",
+          value: 3,
         },
         {
-          name: "superuser",
+          name: "İdari İşler",
           value: 2,
         },
       ],
