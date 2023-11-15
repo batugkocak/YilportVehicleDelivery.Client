@@ -88,11 +88,9 @@ router.beforeEach(async (to, from, next) => {
     next({ name: "Login" });
     localStorage.removeItem("jwt");
   } else if (to.name !== "Login" && isTokenExpired(token)) {
+    localStorage.setItem("isExpired", true);
     next({
       name: "Login",
-      query: {
-        isExpired: true,
-      },
     });
   } else if (!userRoles.includes("admin") && to.name === "Admin") {
     next({ name: "Vehicles" });

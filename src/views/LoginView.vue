@@ -66,6 +66,7 @@ export default {
           if (result.data.token) {
             localStorage.setItem("jwt", result.data.token);
             this.$router.push("/vehicles");
+            localStorage.removeItem("isExpired");
           }
         })
         .catch((error) => {
@@ -82,7 +83,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.query.isExpired === "true") {
+    if (localStorage.getItem("isExpired") === "true") {
       this.showSnackbar(
         false,
         "Oturum süreniz doldu. Lütfen tekrar giriş yapın.",
