@@ -1,17 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import VehiclesView from "@/views/VehiclesView.vue";
-import VehiclesOnTaskView from "@/views/VehiclesOnTaskView.vue";
-import VehiclesOnTaskArchiveView from "@/views/VehiclesOnTaskArchiveView.vue";
+
 import LoginView from "@/views/LoginView.vue";
+import AdminView from "@/views/AdminView.vue";
 
 //Lazy Load:
+const VehiclesOnTaskView = () => import("@/views/VehiclesOnTaskView.vue");
+
+const VehiclesOnTaskArchiveView = () =>
+  import("@/views/VehiclesOnTaskArchiveView.vue");
 const BrandsView = () => import("@/views/BrandsView.vue");
+
 const DepartmentsView = () => import("@/views/DepartmentsView.vue");
 const OwnersView = () => import("@/views/OwnersView.vue");
 const DriversView = () => import("@/views/DriversView.vue");
 const PredefinedTasksView = () => import("@/views/PredefinedTasksView.vue");
-const AdminView = () => import("@/views/AdminView.vue");
 
 import { isTokenExpired, getRoles } from "@/services/authService";
 
@@ -87,16 +91,20 @@ router.beforeEach(async (to, from, next) => {
   if (to.name !== "Login" && !token) {
     next({ name: "Login" });
     localStorage.removeItem("jwt");
+  } else if (to.name === "Login" && !isTokenExpired(token)) {
+    next({ name: "Vehicles" });
   } else if (to.name !== "Login" && isTokenExpired(token)) {
     localStorage.setItem("isExpired", true);
     next({
       name: "Login",
     });
-  }
-  // else if (!userRoles.includes("admin") && to.name === "Admin") {
-  //   next({ name: "Vehicles" });
-  // }
-  else next();
+  } else if (
+    !userRoles.includes("admin") &&
+    !userRoles.includes("superuser") &&
+    to.name === "Admin"
+  ) {
+    next({ name: "Vehicles" });
+  } else next();
 });
 
 export default router;

@@ -1,6 +1,7 @@
 <template>
   <v-card class="pa-5 mt-2" title="Kullanıcı Ekle" elevation="0">
-    <v-form @submit.prevent="postDriver" v-model="valid">
+    <v-form @submit.prevent="postUser" v-model="valid" ref="form">
+      <p>{{ valid }}</p>
       <v-text-field
         v-model="newUser.firstName"
         label="Ad"
@@ -57,7 +58,7 @@
       ></v-select>
       <v-row class="mt-3">
         <v-spacer />
-        <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
+        <v-btn color="red" @click="console.log(valid)"> test </v-btn>
         <v-btn
           type="submit"
           color="success"
@@ -71,12 +72,13 @@
 </template>
 
 <script>
+import { auth } from "@/common/config/apiConfig";
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
 
 export default {
   props: ["modelValue"],
-  emits: ["update:modelValue", "open-snackbar"],
+  emits: ["update:modelValue", "open-snackbar", "add-user"],
   data() {
     return {
       ...rules,
@@ -109,11 +111,18 @@ export default {
     },
     async postUser() {
       await api
-        .post("", this.newUser)
-        .then((res) => {
-          console.log(res);
+        .post(auth.register, this.newUser)
+        .then(() => {
           this.isSuccess = true;
-          this.snackBarMessage = res.data;
+          this.snackBarMessage = "Başarıyla kayıt edildi!";
+          this.$emit("add-user");
+          this.newUser = {
+            username: "",
+            firstName: "",
+            lastName: "",
+            roleId: 3,
+            password: "",
+          };
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -121,20 +130,14 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$emit("add-user");
-          this.closeDialog();
-          this.driver = {
-            name: "",
-          };
+          this.$refs.form.reset();
+          this.newUser.roleId = 3;
         });
     },
     trimInserts() {
       this.newUser.firstName = this.newUser.firstName.trim();
       this.newUser.lastName = this.newUser.lastName.trim();
       this.newUser.username = this.newUser.username.trim();
-    },
-    postDriver() {
-      console.log(this.newUser);
     },
   },
   computed: {

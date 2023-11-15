@@ -6,6 +6,7 @@
       :items="users"
       height="460px"
       density="compact"
+      no-data-text="Kullanıcı bulunamadı"
     >
       <template v-slot:bottom></template>
       <template v-slot:item.actions="{ item }">
@@ -27,7 +28,7 @@ import { users } from "@/common/config/apiConfig";
 
 export default {
   props: ["modelValue"],
-  emits: ["update:modelValue", "open-snackbar"],
+  emits: ["update:modelValue", "open-snackbar", "toggle-delete"],
   data() {
     return {
       users: [],
@@ -93,7 +94,6 @@ export default {
     },
     async getUsers() {
       await api.get(users.forTable).then((respond) => {
-        console.log(respond);
         this.users = respond.data.data;
       });
     },
@@ -101,6 +101,9 @@ export default {
       this.newUser.firstName = this.newUser.firstName.trim();
       this.newUser.lastName = this.newUser.lastName.trim();
       this.newUser.username = this.newUser.username.trim();
+    },
+    openDeleteDialog(id) {
+      this.$emit("toggle-delete", id);
     },
   },
   computed: {

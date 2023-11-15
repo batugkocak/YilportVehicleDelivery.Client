@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <the-sidebar v-if="$route.name !== 'Login'" @logout="logoutDialog" />
+    <the-sidebar v-if="$route.path !== `/login`" @logout="logoutDialog" />
+
     <v-main>
       <div class="ma-5">
         <router-view></router-view>

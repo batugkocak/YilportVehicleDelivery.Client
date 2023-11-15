@@ -15,8 +15,8 @@ export const RoleDirective = (el, binding, vnode) => {
 
   const requiredRoles = binding.value;
 
-  console.log("User:", userRole);
-  console.log("Required: ", requiredRoles);
+  // console.log("User:", userRole);
+  // console.log("Required: ", requiredRoles);
 
   // Condition 1: If user's role is admin, allow access to everything
   if (userRole === "admin") {

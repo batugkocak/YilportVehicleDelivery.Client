@@ -62,6 +62,7 @@ export const drivers = {
 export const auth = {
   login: base + "/Auth/login",
   register: base + "/Auth/register",
+  delete: (driverId) => base + `/Auth/${driverId}/Delete/`,
 };
 export const users = {
   forTable: base + "/Users/ForTable",

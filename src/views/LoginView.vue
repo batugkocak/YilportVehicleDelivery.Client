@@ -65,7 +65,7 @@ export default {
         .then((result) => {
           if (result.data.token) {
             localStorage.setItem("jwt", result.data.token);
-            this.$router.push("/vehicles");
+            this.$router.push("/admin");
             localStorage.removeItem("isExpired");
           }
         })
@@ -118,7 +118,7 @@ export default {
   width: 70%;
   height: 100%;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=3270&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    url("@/assets/login_background.avif");
   background-size: cover;
   background-position: center;
 }

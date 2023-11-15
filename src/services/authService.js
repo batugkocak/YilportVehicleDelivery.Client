@@ -2,10 +2,13 @@ import { jwtDecode } from "jwt-decode";
 
 function isTokenExpired(token) {
   try {
-    const decoded = jwtDecode(token);
-    if (decoded && decoded.exp) {
-      const currentTime = Math.floor(Date.now() / 1000);
-      return decoded.exp < currentTime;
+    if (token !== null) {
+      const decoded = jwtDecode(token);
+
+      if (decoded && decoded.exp) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        return decoded.exp < currentTime;
+      }
     }
   } catch (error) {
     console.error("Error decoding JWT:", error);
