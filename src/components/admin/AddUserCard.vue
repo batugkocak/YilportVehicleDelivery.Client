@@ -1,17 +1,16 @@
 <template>
   <v-card class="pa-5 mt-2" title="Kullanıcı Ekle" elevation="0">
     <v-form @submit.prevent="postUser" v-model="valid" ref="form">
-      <p>{{ valid }}</p>
       <v-text-field
         v-model="newUser.firstName"
         label="Ad"
         prepend-inner-icon="mdi-account-outline"
         :rules="[
           ruleRequired,
-          (v) => ruleMinLength(v, 4),
-          (v) => ruleMaxLength(v, 30),
+          (v) => ruleMinLength(v, userRules.NAME_MIN_LENGTH),
+          (v) => ruleMaxLength(v, userRules.NAME_MAX_LENGTH),
         ]"
-        :counter="30"
+        :counter="userRules.NAME_MAX_LENGTH"
       />
       <v-text-field
         v-model="newUser.lastName"
@@ -19,10 +18,10 @@
         prepend-inner-icon="mdi-account"
         :rules="[
           ruleRequired,
-          (v) => ruleMinLength(v, 4),
-          (v) => ruleMaxLength(v, 30),
+          (v) => ruleMinLength(v, userRules.SURNAME_MIN_LENGTH),
+          (v) => ruleMaxLength(v, userRules.SURNAME_MAX_LENGTH),
         ]"
-        :counter="30"
+        :counter="userRules.SURNAME_MAX_LENGTH"
       />
       <v-text-field
         v-model="newUser.username"
@@ -30,10 +29,10 @@
         prepend-inner-icon="mdi-account-circle"
         :rules="[
           ruleRequired,
-          (v) => ruleMinLength(v, 4),
-          (v) => ruleMaxLength(v, 30),
+          (v) => ruleMinLength(v, userRules.USERNAME_MIN_LENGTH),
+          (v) => ruleMaxLength(v, userRules.USERNAME_MAX_LENGTH),
         ]"
-        :counter="30"
+        :counter="userRules.USERNAME_MAX_LENGTH"
       />
       <v-text-field
         v-model="newUser.password"
@@ -42,10 +41,10 @@
         prepend-inner-icon="mdi-key"
         :rules="[
           ruleRequired,
-          (v) => ruleMinLength(v, 4),
-          (v) => ruleMaxLength(v, 30),
+          (v) => ruleMinLength(v, userRules.PASSWORD_MIN_LENGTH),
+          (v) => ruleMaxLength(v, userRules.PASSWORD_MAX_LENGTH),
         ]"
-        :counter="30"
+        :counter="userRules.PASSWORD_MAX_LENGTH"
       />
 
       <v-select
@@ -58,7 +57,7 @@
       ></v-select>
       <v-row class="mt-3">
         <v-spacer />
-        <v-btn color="red" @click="console.log(valid)"> test </v-btn>
+        <v-btn color="red" @click="clearForm"> Temizle </v-btn>
         <v-btn
           type="submit"
           color="success"
@@ -75,12 +74,14 @@
 import { auth } from "@/common/config/apiConfig";
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
+import { userRules } from "@/common/constants/validations.js";
 
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue", "open-snackbar", "add-user"],
   data() {
     return {
+      userRules,
       ...rules,
       valid: false,
       newUser: {
@@ -110,6 +111,7 @@ export default {
       this.$emit("update:modelValue", false);
     },
     async postUser() {
+      this.trimInserts();
       await api
         .post(auth.register, this.newUser)
         .then(() => {
@@ -133,6 +135,10 @@ export default {
           this.$refs.form.reset();
           this.newUser.roleId = 3;
         });
+    },
+    clearForm() {
+      this.$refs.form.reset();
+      this.newUser.roleId = 3;
     },
     trimInserts() {
       this.newUser.firstName = this.newUser.firstName.trim();

@@ -3,22 +3,33 @@
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
         <v-img src="@/assets/YPH_Mainlogo_titled.png" class="mb-8" />
-        <v-form @submit.prevent="login">
+        <v-form @submit.prevent="login" v-model="valid">
           <v-text-field
             v-model="user.username"
             label="Kullanıcı Adı"
             bg-color="white"
             variant="solo-filled"
-            :rules="[ruleRequired, (v) => ruleMaxLength(v, 10)]"
+            class="mb-2"
+            :rules="[
+              ruleRequired,
+              (v) => ruleMaxLength(v, userRules.USERNAME_MAX_LENGTH),
+              (v) => ruleMinLength(v, userRules.USERNAME_MIN_LENGTH),
+            ]"
           ></v-text-field>
 
           <v-text-field
             v-model="user.password"
-            label="Şifre"
+            elevation="10"
             bg-color="white"
+            label="Şifre"
             variant="solo-filled"
             type="password"
-            :rules="[ruleRequired]"
+            class="mb-2"
+            :rules="[
+              ruleRequired,
+              (v) => ruleMaxLength(v, userRules.PASSWORD_MAX_LENGTH),
+              (v) => ruleMinLength(v, userRules.PASSWORD_MIN_LENGTH),
+            ]"
           ></v-text-field>
           <v-spacer />
 
@@ -27,6 +38,7 @@
             block
             class="login-button"
             type="submit"
+            :admdisabled="!valid"
           >
             Giriş Yap
           </v-btn>
@@ -41,10 +53,13 @@
 import api from "@/services/httpService";
 import { auth } from "@/common/config/apiConfig";
 import baseRules from "@/common/rules/rules";
+import { userRules } from "@/common/constants/validations";
 
 export default {
   data() {
     return {
+      userRules,
+      valid: false,
       user: {
         username: "",
         password: "",
@@ -53,7 +68,7 @@ export default {
     };
   },
   computed: {
-    fixedUsername() {
+    fixedUsername() { 
       return this.username.trim();
     },
   },
@@ -94,10 +109,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login-container {
+  width: 35%;
   height: 100vh;
-  width: 30%;
   position: fixed;
   right: 0;
   top: 0;
@@ -112,14 +127,18 @@ export default {
 }
 
 .background-wallpaper {
+  width: 65%;
   position: fixed;
   top: 0;
   left: 0;
-  width: 70%;
   height: 100%;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("@/assets/login_background.avif");
   background-size: cover;
   background-position: center;
+}
+
+.v-messages__message {
+  color: lightblue;
 }
 </style>

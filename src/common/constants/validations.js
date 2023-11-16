@@ -12,6 +12,22 @@ export const vehicleOnTaskRules = Object.freeze({
   AUTHORIZED_PERSON_LENGTH: 30,
 });
 
+export const userRules = Object.freeze({
+  NAME_MIN_LENGTH: 3,
+  NAME_MAX_LENGTH: 15,
+
+  SURNAME_MIN_LENGTH: 4,
+  SURNAME_MAX_LENGTH: 15,
+
+  USERNAME_MIN_LENGTH: 5,
+  USERNAME_MAX_LENGTH: 20,
+
+  PASSWORD_MIN_LENGTH: 4,
+  PASSWORD_MAX_LENGTH: 20,
+
+  AUTHORIZED_PERSON_LENGTH: 30,
+});
+
 export const driverRules = Object.freeze({
   NAME_LENGTH: 20,
   SURNAME_LENGTH: 15,
