@@ -19,6 +19,7 @@
     v-model="editDialog"
     :id="selectedVehicleId"
     @update-vehicle="updateTable"
+    @open-snackbar="openSnackbar"
   />
   <vehicle-delete-dialog
     v-model="deleteDialog"

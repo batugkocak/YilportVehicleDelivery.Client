@@ -153,7 +153,7 @@ import VehicleType from "@/common/constants/vehicleType";
 
 export default {
   props: ["modelValue", "id", ""],
-  emits: ["update:modelValue", "update-vehicle"],
+  emits: ["update:modelValue", "update-vehicle", "open-snackbar"],
   data() {
     return {
       valid: false,
