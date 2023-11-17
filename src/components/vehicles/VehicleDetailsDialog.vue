@@ -11,7 +11,7 @@
       <v-chip :color="chipColor">
         {{ vehicle.status }}
       </v-chip>
-      <v-card elevation="1" class="pa-5 mt-2">
+      <v-card elevation="1" class="pa-5 mt-2 scroll">
         <div :class="cardContentStyling">
           <v-icon icon="mdi-car-estate" />
           <div>
@@ -147,3 +147,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.scroll {
+   overflow-y: scroll
+}
+</style>
