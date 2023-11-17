@@ -6,9 +6,9 @@ export const vehiclesOnTask = {
   delete: (vehicleOnTaskId) =>
     base + `/VehicleOnTasks/Delete/${vehicleOnTaskId}`,
 
-  url: base + "/VehicleOnTasks/ForNormalTable",
-  archiveUrl: base + "/VehicleOnTasks/ForArchiveTable",
-  byId: (vehicleOnTaskId) =>
+  forNormalTable: base + "/VehicleOnTasks/ForNormalTable",
+  forArchiveTable: base + "/VehicleOnTasks/ForArchiveTable",
+  byIdDetails: (vehicleOnTaskId) =>
     base + `/VehicleOnTasks/Details/${vehicleOnTaskId}`,
 
   archiveDetailsUrl: "https://localhost:7060/VehicleOnTasks/Details",
@@ -23,7 +23,7 @@ export const vehiclesOnTask = {
 
 export const vehicles = {
   url: base + "/Vehicles",
-  detailsForTable: base + "/Vehicles/DetailsForTable",
+  forTable: base + "/Vehicles/DetailsForTable",
   update: base + "/Vehicles/Update",
   selectBox: base + "/Vehicles/ForSelectBox",
   checkPlate: (plate) => base + `/Vehicles/CheckPlate?plate=${plate}`,
@@ -33,7 +33,6 @@ export const vehicles = {
 };
 export const predefinedTasks = {
   url: base + "/PredefinedTasks",
-  details: base + "/PredefinedTasks/Details",
   forTable: base + "/PredefinedTasks/ForTable",
   update: base + "/PredefinedTasks/Update",
   selectBox: base + "/PredefinedTasks/ForSelectBox",
@@ -51,7 +50,6 @@ export const owners = {
 
 export const drivers = {
   url: base + "/Drivers",
-  details: base + "/Drivers/Details",
   selectBox: base + "/Drivers/ForSelectBox",
   forTable: base + "/Drivers/ForTable",
   update: base + "/Drivers/Update",
@@ -84,7 +82,3 @@ export const departments = {
   delete: (departmentId) => base + `/Departments/Delete/${departmentId}`,
   byId: (departmentId) => base + `/Departments/${departmentId}`,
 };
-
-//TODO: Decide wheter using "Separate Endpoints" or "Base URL with Concatenation"
-// API'de bazılarını ?vehicleID=1 şeklinde bazılarını da /1 şeklinde kullanıyoruz. Bunları standartlaştır, ona göre burayı da düzenle
-// gerekirse buraya sadece base apileri koy, /Vehicles cart curtları sayfalara tek tek koy.

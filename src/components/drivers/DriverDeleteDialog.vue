@@ -26,13 +26,13 @@ export default {
           this.isSuccess = true;
           this.snackBarMessage = res.data;
           this.$emit("delete-driver");
-          this.closeDialog();
         })
         .catch((err) => {
           this.isSuccess = false;
           this.snackBarMessage = err.response.data;
         })
         .finally(() => {
+          this.closeDialog();
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },

@@ -32,7 +32,7 @@ export default {
     },
     deleteTask() {
       api
-        .post(vehiclesOnTask.delete(this.id))
+        .update(vehiclesOnTask.delete(this.id))
         .then(() => {
           this.$emit("delete-task", this.snackBarMessage, this.isSuccess);
         })
@@ -53,5 +53,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

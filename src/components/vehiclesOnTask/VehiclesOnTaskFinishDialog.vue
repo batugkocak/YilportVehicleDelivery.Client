@@ -23,7 +23,7 @@ export default {
     },
     async finishTask() {
       api
-        .post(vehiclesOnTask.finishUrl(this.id))
+        .update(vehiclesOnTask.finishUrl(this.id))
         .then((respond) => {
           this.successMessage = respond.data.message;
           console.log(respond);

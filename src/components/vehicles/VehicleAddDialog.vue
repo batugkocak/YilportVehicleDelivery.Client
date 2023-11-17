@@ -6,7 +6,7 @@
           v-model="insertedVehicle.plate"
           label="Plaka"
           placeholder="16YH1616"
-          @update:focused="isPlateExists"
+          @input="isPlateExists"
           prepend-icon="mdi-card-text"
           :rules="[
             ruleRequired,
@@ -232,7 +232,6 @@ export default {
     trimInserts() {
       this.insertedVehicle.plate = this.insertedVehicle.plate.trim();
       this.insertedVehicle.modelName = this.insertedVehicle.modelName.trim();
-      this.insertedVehicle.note = this.insertedVehicle.note.trim();
     },
     async getDepartments() {
       if (this.departments.length) {

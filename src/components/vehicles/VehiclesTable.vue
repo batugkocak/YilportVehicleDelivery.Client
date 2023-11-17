@@ -106,7 +106,7 @@ export default {
     async fetchVehicles() {
       this.isTableLoading = true;
       await api
-        .get(vehicles.detailsForTable)
+        .get(vehicles.forTable)
         .then((response) => {
           this.vehicles = response.data.data;
           this.snackBarMessage = response.data.message;

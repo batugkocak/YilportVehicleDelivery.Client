@@ -22,7 +22,7 @@ export default {
   methods: {
     async deleteUser() {
       await api
-        .post(auth.delete(this.id))
+        .update(auth.delete(this.id))
         .then((res) => {
           console.log(res);
           this.isSuccess = true;

@@ -24,7 +24,7 @@ export default {
   methods: {
     async deleteBrand() {
       await api
-        .post(brands.delete(this.id))
+        .update(brands.delete(this.id))
         .then((res) => {
           console.log(res);
           this.isSuccess = true;

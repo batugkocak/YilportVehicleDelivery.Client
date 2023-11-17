@@ -21,7 +21,7 @@ export default {
   methods: {
     async deleteTask() {
       await api
-        .post(predefinedTasks.delete(this.id))
+        .update(predefinedTasks.delete(this.id))
         .then((res) => {
           console.log(res);
           this.isSuccess = true;

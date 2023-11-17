@@ -154,7 +154,7 @@ export default {
     async fetchVehiclesOnTaskArchive() {
       this.isLoading = true;
       await api
-        .get(vehiclesOnTask.archiveUrl, {
+        .get(vehiclesOnTask.forArchiveTable, {
           page: this.page - 1,
           size: this.itemsPerPage,
           firstDate: this.filterFirstGivenDate,

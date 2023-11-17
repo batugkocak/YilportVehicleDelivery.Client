@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
         <v-img src="@/assets/YPH_Mainlogo_titled.png" class="mb-8" />
-        <v-form @submit.prevent="login" v-model="valid">
+        <v-form @submit.prevent="login" v-model="valid" id="loginForm">
           <v-text-field
             v-model="user.username"
             label="Kullanıcı Adı"
@@ -68,7 +68,7 @@ export default {
     };
   },
   computed: {
-    fixedUsername() { 
+    fixedUsername() {
       return this.username.trim();
     },
   },
@@ -109,7 +109,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .login-container {
   width: 35%;
   height: 100vh;
@@ -138,7 +138,7 @@ export default {
   background-position: center;
 }
 
-.v-messages__message {
+#loginForm .v-messages__message {
   color: lightblue;
 }
 </style>

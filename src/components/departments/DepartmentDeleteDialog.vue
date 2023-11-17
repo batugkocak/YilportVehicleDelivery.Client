@@ -21,7 +21,7 @@ export default {
   methods: {
     async deleteDepartment() {
       await api
-        .post(departments.delete(this.id))
+        .update(departments.delete(this.id))
         .then((res) => {
           this.isSuccess = true;
           this.snackBarMessage = res.data;

@@ -209,7 +209,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .dialogCard {
   margin: 1%;
   padding: 3%;

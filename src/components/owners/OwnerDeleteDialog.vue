@@ -24,7 +24,7 @@ export default {
   methods: {
     async deleteOwner() {
       await api
-        .post(owners.delete(this.id))
+        .update(owners.delete(this.id))
         .then((res) => {
           console.log(res);
           this.isSuccess = true;

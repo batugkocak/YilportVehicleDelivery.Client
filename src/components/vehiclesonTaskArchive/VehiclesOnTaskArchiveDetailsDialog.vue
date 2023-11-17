@@ -88,7 +88,7 @@ export default {
     },
     async getVehicle() {
       await api
-        .get(vehiclesOnTask.byId(this.id))
+        .get(vehiclesOnTask.byIdDetails(this.id))
         .then((response) => {
           this.vehicleOnTask = response.data.data;
           this.snackBarMessage = response.data.message;
@@ -130,7 +130,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .space-between {
   display: flex;
   justify-content: space-between;

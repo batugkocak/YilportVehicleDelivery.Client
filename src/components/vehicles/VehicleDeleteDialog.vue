@@ -21,7 +21,7 @@ export default {
   methods: {
     async deleteVehicle() {
       await api
-        .post(vehicles.delete(this.id))
+        .update(vehicles.delete(this.id))
         .then((res) => {
           console.log(res);
           this.isSuccess = true;
