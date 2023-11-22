@@ -25,6 +25,7 @@
             variant="solo-filled"
             type="password"
             class="mb-2"
+            autocomplete="off"
             :rules="[
               ruleRequired,
               (v) => ruleMaxLength(v, userRules.PASSWORD_MAX_LENGTH),
@@ -38,7 +39,7 @@
             block
             class="login-button"
             type="submit"
-            :admdisabled="!valid"
+            :disabled="!valid"
           >
             Giriş Yap
           </v-btn>
@@ -46,6 +47,9 @@
       </v-col>
     </v-row>
   </v-container>
+  <div id="CssLoader" v-if="loading">
+    <the-loader></the-loader>
+  </div>
   <div class="background-wallpaper"></div>
 </template>
 
@@ -55,11 +59,14 @@ import { auth } from "@/common/config/apiConfig";
 import baseRules from "@/common/rules/rules";
 import { userRules } from "@/common/constants/validations";
 
+import TheLoader from "@/components/layout/TheLoader.vue";
+
 export default {
   data() {
     return {
       userRules,
       valid: false,
+      loading: false,
       user: {
         username: "",
         password: "",
@@ -74,18 +81,26 @@ export default {
   },
   methods: {
     async login() {
+      this.loading = true;
       this.user.username = this.user.username.trim();
-      api
+      await api
         .login(auth.login, this.user)
         .then((result) => {
           if (result.data.token) {
             localStorage.setItem("jwt", result.data.token);
-            this.$router.push("/admin");
+            setTimeout(() => {
+              this.loading = false;
+              this.$router.push("/admin");
+            }, 1000);
+
             localStorage.removeItem("isExpired");
           }
         })
         .catch((error) => {
-          this.showSnackbar(false, error.response.data);
+          if (error.response === undefined) {
+            this.showSnackbar(false, "Sunucuya bağlanılamadı.");
+          } else this.showSnackbar(false, error.response.data);
+          this.loading = false;
         });
     },
 
@@ -105,6 +120,9 @@ export default {
         5000
       );
     }
+  },
+  components: {
+    TheLoader,
   },
 };
 </script>
@@ -140,5 +158,18 @@ export default {
 
 #loginForm .v-messages__message {
   color: lightblue;
+}
+
+#CssLoader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(63, 68, 77, 0.7);
+  z-index: 9999;
 }
 </style>
