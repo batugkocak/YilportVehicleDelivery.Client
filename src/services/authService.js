@@ -29,12 +29,14 @@ function getLoginTime(token) {
 }
 
 function getUserName(token) {
+ 
   try {
     const decoded = jwtDecode(token);
-    if (decoded && decoded.sub) {
-      const sub = decoded.sub;
+    console.log(decoded)
+    if (decoded && decoded.nameIdentifier) {
+      const id = decoded.nameIdentifier;
       return {
-        sub: sub,
+        id: id,
       };
     }
   } catch (error) {

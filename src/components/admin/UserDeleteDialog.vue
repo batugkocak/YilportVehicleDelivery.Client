@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
     <v-card>
-      <v-card-text> Kullanıcıyı silmek istediğinize emin misiniz? </v-card-text>
+      <v-card-text>{{ dialogText }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green" @click="dialog = false">Vazgeç</v-btn>
@@ -15,6 +15,8 @@
 import { auth } from "@/common/config/apiConfig";
 import api from "@/services/httpService";
 
+import { getUserName } from "@/services/authService";
+
 export default {
   props: ["modelValue", "id"],
   emits: ["update:modelValue", "open-snackbar", "delete-user"],
@@ -24,39 +26,31 @@ export default {
       await api
         .update(auth.delete(this.id))
         .then((res) => {
-          console.log(res);
           this.isSuccess = true;
           this.snackBarMessage = res.data;
           this.$emit("delete-user");
+          if (this.id == this.currentId) {
+            this.$router.push("/login");
+            localStorage.removeItem("jwt");
+          }
           this.closeDialog();
         })
         .catch((err) => {
-          console.log(err);
+          this.isSuccess = true;
+          this.snackBarMessage = err.response.data;
+        })
+        .finally(() => {
+          this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
         });
     },
-    // async deleteOwner() {
-    //   await api
-    //     .post(owners.delete(this.id))
-    //     .then((res) => {
-    //       console.log(res);
-    //       this.isSuccess = true;
-    //       this.snackBarMessage = res.data;
-    //       this.$emit("delete-owner");
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       this.isSuccess = false;
-    //       this.snackBarMessage = err.response.data;
-    //     })
-    //     .finally(() => {
-    //       console.log("Finally");
-    //       this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-    //       this.closeDialog();
-    //     });
-    // },
     closeDialog() {
       this.$emit("update:modelValue", false);
     },
+  },
+  data() {
+    return {
+      currentId: "",
+    };
   },
   computed: {
     dialog: {
@@ -66,6 +60,21 @@ export default {
       set() {
         this.closeDialog();
       },
+    },
+    dialogText() {
+      if (this.id == this.currentId) {
+        return "Kendi kullanıcınızı silmek istediğinize emin misiniz?";
+      } else return "Kullanıcıyı silmek istediğinize emin misiniz?";
+    },
+  },
+  watch: {
+    dialog: {
+      handler(newValue) {
+        if (newValue) {
+          this.currentId = getUserName(localStorage.getItem("jwt")).id;
+        }
+      },
+      immediate: true,
     },
   },
 };

@@ -107,7 +107,7 @@
           :rules="[ruleRequired]"
         ></v-autocomplete>
 
-        <v-select
+        <!-- <v-select
           v-model="insertedVehicle.status"
           label="Durum"
           :items="stats"
@@ -117,7 +117,7 @@
           prepend-icon="mdi-list-status"
           no-data-text="Markalar getiriliyor, lütfen bekleyin..."
           :rules="[ruleRequired]"
-        />
+        /> -->
         <v-text-field
           v-model="insertedVehicle.note"
           label="Not"
@@ -182,7 +182,7 @@ export default {
         modelYear: "",
         fuelType: "",
         departmentId: "",
-        status: "",
+        status: 1,
         note: null,
       },
       departments: [],

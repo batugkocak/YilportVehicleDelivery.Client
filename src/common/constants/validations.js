@@ -30,7 +30,7 @@ export const userRules = Object.freeze({
 
 export const driverRules = Object.freeze({
   NAME_LENGTH: 20,
-  SURNAME_LENGTH: 15,
+  SURNAME_LENGTH: 20,
   MISSION_LENGTH: 30,
 });
 

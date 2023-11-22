@@ -88,13 +88,13 @@ export default {
         username: "",
         firstName: "",
         lastName: "",
-        roleId: 3,
+        roleId: 1,
         password: "",
       },
       roles: [
         {
           name: "Sürücü",
-          value: 3,
+          value: 1,
         },
         {
           name: "İdari İşler",
@@ -118,13 +118,7 @@ export default {
           this.isSuccess = true;
           this.snackBarMessage = "Başarıyla kayıt edildi!";
           this.$emit("add-user");
-          this.newUser = {
-            username: "",
-            firstName: "",
-            lastName: "",
-            roleId: 3,
-            password: "",
-          };
+          this.clearForm();
         })
         .catch((err) => {
           this.isSuccess = false;
@@ -132,13 +126,11 @@ export default {
         })
         .finally(() => {
           this.$emit("open-snackbar", this.isSuccess, this.snackBarMessage);
-          this.$refs.form.reset();
-          this.newUser.roleId = 3;
         });
     },
     clearForm() {
       this.$refs.form.reset();
-      this.newUser.roleId = 3;
+      this.newUser.roleId = 1;
     },
     trimInserts() {
       this.newUser.firstName = this.newUser.firstName.trim();
