@@ -15,7 +15,7 @@
 import { auth } from "@/common/config/apiConfig";
 import api from "@/services/httpService";
 
-import { getUserName } from "@/services/authService";
+import { getId } from "@/services/authService";
 
 export default {
   props: ["modelValue", "id"],
@@ -63,7 +63,7 @@ export default {
     },
     dialogText() {
       if (this.id == this.currentId) {
-        return "Kendi kullanıcınızı silmek istediğinize emin misiniz?";
+        return "**KENDİ KULLANICINIZI** silmek istediğinize emin misiniz?";
       } else return "Kullanıcıyı silmek istediğinize emin misiniz?";
     },
   },
@@ -71,7 +71,7 @@ export default {
     dialog: {
       handler(newValue) {
         if (newValue) {
-          this.currentId = getUserName(localStorage.getItem("jwt")).id;
+          this.currentId = getId(localStorage.getItem("jwt")).id;
         }
       },
       immediate: true,

@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px" v-if="fetchedVehicleOnTask">
-    <v-card class="dialogCard" hover>
+    <v-card class="dialogCard" elevation="2">
       <v-form v-model="valid" @submit.prevent="editTaskOfVehicle">
         <v-card elevation="2" class="dialogCard">
           <v-card-title>Sürücü</v-card-title>
@@ -73,7 +73,7 @@
             :counter="vehicleOnTaskRules.AUTHORIZED_PERSON_LENGTH"
           />
         </v-card>
-        <v-row class="mt-3">
+        <v-row class="mt-5">
           <v-spacer />
           <v-btn color="red" @click="closeDialog"> Vazgeç </v-btn>
           <v-btn type="submit" color="success" class="ml-5 mr-5">Düzenle</v-btn>

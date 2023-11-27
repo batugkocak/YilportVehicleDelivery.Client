@@ -86,11 +86,20 @@
     <template v-slot:append>
       <v-btn
         elevation="0"
+        icon="mdi-account"
+        @click="openInfoDialog"
+        class="ml-1"
+      />
+      <v-spacer />
+
+      <v-btn
+        elevation="0"
         icon="mdi-exit-to-app"
         @click="logout"
         class="ml-1"
       />
-      <v-spacer></v-spacer>
+      <v-spacer />
+
       <v-btn
         class="ml-1"
         variant="text"
@@ -103,7 +112,7 @@
 </template>
 <script>
 export default {
-  emits: ["logout"],
+  emits: ["logout", "open-info-dialog"],
   data() {
     return {
       hover: false,
@@ -112,6 +121,9 @@ export default {
   methods: {
     logout() {
       this.$emit("logout");
+    },
+    openInfoDialog() {
+      this.$emit("open-info-dialog");
     },
   },
 };

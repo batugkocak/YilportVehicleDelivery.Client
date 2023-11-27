@@ -28,15 +28,58 @@ function getLoginTime(token) {
   }
 }
 
+function getExpirationTime(token) {
+  try {
+    const decoded = jwtDecode(token);
+    if (decoded && decoded.exp) {
+      const date = new Date(decoded.exp * 1000);
+      return date.toLocaleString();
+    }
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+}
+
 function getUserName(token) {
  
   try {
     const decoded = jwtDecode(token);
-    console.log(decoded)
+    if (decoded && decoded.sub) {
+      const username = decoded.sub;
+      return {
+        username: username,
+      };
+    }
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+  return null; // Return null if "sub" is not found or there was an error
+}
+
+function getId(token) {
+ 
+  try {
+    const decoded = jwtDecode(token);
     if (decoded && decoded.nameIdentifier) {
       const id = decoded.nameIdentifier;
       return {
         id: id,
+      };
+    }
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+  return null; // Return null if "sub" is not found or there was an error
+}
+
+function getName(token) {
+ 
+  try {
+    const decoded = jwtDecode(token);
+    if (decoded && decoded.name) {
+      const name = decoded.name;
+      return {
+        name: name,
       };
     }
   } catch (error) {
@@ -62,4 +105,4 @@ function getRoles(token) {
   return null; // Return null if "sub" is not found or there was an error
 }
 
-export { isTokenExpired, getUserName, getLoginTime, getRoles };
+export { isTokenExpired, getUserName, getLoginTime, getExpirationTime, getRoles, getName, getId };

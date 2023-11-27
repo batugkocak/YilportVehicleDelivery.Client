@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <the-sidebar v-if="$route.path !== `/login`" @logout="logoutDialog" />
+    <the-sidebar
+      v-if="$route.path !== `/login`"
+      @logout="logoutDialog"
+      @open-info-dialog="openInfoDialog"
+    />
 
     <v-main>
       <div class="ma-5">
@@ -21,21 +25,26 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <user-info-dialog v-model="infoDialog"></user-info-dialog>
 </template>
 
 <script>
 import TheSidebar from "@/components/layout/TheSidebar.vue";
 import ResultSnackbar from "./common/components/ResultSnackbar.vue";
+import UserInfoDialog from "./components/user/UserInfoDialog.vue";
 
 export default {
   data() {
     return {
       isLoggingOut: false,
+      infoDialog: false,
     };
   },
   components: {
     TheSidebar,
     ResultSnackbar,
+    UserInfoDialog,
   },
   mounted() {
     this.$root.snackBar = this.$refs.snackBar;
@@ -44,10 +53,14 @@ export default {
     logoutDialog() {
       this.isLoggingOut = true;
     },
+
     logoutUser() {
       this.isLoggingOut = false;
       localStorage.removeItem("jwt");
       this.$router.push({ name: "Login" });
+    },
+    openInfoDialog() {
+      this.infoDialog = true;
     },
   },
 };
