@@ -61,6 +61,7 @@ export const auth = {
   login: base + "/Auth/login",
   register: base + "/Auth/register",
   delete: (driverId) => base + `/Auth/${driverId}/Delete/`,
+  changePassword: base + "/Auth/changePassword"
 };
 export const users = {
   forTable: base + "/Users/ForTable",

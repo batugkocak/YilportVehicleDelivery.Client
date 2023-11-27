@@ -40,6 +40,7 @@
         v-model="newUser.password"
         label="Şifre"
         type="password"
+        autocomplete="new-password"
         prepend-inner-icon="mdi-key"
         :rules="
           !isForm
@@ -60,6 +61,7 @@
         label="Şifre Tekrar"
         @input="isPasswordSame"
         type="password"
+        autocomplete="new-password"
         :disabled="!isForm"
         prepend-inner-icon="mdi-key"
         :rules="

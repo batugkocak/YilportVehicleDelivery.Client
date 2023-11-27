@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="500">
     <v-card
-      class="pa-2"
+      class="pa-5"
       prepend-icon="mdi-account-details"
       :title="username"
       subtitle="Kullanıcı Bilgileri"
@@ -35,12 +35,28 @@
           </div>
         </div>
         <v-divider />
+        <v-row>
+          <v-spacer />
+          <v-btn class="mt-5" @click="openChangePasswordDialog"
+            >Şifre Değiştir</v-btn
+          >
+          <v-spacer />
+        </v-row>
       </v-card>
-      <v-card-actions>
-        <v-btn color="primary" @click="closeDialog">Kapat</v-btn>
-      </v-card-actions>
+      <v-row class="mt-5">
+        <v-spacer />
+        <v-card-actions>
+          <v-btn color="primary" @click="closeDialog">Kapat</v-btn>
+        </v-card-actions>
+      </v-row>
     </v-card>
   </v-dialog>
+  <change-password-dialog
+    v-model="isChangingPassword"
+    @change-password="afterPasswordChange"
+    @open-snackbar="openSnackbar"
+  >
+  </change-password-dialog>
 </template>
 
 <script>
@@ -50,12 +66,28 @@ import {
   getExpirationTime,
   getLoginTime,
 } from "@/services/authService";
+import ChangePasswordDialog from "./ChangePasswordDialog.vue";
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue"],
+  components: {
+    ChangePasswordDialog,
+  },
   methods: {
     closeDialog() {
       this.$emit("update:modelValue", false);
+    },
+    openChangePasswordDialog() {
+      this.isChangingPassword = true;
+    },
+    afterPasswordChange() {
+      console.log("Test");
+    },
+    openSnackbar(isSuccess, message) {
+      this.$root.snackBar.show({
+        isSuccess: isSuccess,
+        message: message,
+      });
     },
   },
   computed: {
@@ -74,6 +106,7 @@ export default {
       loginTime: "",
       name: "",
       username: "",
+      isChangingPassword: false,
       cardContentStyling: "d-flex align-center",
     };
   },
