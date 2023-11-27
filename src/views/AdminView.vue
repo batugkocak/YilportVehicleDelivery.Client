@@ -1,13 +1,13 @@
 <template>
   <v-row align="center">
     <v-col cols="4">
-      <v-card elevation="10" height="550px">
+      <v-card elevation="10" height="600px">
         <add-user-card @add-user="refreshTable" @open-snackbar="showSnackbar">
         </add-user-card>
       </v-card>
     </v-col>
     <v-col cols="8" v-role="`[admin]`">
-      <v-card elevation="10" height="550px">
+      <v-card elevation="10" height="600px">
         <list-users-card @toggle-delete="openDeleteDialog" ref="usersTable" />
       </v-card>
     </v-col>
