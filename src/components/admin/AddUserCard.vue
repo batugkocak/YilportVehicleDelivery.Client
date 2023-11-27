@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-5 mt-2" title="Kullanıcı Ekle" elevation="0">
-    <v-form @submit.prevent="postUser" v-model="valid" ref="form">
+    <v-form @submit.prevent="postUser" ref="form" v-model="valid">
       <v-text-field
         v-model="newUser.firstName"
         label="Ad"
@@ -36,31 +36,42 @@
       >
       </v-text-field>
       <v-text-field
+        ref="password"
         v-model="newUser.password"
         label="Şifre"
         type="password"
         prepend-inner-icon="mdi-key"
-        :rules="[
-          ruleRequired,
-          (v) => ruleMinLength(v, userRules.PASSWORD_MIN_LENGTH),
-          (v) => ruleMaxLength(v, userRules.PASSWORD_MAX_LENGTH),
-        ]"
-        :disabled="isLdap"
+        :rules="
+          !isForm
+            ? []
+            : [
+                ruleRequired,
+                (v) => ruleMinLength(v, userRules.PASSWORD_MIN_LENGTH),
+                (v) => ruleMaxLength(v, userRules.PASSWORD_MAX_LENGTH),
+                (v) => isPasswordSame(v),
+              ]
+        "
+        :disabled="!isForm"
         :counter="userRules.PASSWORD_MAX_LENGTH"
       />
       <v-text-field
+        ref="verifyPassword"
         v-model="verifyPassword"
         label="Şifre Tekrar"
         @input="isPasswordSame"
         type="password"
-        :disabled="isLdap"
+        :disabled="!isForm"
         prepend-inner-icon="mdi-key"
-        :rules="[
-          ruleRequired,
-          (v) => ruleMinLength(v, userRules.PASSWORD_MIN_LENGTH),
-          (v) => ruleMaxLength(v, userRules.PASSWORD_MAX_LENGTH),
-          (v) => isPasswordSame(v),
-        ]"
+        :rules="
+          !isForm
+            ? []
+            : [
+                ruleRequired,
+                (v) => ruleMinLength(v, userRules.PASSWORD_MIN_LENGTH),
+                (v) => ruleMaxLength(v, userRules.PASSWORD_MAX_LENGTH),
+                (v) => isPasswordSame(v),
+              ]
+        "
         :counter="userRules.PASSWORD_MAX_LENGTH"
       />
       <v-select
@@ -73,7 +84,14 @@
       ></v-select>
       <v-row class="mt-3">
         <v-spacer />
-        <v-switch label="Test" v-model="isLdap" color="primary"></v-switch>
+        <v-switch
+          :label="ldapSwitchText"
+          v-model="chosenVerificationType"
+          color="primary"
+          :true-value="verificationTypes.LDAP"
+          :false-value="verificationTypes.FORM"
+        >
+        </v-switch>
         <v-btn color="red" @click="clearForm"> Temizle </v-btn>
         <v-btn
           type="submit"
@@ -92,7 +110,7 @@ import { auth } from "@/common/config/apiConfig";
 import rules from "@/common/rules/rules";
 import api from "@/services/httpService";
 import { userRules } from "@/common/constants/validations.js";
-import VerificationTypes from "@/common/constants/verificationType";
+import { verificationTypes } from "@/common/constants/verificationType";
 
 export default {
   props: ["modelValue"],
@@ -102,6 +120,7 @@ export default {
       chosenVerificationType: 2,
       isLdap: false,
       valid: false,
+
       newUser: {
         username: "",
         firstName: "",
@@ -110,7 +129,7 @@ export default {
         password: "",
         verificationType: 2,
       },
-      VerificationTypes,
+      verificationTypes,
       verifyPassword: "",
       roles: [
         {
@@ -134,7 +153,13 @@ export default {
       this.$emit("update:modelValue", false);
     },
     async postUser() {
+      if (!this.isForm) {
+        this.newUser.password = null;
+        this.verifyPassword = null;
+      }
       this.trimInserts();
+      console.log(this.newUser);
+      this.newUser.verificationType = this.chosenVerificationType;
       await api
         .post(auth.register, this.newUser)
         .then(() => {
@@ -163,7 +188,7 @@ export default {
     isPasswordSame() {
       if (this.newUser.password !== this.verifyPassword) {
         return "Şifreler uyuşmuyor!";
-      }
+      } else return true;
     },
   },
   computed: {
@@ -174,6 +199,26 @@ export default {
       set() {
         this.closeDialog();
       },
+    },
+    isForm() {
+      if (this.chosenVerificationType == this.verificationTypes.FORM) {
+        return true;
+      } else return false;
+    },
+    ldapSwitchText() {
+      if (this.isForm) {
+        return "Form";
+      } else return "Ldap";
+    },
+  },
+  watch: {
+    "newUser.password"() {
+      this.$refs.verifyPassword.validate();
+      this.$refs.password.validate();
+    },
+    verifyPassword() {
+      this.$refs.password.validate();
+      this.$refs.verifyPassword.validate();
     },
   },
 };
