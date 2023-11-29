@@ -234,6 +234,9 @@ export default {
         });
     },
     async getPredefinedTasks() {
+      if (this.predefinedTasks.length) {
+        return;
+      }
       await api
         .get(predefinedTasks.selectBox)
         .then((response) => {
@@ -271,5 +274,3 @@ export default {
   },
 };
 </script>
-
-

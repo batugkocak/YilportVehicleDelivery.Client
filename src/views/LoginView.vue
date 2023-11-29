@@ -151,7 +151,7 @@ export default {
   left: 0;
   height: 100%;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("@/assets/login_background.avif");
+    url("@/assets/login_background.jpg");
   background-size: cover;
   background-position: center;
 }

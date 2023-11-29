@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer :rail="hover" :permanent="true">
     <v-list>
-      <v-list-item title="Araç Teslim" subtitle="Yılport Holding INC.">
+      <v-list-item title="Gemport Araç Takip" subtitle="Yılport Holding INC.">
         <template v-slot:prepend>
           <v-img
             :width="25"

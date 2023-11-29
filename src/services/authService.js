@@ -40,6 +40,22 @@ function getExpirationTime(token) {
   }
 }
 
+function getVerificationType(token) {
+  try {
+    const decoded = jwtDecode(token);
+    console.log(decoded);
+    if (decoded && decoded.verificationType) {
+      const verificationType = decoded.verificationType;
+      return {
+        verificationType: verificationType,
+      };
+    }
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+  }
+  return null; // Return null if "sub" is not found or there was an error
+}
+
 function getUserName(token) {
  
   try {
@@ -105,4 +121,4 @@ function getRoles(token) {
   return null; // Return null if "sub" is not found or there was an error
 }
 
-export { isTokenExpired, getUserName, getLoginTime, getExpirationTime, getRoles, getName, getId };
+export { isTokenExpired, getUserName, getLoginTime, getExpirationTime, getRoles, getName, getId, getVerificationType };

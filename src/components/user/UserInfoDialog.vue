@@ -65,8 +65,10 @@ import {
   getName,
   getExpirationTime,
   getLoginTime,
+  getVerificationType,
 } from "@/services/authService";
 import ChangePasswordDialog from "./ChangePasswordDialog.vue";
+import { verificationTypes } from "@/common/constants/verificationType";
 export default {
   props: ["modelValue"],
   emits: ["update:modelValue"],
@@ -78,6 +80,12 @@ export default {
       this.$emit("update:modelValue", false);
     },
     openChangePasswordDialog() {
+      const token = localStorage.getItem("jwt");
+      const verificationType = getVerificationType(token).verificationType;
+      if (verificationType == verificationTypes.LDAP) {
+        this.openSnackbar(false, "LDAP Kullanıcıları Şifre Değişemez!");
+        return;
+      }
       this.isChangingPassword = true;
     },
     afterPasswordChange() {
